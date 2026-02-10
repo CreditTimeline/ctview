@@ -1,0 +1,33 @@
+{
+  "name": "ctview2",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev": "pnpm -F @ctview/web dev",
+    "build": "pnpm -F @ctview/core build && pnpm -F @ctview/web build",
+    "preview": "pnpm -F @ctview/web preview",
+    "check": "pnpm -F @ctview/web check",
+    "test": "vitest",
+    "test:e2e": "pnpm -F @ctview/web test:e2e",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "db:reset": "rm -f packages/web/data/credittimeline.db*"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.15.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-svelte": "^3.4.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.55.0",
+    "vitest": "^3.0.5"
+  }
+}

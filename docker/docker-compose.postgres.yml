@@ -1,0 +1,26 @@
+# Usage: docker compose -f docker/docker-compose.yml -f docker/docker-compose.postgres.yml up
+services:
+  postgres:
+    image: postgres:17-alpine
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: credittimeline
+      POSTGRES_USER: ctview
+      POSTGRES_PASSWORD: ctview_dev
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ctview -d credittimeline']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ctview:
+    environment:
+      - DATABASE_DIALECT=postgres
+      - DATABASE_URL=postgres://ctview:ctview_dev@postgres:5432/credittimeline
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pg-data:

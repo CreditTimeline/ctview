@@ -1,0 +1,17 @@
+services:
+  ctview:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ctview-data:/data
+    environment:
+      - DATABASE_DIALECT=sqlite
+      - DATABASE_URL=/data/credittimeline.db
+      - PORT=3000
+    restart: unless-stopped
+
+volumes:
+  ctview-data:
