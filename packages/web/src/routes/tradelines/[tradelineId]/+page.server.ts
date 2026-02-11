@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getTradelineDetail } from '@ctview/core';
+import { getTradelineDetail, getTradelineMetrics } from '@ctview/core';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -7,5 +7,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
   if (!detail) {
     throw error(404, 'Tradeline not found');
   }
-  return detail;
+  const metrics = getTradelineMetrics(locals.db, params.tradelineId);
+  return { detail, metrics };
 };

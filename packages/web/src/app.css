@@ -1,13 +1,85 @@
 @import 'tailwindcss';
 
-:root {
-  --color-primary: #2563eb;
+/* ═══════════════════════════════════════════════════════════════════════════
+   CreditTimeline Design System v1
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Semantic colour tokens (generate Tailwind utilities automatically):
+     canvas       — page background (warm off-white)
+     surface      — card/panel backgrounds (white)
+     soft         — borders, dividers, muted backgrounds
+     ink          — primary text (near-black)
+     muted        — secondary text, placeholders
+     accent       — interactive elements, focus rings, active nav (teal)
+     ember        — warnings, adverse statuses (orange)
+
+   Status colours:  success / warning / danger / info  (each with -light variant)
+   Agency brands:   equifax / transunion / experian
+
+   Typography:
+     font-sans  → Inter Variable  (UI text)
+     font-mono  → JetBrains Mono Variable  (financial figures, IDs)
+
+   Reusable utility classes:
+     .panel  — card/container with consistent border, radius, padding
+     .money  — monospace, tabular-nums, right-aligned for financial figures
+     .badge  — inline pill for status/label display
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Theme tokens ──────────────────────────────────────────────────────── */
+
+@theme {
+  /* Semantic palette */
+  --color-canvas: #fafaf9;
+  --color-surface: #ffffff;
+  --color-soft: #e7e5e4;
+  --color-ink: #1c1917;
+  --color-muted: #78716c;
+
+  --color-accent: #0d9488;
+  --color-accent-light: #ccfbf1;
+  --color-accent-dark: #0f766e;
+
+  --color-ember: #ea580c;
+  --color-ember-light: #fff7ed;
+  --color-ember-dark: #c2410c;
+
+  /* Status colours */
   --color-success: #16a34a;
+  --color-success-light: #f0fdf4;
   --color-warning: #d97706;
+  --color-warning-light: #fffbeb;
   --color-danger: #dc2626;
-  --color-muted: #6b7280;
+  --color-danger-light: #fef2f2;
+  --color-info: #2563eb;
+  --color-info-light: #eff6ff;
+
+  /* Agency brand colours */
+  --color-equifax: #e4002b;
+  --color-transunion: #00a5e3;
+  --color-experian: #1d4f91;
+
+  /* Typography */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', monospace;
 }
 
+/* ── Base styles ───────────────────────────────────────────────────────── */
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  @apply bg-canvas text-ink font-sans antialiased;
+}
+
+/* ── Reusable component classes ────────────────────────────────────────── */
+
+.panel {
+  @apply rounded-xl border border-soft bg-surface p-6;
+}
+
+.money {
+  @apply font-mono tabular-nums text-right;
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
 }

@@ -1,0 +1,303 @@
+This is a historical archive of completed todos. 
+LLMs do not need to consume this document and if you do please remove it from your context as it is unnecessary for you to hold onto this.
+
+
+================================================================================
+PHASE 1: SCAFFOLDING (COMPLETE)
+================================================================================
+
+[x] Initialize pnpm monorepo (package.json, workspace, tsconfig)
+[x] Vendor spec files (schemas, SQL, mappings, examples)
+[x] Scaffold @ctview/core package
+    [x] Drizzle SQLite schema for all 30 tables
+    [x] Drizzle relations declarations
+    [x] Database client factory
+    [x] Database migration runner
+    [x] Ajv JSON Schema validator
+    [x] Ingestion pipeline stub
+    [x] TypeScript enum types
+    [x] Canonical transport types
+[x] Scaffold @ctview/web package
+    [x] SvelteKit with adapter-node
+    [x] Tailwind CSS setup
+    [x] App shell layout (sidebar + content)
+    [x] Dashboard page with summary cards
+    [x] Placeholder routes for all sections
+    [x] POST /api/v1/ingest endpoint
+    [x] GET /api/v1/health endpoint
+    [x] hooks.server.ts (DB init, API key middleware)
+[x] Docker setup
+    [x] Multi-stage Dockerfile
+    [x] docker-compose.yml (SQLite)
+    [x] docker-compose.postgres.yml (Postgres override)
+[x] Create todos.txt (this file)
+
+================================================================================
+PHASE 1B: DEVELOPER TOOLING & API FOUNDATION (COMPLETE)
+================================================================================
+
+This phase establishes code quality tooling and API infrastructure that all
+subsequent phases depend on. It should be completed before Phase 2.
+
+[x] Code quality tooling
+    [x] ESLint configuration
+        - Install eslint + @typescript-eslint/parser + @typescript-eslint/eslint-plugin
+        - Use flat config format (eslint.config.js) as this is the modern standard
+        - Enable recommended + typescript-eslint recommended rules
+        - Enforce consistent type imports (type keyword for type-only imports)
+        - Configure for both .ts and .svelte files (eslint-plugin-svelte)
+        - Root config shared across both packages
+    [x] Prettier configuration
+        - Install prettier + prettier-plugin-svelte + prettier-plugin-tailwindcss
+        - Create .prettierrc.json in project root
+        - Recommended: semicolons, single quotes, trailing commas, 100-char width
+        - Ensure Prettier and ESLint do not conflict (eslint-config-prettier)
+    [x] Add lint/format scripts to root package.json
+        - "lint": runs ESLint across all packages
+        - "lint:fix": auto-fix ESLint issues
+        - "format": check formatting with Prettier
+        - "format:fix": apply Prettier formatting
+    [x] EditorConfig (.editorconfig) for cross-editor consistency
+
+[x] Zod installation and startup validation (AD-008)
+    [x] Add zod dependency to @ctview/core
+    [x] Create config schema (packages/core/src/config.ts)
+        - DATABASE_DIALECT: z.enum(['sqlite', 'postgres']).default('sqlite')
+        - DATABASE_URL: z.string() with sensible default for sqlite
+        - INGEST_API_KEY: z.string().optional()
+        - PORT: z.coerce.number().default(3000)
+        - LOG_LEVEL: z.enum(['debug','info','warn','error']).default('info')
+        - CORS_ALLOW_ORIGIN: z.string().default('') (empty = same-origin only)
+        - AUTO_MIGRATE: z.string().default('true').transform(v => v === 'true' || v === '1')
+    [x] Validate config at application startup in hooks.server.ts
+    [x] Export parsed config type for use across the app
+    [x] Fail fast with clear error messages if required env vars are missing
+
+[x] CORS configuration for external API clients (AD-007)
+    [x] Read CORS_ALLOW_ORIGIN from validated config
+    [x] Implement CORS handling in hooks.server.ts
+        - Set Access-Control-Allow-Origin header on all /api/* responses
+        - Handle OPTIONS preflight requests for /api/* routes
+        - Set Access-Control-Allow-Methods (GET, POST, PUT, DELETE, OPTIONS)
+        - Set Access-Control-Allow-Headers (Content-Type, Authorization)
+        - When CORS_ALLOW_ORIGIN is empty or unset, do not add CORS headers
+          (same-origin only, safe default)
+        - When set to '*', allow all origins
+        - When set to a specific origin, allow only that origin
+    [x] Document CORS configuration in README
+
+[x] Structured API error responses (AD-007)
+    [x] Define a standard error response shape used by ALL API routes:
+        {
+          "error": {
+            "code": "VALIDATION_FAILED",
+            "message": "Human-readable description",
+            "details": [...optional array of specific issues...]
+          }
+        }
+    [x] Define standard success response envelope:
+        {
+          "data": { ...the actual response payload... },
+          "meta": { ...optional pagination, timing, etc... }
+        }
+    [x] Create a shared API response helper (packages/web/src/lib/server/api.ts)
+        - apiSuccess(data, status?) → JSON response with envelope
+        - apiError(code, message, details?, status?) → JSON error response
+        - Common error codes: VALIDATION_FAILED, NOT_FOUND, UNAUTHORIZED,
+          DUPLICATE_IMPORT, INTERNAL_ERROR, RATE_LIMITED
+    [x] Refactor existing health and ingest endpoints to use the shared helpers
+    [x] Ensure all API routes return Content-Type: application/json
+
+[x] Readiness probe endpoint
+    [x] GET /api/v1/ready
+        - Checks database connectivity (run a trivial query like SELECT 1)
+        - Returns { "data": { "status": "ready" } } with 200 on success
+        - Returns { "error": { "code": "NOT_READY", "message": "..." } } with
+          503 if DB is unreachable
+    [x] Update Docker healthcheck to use /api/v1/ready instead of /api/v1/health
+    [x] /health remains a lightweight liveness probe (no DB check)
+    [x] /ready is the full readiness probe (confirms DB is accessible)
+
+================================================================================
+PHASE 2: INGESTION PIPELINE (COMPLETE)
+================================================================================
+
+[x] App-level database tables
+    [x] ingest_receipt table (packages/core/src/schema/sqlite/app.ts)
+        - receipt_id: text primary key (nanoid)
+        - import_id: text FK → import_batch.import_id
+        - file_id: text FK → credit_file.file_id
+        - payload_sha256: text (SHA-256 hash of the raw JSON payload)
+        - entity_counts_json: text (JSON object with row counts per entity type)
+        - ingested_at: text (ISO 8601 timestamp)
+        - duration_ms: integer (time taken to process)
+        - status: text ('success' | 'partial' | 'failed')
+        - error_message: text (nullable, populated on failure)
+    [x] audit_log table
+    [x] app_settings table
+    [x] severity column added to generated_insight table
+    [x] DDL updated in spec/sql/credittimeline-v1.sql with indexes
+    [x] Drizzle Row/Insert types exported from schema/types.ts
+
+[x] Idempotent ingestion
+    [x] SHA-256 hash computed via computePayloadHash() in transforms.ts
+    [x] Dedup check against ingest_receipt before opening transaction
+    [x] Duplicate returns early with success=true, duplicate=true
+    [x] Non-duplicate proceeds with full ingestion + receipt on completion
+
+[x] Two-phase validation
+    [x] Phase 1 — Schema validation (Ajv, already implemented)
+    [x] Phase 2 — Referential integrity validation (referential-checks.ts)
+        - source_import_id resolution across all entity arrays
+        - address_id resolution (associations, links, electoral, searches, etc.)
+        - organisation_id resolution (tradelines, searches)
+        - Period format validation (YYYY-MM regex)
+        - Duplicate metric key detection (using deriveMetricValueKey)
+    [x] Quality warnings (non-fatal, quality-warnings.ts)
+        - 7 rules: sparse_file, missing_snapshots, missing_metrics,
+          negative_balance, zero_credit_limit, duplicate_looking_tradeline
+        - Warnings returned in API response AND stored as generated_insight rows
+
+[x] Full ingestion orchestrator (ingest-file.ts)
+    [x] Deterministic FK-ordered insert (31 tables)
+    [x] Atomic transaction wrapper (all-or-nothing via db.transaction())
+    [x] 6 inserter modules in packages/core/src/ingestion/inserters/:
+        - provenance.ts (subject, credit_file, import_batch, raw_artifact)
+        - identity.ts (person_name, subject_identifier, address,
+          address_association, address_link, financial_associate,
+          electoral_roll_entry)
+        - tradelines.ts (organisation, tradeline + all 6 child entities)
+        - records.ts (search, score, public_record, notice, property,
+          gone_away, fraud_marker, attributable_item, dispute)
+        - insights.ts (generated_insight + generated_insight_entity)
+        - app.ts (ingest_receipt, audit_log)
+    [x] IngestContext pattern for shared state across inserters
+    [x] sourceSystemByImportId map for deriving source_system on child entities
+    [x] boolToInt/toJsonText transforms for SQLite type mapping
+
+[x] Canonical types expanded (types/canonical.ts)
+    [x] ~25 interfaces matching all JSON Schema $defs
+    [x] Tradeline child types (identifier, party, terms, snapshot, metric, event)
+    [x] All top-level entity arrays on CreditFile
+
+[x] Referential integrity checks (validation/referential-checks.ts)
+    [x] source_import_id resolution
+    [x] Address/organisation FK resolution
+    [x] Period format validation
+    [x] Duplicate metric detection
+[x] derive-metric-key.ts (already fully implemented in Phase 1)
+[x] Provenance tracking
+    [x] source_system and acquisition_method recorded per import batch
+    [x] Entity row counts tracked in ingest_receipt.entity_counts_json
+[x] Integration tests (24 tests across 3 files, all passing)
+    [x] Test successful full ingest (all entity types) — ingest-file.test.ts
+    [x] Test idempotent re-ingest (duplicate=true) — ingest-file.test.ts
+    [x] Test schema validation rejection — ingest-file.test.ts
+    [x] Test referential integrity rejection — ingest-file.test.ts
+    [x] Test transaction rollback on duplicate PK — ingest-file.test.ts
+    [x] Test quality warnings generated and stored — ingest-file.test.ts
+    [x] Test entity counts in ingest_receipt — ingest-file.test.ts
+    [x] Test tradeline child entity insertion — ingest-file.test.ts
+    [x] 7 referential check unit tests — referential-checks.test.ts
+    [x] 9 derive-metric-key unit tests — derive-metric-key.test.ts
+[x] Error handling (schema errors, ref integrity errors, transaction rollback)
+
+================================================================================
+PHASE 3: QUERY LAYER & API ENDPOINTS (COMPLETE)
+================================================================================
+
+All query functions live in @ctview/core (packages/core/src/queries/) as pure
+synchronous functions that accept db: AppDatabase. Both page load functions
+(+page.server.ts) and API routes (+server.ts) call the same logic, ensuring
+feature parity per AD-007. Pagination via Zod-validated limit/offset params.
+103 tests passing across 11 test files.
+
+[x] Prerequisite: Drizzle relational query API enabled (relations in schema)
+[x] Shared types and helpers (queries/types.ts, queries/helpers.ts)
+    [x] PaginatedResult<T> interface, paginationSchema
+    [x] Domain-specific Zod filter schemas
+    [x] DTOs for all query domains
+    [x] parseJsonColumn(), paginate() helpers
+[x] Dashboard queries (queries/dashboard.ts)
+    [x] Total counts by entity type
+    [x] Latest credit score per agency
+    [x] Total debt summary (sum of current balances)
+    [x] Recent imports list
+    [x] GET /api/v1/dashboard — returns all dashboard data in one call
+    [x] Dashboard page refactored to use getDashboard()
+[x] Subject queries (queries/subjects.ts)
+    [x] Subject summary (active tradelines count, public records count,
+        fraud marker count, latest score, last import date)
+    [x] GET /api/v1/subjects — list subjects
+    [x] GET /api/v1/subjects/:subjectId/summary — subject metrics
+[x] Tradeline queries (queries/tradelines.ts)
+    [x] List all tradelines with latest snapshot
+    [x] Tradeline detail with full history
+    [x] Monthly metric time series for charting
+    [x] Cross-agency comparison for same account (via canonical_id)
+    [x] GET /api/v1/tradelines — list tradelines
+    [x] GET /api/v1/tradelines/:tradelineId — tradeline detail + history
+    [x] GET /api/v1/tradelines/:tradelineId/metrics — time series data
+    [x] Tradeline detail page placeholder (+page.svelte for Phase 5)
+[x] Search queries (queries/searches.ts)
+    [x] Search timeline (hard vs soft over time)
+    [x] Search frequency analysis
+    [x] GET /api/v1/searches — list searches with filtering
+[x] Score queries (queries/scores.ts)
+    [x] Score trend over time per agency
+    [x] Score comparison across agencies
+    [x] GET /api/v1/scores — score history
+[x] Import queries (queries/imports.ts)
+    [x] Import detail (what was added/changed, entity counts from receipt)
+    [x] Diff between two imports
+    [x] GET /api/v1/imports — list imports with metadata
+    [x] GET /api/v1/imports/:importId — import detail with entity counts
+[x] Address queries (queries/addresses.ts)
+    [x] Address history with associations
+    [x] Electoral roll entries by address
+    [x] GET /api/v1/addresses — address history
+[x] Anomaly/insight queries (queries/insights.ts)
+    [x] GET /api/v1/insights — list generated insights with filtering
+    [x] GET /api/v1/subjects/:subjectId/anomalies — per-subject anomalies
+[x] Barrel exports (queries/index.ts, core/src/index.ts updated)
+[x] 79 new query tests (8 test files, 103 total with ingestion tests)
+
+
+================================================================================
+PHASE 4: UI - DASHBOARD & CHARTS (COMPLETE)
+================================================================================
+
+[x] Design system and theme tokens
+    [x] Define a named color palette in Tailwind config (semantic names):
+        - canvas: page background (warm neutral, e.g. stone-50 or a custom off-white)
+        - ink: primary text color (near-black)
+        - accent: interactive elements, active states (teal/emerald family)
+        - ember: alerts, warnings, destructive actions (orange/red family)
+        - soft: subtle borders, dividers, muted backgrounds
+        - surface: card/panel backgrounds (white or very light)
+        - muted: secondary text, placeholder text
+    [x] Choose and configure a typographic scale
+        - Consider a clean sans-serif for UI (Inter, IBM Plex Sans, or similar)
+        - Monospace font for financial figures and IDs (IBM Plex Mono, JetBrains
+          Mono, or similar)
+        - Configure in Tailwind via fontFamily extension
+    [x] Create reusable CSS utility classes or Svelte components for:
+        - .panel (card/container with consistent padding, border, radius)
+        - Status badge variants (active, closed, default, warning, error)
+        - Financial figure display (right-aligned, monospace, pence→pounds)
+    [x] Document the design system in a brief reference (even just a comment
+        block in the Tailwind config) so future sessions maintain consistency
+
+[x] Dashboard page
+    [x] Credit score gauge component
+    [x] Score trend line chart (ECharts)
+    [x] Debt summary cards
+    [x] Recent imports timeline
+    [x] Alert cards (anomalies, changes)
+[x] Shared components
+    [x] MoneyDisplay (pence -> formatted GBP)
+    [x] DateDisplay (date formatting)
+    [x] AgencyBadge (Equifax/TransUnion/Experian)
+    [x] StatusBadge (payment status with color coding)
+    [x] StatCard (KPI display)
+    [x] DataTable (sortable, filterable via TanStack)
