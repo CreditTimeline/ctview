@@ -8,6 +8,10 @@ import { computePayloadHash } from './transforms.js';
 import { generateQualityWarnings } from './quality-warnings.js';
 import { ingestReceipt } from '../schema/sqlite/index.js';
 import type { IngestContext } from './ingest-context.js';
+import { runAnomalyRules } from '../analysis/engine.js';
+import { defaultRules } from '../analysis/registry.js';
+import { loadAnomalyConfig } from '../analysis/config.js';
+import type { AnalysisEngineResult } from '../analysis/types.js';
 
 // Inserters — ordered by FK dependency graph
 import {
@@ -49,6 +53,7 @@ export interface IngestResult {
   receiptId?: string;
   durationMs?: number;
   summary?: Record<string, number>;
+  analysisResult?: AnalysisEngineResult;
 }
 
 export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<IngestResult> {
@@ -105,6 +110,7 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
 
   // Step 7: Insert all entities inside a single atomic transaction
   let receiptId: string | undefined;
+  let analysisResult: AnalysisEngineResult | undefined;
   const entityCounts: Record<string, number> = {};
 
   db.transaction((tx) => {
@@ -149,6 +155,23 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
     // Quality warnings → generated_insight rows
     insertQualityWarnings(ctx, warnings);
 
+    // Anomaly detection rules → generated_insight rows
+    const anomalyConfig = loadAnomalyConfig(tx);
+    analysisResult = runAnomalyRules(
+      {
+        db: tx,
+        file,
+        subjectId: file.subject.subject_id,
+        importIds: file.imports.map((i) => i.import_id),
+        sourceSystemByImportId,
+        config: anomalyConfig,
+      },
+      defaultRules,
+    );
+    if (analysisResult.insightCount > 0) {
+      entityCounts.anomaly_insights = analysisResult.insightCount;
+    }
+
     // Ingest receipt (last — after all entities)
     const durationMs = Math.round(performance.now() - startTime);
     receiptId = insertIngestReceipt(ctx, {
@@ -172,5 +195,6 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
     receiptId,
     durationMs: Math.round(performance.now() - startTime),
     summary: entityCounts,
+    analysisResult,
   };
 }

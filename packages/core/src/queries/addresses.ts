@@ -6,6 +6,7 @@ import type {
   AddressListParams,
   PaginatedResult,
   AddressWithAssociations,
+  AddressLinkEntry,
 } from './types.js';
 
 export function listAddresses(
@@ -132,4 +133,39 @@ export function listAddresses(
   }));
 
   return paginate(items, total, limit, offset);
+}
+
+export function getAddressLinks(
+  db: AppDatabase,
+  subjectId: string,
+): AddressLinkEntry[] {
+  interface Row {
+    address_link_id: string;
+    from_single_line: string | null;
+    to_single_line: string | null;
+    last_confirmed_at: string | null;
+    source_system: string;
+  }
+
+  const rows = db.all<Row>(sql`
+    SELECT
+      al.address_link_id,
+      COALESCE(fa.normalized_single_line, fa.line_1) AS from_single_line,
+      COALESCE(ta.normalized_single_line, ta.line_1) AS to_single_line,
+      al.last_confirmed_at,
+      al.source_system
+    FROM address_link al
+    LEFT JOIN address fa ON fa.address_id = al.from_address_id
+    LEFT JOIN address ta ON ta.address_id = al.to_address_id
+    WHERE al.subject_id = ${subjectId}
+    ORDER BY al.last_confirmed_at DESC
+  `);
+
+  return rows.map((r) => ({
+    linkId: r.address_link_id,
+    fromAddress: r.from_single_line ?? 'Unknown',
+    toAddress: r.to_single_line ?? 'Unknown',
+    linkedAt: r.last_confirmed_at,
+    sourceSystem: r.source_system,
+  }));
 }

@@ -12,6 +12,7 @@
     { href: '/addresses', label: 'Addresses' },
     { href: '/public-records', label: 'Public Records' },
     { href: '/imports', label: 'Imports' },
+    { href: '/settings', label: 'Settings' },
   ];
 
   function isActive(href: string, pathname: string): boolean {

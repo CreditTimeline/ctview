@@ -301,3 +301,60 @@ PHASE 4: UI - DASHBOARD & CHARTS (COMPLETE)
     [x] StatusBadge (payment status with color coding)
     [x] StatCard (KPI display)
     [x] DataTable (sortable, filterable via TanStack)
+
+
+
+================================================================================
+PHASE 5: UI - TRADELINE VIEWS  ✅ COMPLETED
+================================================================================
+
+[x] Tradeline list page
+    [x] Filterable table (by type, status, agency)
+    [x] Account type badges
+    [x] Balance/limit columns with formatting
+[x] Tradeline detail page
+    [x] Account summary card
+    [x] Payment history grid (monthly status heatmap)
+    [x] Balance over time chart
+    [x] Credit limit over time chart
+    [x] Utilization ratio chart (balance/limit)
+    [x] Snapshot comparison table
+    [x] Event timeline
+    [x] Cross-agency data comparison
+
+================================================================================
+PHASE 6: UI - REMAINING SECTIONS  ✅ COMPLETED
+================================================================================
+
+[x] Searches page
+    [x] Timeline view (hard/soft markers)
+    [x] Search frequency chart
+    [x] Organisation search breakdown
+[x] Scores page
+    [x] Multi-agency score chart
+    [x] Score factor display
+    [x] Historical comparison
+[x] Imports page
+    [x] Import list with metadata (source system, entity counts from receipt)
+    [x] Import detail (entities added per import, pulled from ingest_receipt)
+    [x] Manual file upload UI for ingest endpoint
+[x] Addresses page
+    [x] Address history cards
+    [x] Electoral roll display
+    [x] Address link visualization
+[x] Public records page
+    [x] CCJ/IVA/DRO display
+    [x] Status tracking
+[x] Settings page
+    [x] Database info (dialect, path/connection, schema version, row counts)
+    [x] API key management
+        - Display whether INGEST_API_KEY is configured (mask the value)
+        - Provide a "test ingest" button that sends a minimal payload to
+          verify the key works
+        - Display CORS configuration status (what origins are allowed)
+    [x] App settings management (read/write from app_settings table)
+        - Display preferences (date format, currency format)
+        - Anomaly detection thresholds (configurable sensitivity)
+        - Notification preferences (if notification system exists)
+    [x] Export functionality (see Phase 9)
+    [x] System health summary (last ingest, DB size, total records)

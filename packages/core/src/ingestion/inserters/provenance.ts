@@ -10,6 +10,7 @@ export function insertSubject(ctx: IngestContext): void {
       created_at: ctx.file.created_at,
       extensions_json: toJsonText(ctx.file.subject.extensions),
     })
+    .onConflictDoNothing()
     .run();
   ctx.entityCounts.subjects = 1;
 }

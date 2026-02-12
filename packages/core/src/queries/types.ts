@@ -368,6 +368,52 @@ export interface AddressWithAssociations {
   }[];
 }
 
+export interface AddressLinkEntry {
+  linkId: string;
+  fromAddress: string;
+  toAddress: string;
+  linkedAt: string | null;
+  sourceSystem: string;
+}
+
+// ---------------------------------------------------------------------------
+// Public Records
+// ---------------------------------------------------------------------------
+
+export const publicRecordListSchema = paginationSchema.extend({
+  subjectId: z.string().optional(),
+});
+
+export type PublicRecordListParams = z.infer<typeof publicRecordListSchema>;
+
+export interface PublicRecordSummary {
+  publicRecordId: string;
+  recordType: string | null;
+  courtOrRegister: string | null;
+  amount: number | null;
+  recordedAt: string | null;
+  satisfiedAt: string | null;
+  status: string | null;
+  sourceSystem: string;
+}
+
+// ---------------------------------------------------------------------------
+// Settings
+// ---------------------------------------------------------------------------
+
+export interface SystemHealth {
+  tableCounts: Record<string, number>;
+  lastIngestAt: string | null;
+  dbDialect: string;
+  schemaVersion: string | null;
+}
+
+export interface AppSettingEntry {
+  key: string;
+  value: string;
+  updatedAt: string;
+}
+
 // ---------------------------------------------------------------------------
 // Insights
 // ---------------------------------------------------------------------------

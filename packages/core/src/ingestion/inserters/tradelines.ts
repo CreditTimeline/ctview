@@ -31,6 +31,7 @@ export function insertOrganisations(ctx: IngestContext): void {
           : undefined,
         extensions_json: toJsonText(o.extensions),
       })
+      .onConflictDoNothing()
       .run();
   }
   ctx.entityCounts.organisations = orgs.length;
@@ -50,7 +51,7 @@ export function insertTradelines(ctx: IngestContext): void {
   for (const t of tls) {
     const sourceSystem = ctx.sourceSystemByImportId.get(t.source_import_id)!;
 
-    // Insert tradeline
+    // Insert tradeline (onConflictDoNothing for multi-import re-ingestion)
     ctx.tx
       .insert(tradeline)
       .values({
@@ -70,6 +71,7 @@ export function insertTradelines(ctx: IngestContext): void {
         source_system: sourceSystem,
         extensions_json: toJsonText(t.extensions),
       })
+      .onConflictDoNothing()
       .run();
 
     // Identifiers

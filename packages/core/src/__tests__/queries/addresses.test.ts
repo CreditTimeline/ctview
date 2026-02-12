@@ -1,7 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { createTestDb } from '../helpers/test-db.js';
-import { createSeededDb, createTradelineSeededDb } from './query-test-helpers.js';
-import { listAddresses } from '../../queries/addresses.js';
+import { ingestCreditFile } from '../../ingestion/ingest-file.js';
+import {
+  createSeededDb,
+  createTradelineSeededDb,
+  buildCreditFileWithAddressLinks,
+} from './query-test-helpers.js';
+import { listAddresses, getAddressLinks } from '../../queries/addresses.js';
+
+async function createAddressLinkSeededDb() {
+  const db = createTestDb();
+  const data = buildCreditFileWithAddressLinks();
+  const result = await ingestCreditFile(db, data);
+  if (!result.success) throw new Error(`Seed failed: ${result.errors?.join(', ')}`);
+  return db;
+}
 
 describe('listAddresses', () => {
   it('returns empty result on empty database', () => {
@@ -86,5 +99,57 @@ describe('listAddresses', () => {
     expect(result.items).toHaveLength(1);
     expect(result.items[0].addressId).toBe('addr_test_001');
     expect(result.items[0].postcode).toBe('TE1 1ST');
+  });
+});
+
+describe('getAddressLinks', () => {
+  it('returns empty array on empty database', () => {
+    const db = createTestDb();
+    const result = getAddressLinks(db, 'subj_test_001');
+
+    expect(result).toHaveLength(0);
+  });
+
+  it('returns address links after ingestion', async () => {
+    const db = await createAddressLinkSeededDb();
+    const result = getAddressLinks(db, 'subj_test_001');
+
+    expect(result).toHaveLength(2);
+  });
+
+  it('returns links ordered by last_confirmed_at DESC', async () => {
+    const db = await createAddressLinkSeededDb();
+    const result = getAddressLinks(db, 'subj_test_001');
+
+    expect(result[0].linkedAt).toBe('2025-06-10');
+    expect(result[1].linkedAt).toBe('2024-01-15');
+  });
+
+  it('resolves from/to address display names', async () => {
+    const db = await createAddressLinkSeededDb();
+    const result = getAddressLinks(db, 'subj_test_001');
+
+    const mostRecent = result[0];
+    expect(mostRecent.fromAddress).toBe('10 NEW ROAD, MANCHESTER, M1 1AA');
+    expect(mostRecent.toAddress).toBe('20 LATEST AVENUE, BRISTOL, BS1 1AB');
+
+    const older = result[1];
+    expect(older.fromAddress).toBe('5 OLD STREET, LONDON, EC1V 9HL');
+    expect(older.toAddress).toBe('10 NEW ROAD, MANCHESTER, M1 1AA');
+  });
+
+  it('includes link metadata', async () => {
+    const db = await createAddressLinkSeededDb();
+    const result = getAddressLinks(db, 'subj_test_001');
+
+    expect(result[0].linkId).toBe('al_test_002');
+    expect(result[0].sourceSystem).toBe('equifax');
+  });
+
+  it('returns empty for non-existent subject', async () => {
+    const db = await createAddressLinkSeededDb();
+    const result = getAddressLinks(db, 'nonexistent');
+
+    expect(result).toHaveLength(0);
   });
 });

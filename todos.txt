@@ -76,118 +76,62 @@ AD-008: Zod for runtime validation at system boundaries
     - Zod for ergonomic TypeScript-native validation with inference
 
 
-
 ================================================================================
-PHASE 5: UI - TRADELINE VIEWS  ✅ COMPLETED
-================================================================================
-
-[x] Tradeline list page
-    [x] Filterable table (by type, status, agency)
-    [x] Account type badges
-    [x] Balance/limit columns with formatting
-[x] Tradeline detail page
-    [x] Account summary card
-    [x] Payment history grid (monthly status heatmap)
-    [x] Balance over time chart
-    [x] Credit limit over time chart
-    [x] Utilization ratio chart (balance/limit)
-    [x] Snapshot comparison table
-    [x] Event timeline
-    [x] Cross-agency data comparison
-
-================================================================================
-PHASE 6: UI - REMAINING SECTIONS
+PHASE 7: ANALYSIS & INSIGHTS  ✅ COMPLETED
 ================================================================================
 
-[ ] Searches page
-    [ ] Timeline view (hard/soft markers)
-    [ ] Search frequency chart
-    [ ] Organisation search breakdown
-[ ] Scores page
-    [ ] Multi-agency score chart
-    [ ] Score factor display
-    [ ] Historical comparison
-[ ] Imports page
-    [ ] Import list with metadata (source system, entity counts from receipt)
-    [ ] Import detail (entities added per import, pulled from ingest_receipt)
-    [ ] Manual file upload UI for ingest endpoint
-[ ] Addresses page
-    [ ] Address history cards
-    [ ] Electoral roll display
-    [ ] Address link visualization
-[ ] Public records page
-    [ ] CCJ/IVA/DRO display
-    [ ] Status tracking
-[ ] Settings page
-    [ ] Database info (dialect, path/connection, schema version, row counts)
-    [ ] API key management
-        - Display whether INGEST_API_KEY is configured (mask the value)
-        - Provide a "test ingest" button that sends a minimal payload to
-          verify the key works
-        - Display CORS configuration status (what origins are allowed)
-    [ ] App settings management (read/write from app_settings table)
-        - Display preferences (date format, currency format)
-        - Anomaly detection thresholds (configurable sensitivity)
-        - Notification preferences (if notification system exists)
-    [ ] Export functionality (see Phase 9)
-    [ ] System health summary (last ingest, DB size, total records)
-
-================================================================================
-PHASE 7: ANALYSIS & INSIGHTS
-================================================================================
-
-[ ] Anomaly detection rule engine
-    [ ] Design a pluggable rule architecture:
+[x] Anomaly detection rule engine
+    [x] Design a pluggable rule architecture:
         - Each rule is a function: (db, importContext) → InsightResult[]
         - Rules run automatically after successful ingestion
         - Each rule returns zero or more generated_insight records
         - Rules are registered in a central array and executed sequentially
         - New rules can be added without modifying the orchestrator
-    [ ] Severity classification for all generated insights:
+    [x] Severity classification for all generated insights:
         - info: Informational, no action needed (e.g. "new tradeline opened")
         - low: Minor observation (e.g. "address changed between imports")
         - medium: Warrants attention (e.g. "hard search from unknown org")
         - high: Requires investigation (e.g. "large unexpected balance jump",
           "payment status degraded to default")
-    [ ] Entity linking for all insights:
+    [x] Entity linking for all insights:
         - Every generated_insight links to the relevant entities via
           generated_insight_entity join table
         - Enables "show me all anomalies for this tradeline" queries
 
-[ ] Core anomaly rules
-    [ ] Hard search detection
+[x] Core anomaly rules
+    [x] Hard search detection
         - Flag hard searches appearing since last import
         - Classify by frequency: occasional (low), frequent (medium),
           burst pattern (high)
         - Cross-reference search organisation against known tradeline lenders
           to distinguish expected searches (you applied) from unexpected ones
-    [ ] Payment status degradation
+    [x] Payment status degradation
         - Compare tradeline payment_status between consecutive snapshots
         - Flag any worsening (e.g. current → 1-month-late → 3-months-late)
         - Severity scales with degradation magnitude
-    [ ] Unexpected balance changes
+    [x] Unexpected balance changes
         - Flag balance increases/decreases that exceed a configurable threshold
           percentage between consecutive snapshots
         - Useful for spotting unauthorized charges or data errors
-    [ ] New tradeline detection
+    [x] New tradeline detection
         - Flag tradelines appearing for the first time in an import
         - Distinguish between expected (new account) and unexpected
-    [ ] Status changes
+    [x] Status changes
         - Flag tradeline status transitions (active → settled, active → default)
         - Credit score movements exceeding threshold
-    [ ] Cross-agency discrepancy detection
+    [x] Cross-agency discrepancy detection
         - Compare tradeline data reported by different agencies for the same
           account (matched via canonical_id)
         - Flag material differences in balance, limit, or status
 
-[ ] Trend analysis
-    [ ] Debt-to-income trend (if income data available)
-    [ ] Credit utilization trend
-    [ ] Score movement correlation with account events
-[ ] Generated insights pipeline
-    [ ] Quality warnings (missing data, sparse imports)
-    [ ] Cross-agency comparison insights
-    [ ] Payment pattern analysis
+[x] Trend analysis
+    [ ] Debt-to-income trend (if income data available) — deferred, requires income data not in schema
+    [x] Credit utilization trend
+    [x] Score movement correlation with account events
+[x] Generated insights pipeline
+    [x] Quality warnings (missing data, sparse imports) — done in Phase 2
+    [x] Cross-agency comparison insights — covered by cross-agency discrepancy rule
+    [x] Payment pattern analysis
 
 ================================================================================
 PHASE 8: POSTGRES SUPPORT

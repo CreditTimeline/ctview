@@ -26,6 +26,9 @@ export type { QualityWarning } from './ingestion/quality-warnings.js';
 // Queries
 export * from './queries/index.js';
 
+// Analysis
+export * from './analysis/index.js';
+
 // Types
 export * from './types/enums.js';
 export type * from './types/canonical.js';
