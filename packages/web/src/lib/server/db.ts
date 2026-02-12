@@ -8,7 +8,7 @@ let _db: AppDatabase | null = null;
 /**
  * Lazy singleton for the database connection.
  * Uses validated config for DATABASE_URL and AUTO_MIGRATE.
- * Ensures the data directory exists for SQLite before connecting.
+ * Ensures the data directory exists before connecting.
  */
 export function getDb(): AppDatabase {
   if (!_db) {
