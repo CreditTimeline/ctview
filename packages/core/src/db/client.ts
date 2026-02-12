@@ -5,12 +5,15 @@ import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import * as schema from '../schema/sqlite/index.js';
 import * as relations from '../schema/relations.js';
+import { noopLogger, type Logger } from '../logger.js';
 
 export interface CreateDatabaseOptions {
   /** Path to the spec/ directory containing the DDL SQL. Auto-detected if omitted. */
   specDir?: string;
   /** Skip running the DDL on startup. Default: false */
   skipMigration?: boolean;
+  /** Structured logger for database events */
+  logger?: Logger;
 }
 
 /**
@@ -89,7 +92,7 @@ function storeDdlHash(sqlite: InstanceType<typeof Database>, hash: string): void
  * If the DDL has changed (or this is a legacy DB without a stored hash),
  * all tables are dropped and recreated from scratch.
  */
-function applyDdl(sqlite: InstanceType<typeof Database>, ddl: string): void {
+function applyDdl(sqlite: InstanceType<typeof Database>, ddl: string, logger: Logger): void {
   const ddlHash = computeDdlHash(ddl);
   const storedHash = getStoredDdlHash(sqlite);
 
@@ -98,12 +101,13 @@ function applyDdl(sqlite: InstanceType<typeof Database>, ddl: string): void {
   }
 
   if (hasExistingTables(sqlite)) {
-    console.warn(
-      `[ctview] DDL ${storedHash ? 'change' : 'hash missing'} detected ` +
-        `(${storedHash ?? 'none'} → ${ddlHash}). ` +
-        'Recreating database schema. Development data has been cleared.',
+    logger.warn(
+      { storedHash: storedHash ?? 'none', newHash: ddlHash },
+      'DDL change detected, recreating database schema',
     );
     dropAllTables(sqlite);
+  } else {
+    logger.info({ ddlHash }, 'initializing database schema');
   }
 
   sqlite.exec(ddl);
@@ -113,6 +117,7 @@ function applyDdl(sqlite: InstanceType<typeof Database>, ddl: string): void {
 // ---------------------------------------------------------------------------
 
 export function createDatabase(url: string, options?: CreateDatabaseOptions) {
+  const logger = options?.logger ?? noopLogger;
   const sqlite = new Database(url);
   sqlite.pragma('journal_mode = WAL');
   sqlite.pragma('foreign_keys = ON');
@@ -121,7 +126,7 @@ export function createDatabase(url: string, options?: CreateDatabaseOptions) {
     const specDir = options?.specDir ?? findSpecDir();
     const ddlPath = resolve(specDir, 'sql', 'credittimeline-v1.sql');
     const ddl = readFileSync(ddlPath, 'utf-8');
-    applyDdl(sqlite, ddl);
+    applyDdl(sqlite, ddl, logger);
   }
 
   return drizzle(sqlite, { schema: { ...schema, ...relations } });

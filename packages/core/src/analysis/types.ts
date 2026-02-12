@@ -4,6 +4,7 @@ import type * as relations from '../schema/relations.js';
 import type { CreditFile } from '../types/canonical.js';
 import type { InsightSeverity } from '../types/enums.js';
 import type { AnomalyConfig } from './config.js';
+import type { Logger } from '../logger.js';
 
 export interface AnalysisContext {
   db: BetterSQLite3Database<typeof schema & typeof relations>;
@@ -12,6 +13,7 @@ export interface AnalysisContext {
   importIds: string[];
   sourceSystemByImportId: Map<string, string>;
   config: AnomalyConfig;
+  logger?: Logger;
 }
 
 export interface InsightResult {

@@ -1,9 +1,10 @@
-import type { AppDatabase } from '@ctview/core';
+import type { AppDatabase, Logger } from '@ctview/core';
 
 declare global {
   namespace App {
     interface Locals {
       db: AppDatabase;
+      logger: Logger;
     }
   }
 }

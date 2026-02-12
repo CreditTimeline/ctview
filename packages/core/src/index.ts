@@ -1,3 +1,7 @@
+// Logging
+export type { Logger } from './logger.js';
+export { noopLogger } from './logger.js';
+
 // Config
 export { parseConfig, configSchema, type AppConfig } from './config.js';
 

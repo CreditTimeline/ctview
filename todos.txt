@@ -86,15 +86,19 @@ FUTURE IDEAS (UNSCHEDULED)
 - CLI tool for importing credit reports from command line
   (this is a key motivator for @ctview/core being framework-independent)
 - Browser extension for scraping credit reports directly
+ - Can support creditkarma, clearscore, checkmyfile, experian credit expert and generic page scraping for unsupported providers.
+ 
 - PDF parser adapter (Equifax statutory report)
 - HTML scraper adapter (TransUnion via ClearScore)
 - Notification system (email/webhook on score changes)
 - Multi-subject support (household members)
 - Plugin system for custom analysis
-- Mobile app consuming the API (AD-007 ensures API is ready for this)
 - Import diff view: side-by-side comparison showing what changed between
   two consecutive imports for the same subject (new tradelines, closed
   accounts, balance movements, score changes)
-- GraphQL layer alongside REST (for clients that prefer it)
+
+
+Later:
+- Mobile app consuming the API (AD-007 ensures API is ready for this)
 - Webhook system: push notifications to external URLs when anomalies are
   detected or new imports are processed

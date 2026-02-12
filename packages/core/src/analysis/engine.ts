@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { generatedInsight, generatedInsightEntity } from '../schema/sqlite/index.js';
+import { noopLogger } from '../logger.js';
 import type { AnalysisContext, AnomalyRule, InsightResult, AnalysisEngineResult } from './types.js';
 
 /**
@@ -11,6 +12,7 @@ export function runAnomalyRules(
   ctx: AnalysisContext,
   rules: AnomalyRule[],
 ): AnalysisEngineResult {
+  const log = ctx.logger ?? noopLogger;
   const allInsights: InsightResult[] = [];
   const ruleErrors: { ruleId: string; error: string }[] = [];
 
@@ -21,7 +23,7 @@ export function runAnomalyRules(
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       ruleErrors.push({ ruleId: rule.id, error: message });
-      console.warn(`[analysis] Rule "${rule.id}" failed: ${message}`);
+      log.warn({ ruleId: rule.id, error: message }, 'anomaly rule failed');
     }
   }
 

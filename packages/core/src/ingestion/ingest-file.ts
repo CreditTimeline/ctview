@@ -14,6 +14,7 @@ import { runAnomalyRules } from '../analysis/engine.js';
 import { defaultRules } from '../analysis/registry.js';
 import { loadAnomalyConfig } from '../analysis/config.js';
 import type { AnalysisEngineResult } from '../analysis/types.js';
+import { noopLogger, type Logger } from '../logger.js';
 
 // Inserters — ordered by FK dependency graph
 import {
@@ -72,12 +73,21 @@ export interface IngestResult {
   analysisResult?: AnalysisEngineResult;
 }
 
-export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<IngestResult> {
+export async function ingestCreditFile(
+  db: AppDatabase,
+  data: unknown,
+  logger?: Logger,
+): Promise<IngestResult> {
+  const log = logger ?? noopLogger;
   const startTime = performance.now();
 
   // Step 1: JSON Schema validation
   const schemaResult = validateCreditFile(data);
   if (!schemaResult.valid) {
+    log.warn(
+      { errorCount: schemaResult.errors?.length ?? 0 },
+      'schema validation failed',
+    );
     return {
       success: false,
       importIds: [],
@@ -107,6 +117,10 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
     .get();
 
   if (existing) {
+    log.info(
+      { fileId: file.file_id, importIds: file.imports.map((i) => i.import_id) },
+      'duplicate payload detected, skipping',
+    );
     return {
       success: true,
       importIds: file.imports.map((i) => i.import_id),
@@ -136,6 +150,7 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
       subjectId: file.subject.subject_id,
       sourceSystemByImportId,
       entityCounts,
+      logger: log.child({ fileId: file.file_id }),
     };
 
     // Provenance (root entities)
@@ -181,6 +196,7 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
         importIds: file.imports.map((i) => i.import_id),
         sourceSystemByImportId,
         config: anomalyConfig,
+        logger: log,
       },
       defaultRules,
     );
@@ -204,12 +220,19 @@ export async function ingestCreditFile(db: AppDatabase, data: unknown): Promise<
     });
   });
 
+  const durationMs = Math.round(performance.now() - startTime);
+  const importIds = file.imports.map((i) => i.import_id);
+  log.info(
+    { fileId: file.file_id, importIds, durationMs, entityCounts },
+    'ingestion completed',
+  );
+
   return {
     success: true,
-    importIds: file.imports.map((i) => i.import_id),
+    importIds,
     warnings: warnings.length > 0 ? warnings : undefined,
     receiptId,
-    durationMs: Math.round(performance.now() - startTime),
+    durationMs,
     summary: entityCounts,
     analysisResult,
   };

@@ -2,6 +2,7 @@ import { createDatabase, type AppDatabase } from '@ctview/core';
 import { mkdirSync } from 'fs';
 import { dirname } from 'path';
 import { getConfig } from './config.js';
+import { getLogger } from './logger.js';
 
 let _db: AppDatabase | null = null;
 
@@ -21,7 +22,10 @@ export function getDb(): AppDatabase {
       mkdirSync(dir, { recursive: true });
     }
 
-    _db = createDatabase(dbUrl, { skipMigration: !config.AUTO_MIGRATE });
+    _db = createDatabase(dbUrl, {
+      skipMigration: !config.AUTO_MIGRATE,
+      logger: getLogger(),
+    });
   }
   return _db;
 }

@@ -4,6 +4,28 @@ import { getConfig } from '$lib/server/config';
 import { getDb } from '$lib/server/db';
 import { apiError, ErrorCode } from '$lib/server/api';
 import { createRateLimiter } from '$lib/server/rate-limit';
+import { getLogger } from '$lib/server/logger';
+
+/**
+ * Logging handler — runs first in the sequence.
+ * Creates a per-request child logger with request metadata and logs completion.
+ */
+const handleLogging: Handle = async ({ event, resolve }) => {
+  const logger = getLogger();
+  const requestId = crypto.randomUUID().slice(0, 8);
+  const method = event.request.method;
+  const path = event.url.pathname;
+
+  event.locals.logger = logger.child({ requestId, method, path });
+
+  const start = performance.now();
+  const response = await resolve(event);
+  const durationMs = Math.round(performance.now() - start);
+
+  event.locals.logger.info({ status: response.status, durationMs }, 'request completed');
+
+  return response;
+};
 
 /**
  * CORS handler for /api/* routes.
@@ -71,6 +93,7 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 
   if (!result.allowed) {
     const retryAfterSec = Math.ceil(result.retryAfterMs / 1000);
+    event.locals.logger.warn({ ip, retryAfterSec }, 'rate limit exceeded');
     const response = apiError(ErrorCode.RATE_LIMITED, 'Rate limit exceeded');
     response.headers.set('Retry-After', String(retryAfterSec));
     return response;
@@ -102,4 +125,4 @@ const handleApp: Handle = async ({ event, resolve }) => {
   return resolve(event);
 };
 
-export const handle = sequence(handleCors, handleRateLimit, handleApp);
+export const handle = sequence(handleLogging, handleCors, handleRateLimit, handleApp);

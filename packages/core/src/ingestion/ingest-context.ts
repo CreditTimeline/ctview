@@ -2,6 +2,7 @@ import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type * as schema from '../schema/sqlite/index.js';
 import type * as relations from '../schema/relations.js';
 import type { CreditFile } from '../types/canonical.js';
+import type { Logger } from '../logger.js';
 
 /**
  * Shared context passed to all inserter functions during ingestion.
@@ -18,4 +19,6 @@ export interface IngestContext {
   sourceSystemByImportId: Map<string, string>;
   /** Counts of inserted entities, accumulated during ingestion */
   entityCounts: Record<string, number>;
+  /** Structured logger for ingestion events */
+  logger: Logger;
 }

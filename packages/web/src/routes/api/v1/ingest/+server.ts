@@ -5,7 +5,7 @@ import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const data = await request.json();
-    const result = await ingestCreditFile(locals.db, data);
+    const result = await ingestCreditFile(locals.db, data, locals.logger);
 
     if (!result.success) {
       const details: ApiErrorDetail[] = (result.errors ?? []).map((e) => ({ message: e }));
@@ -14,6 +14,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     return apiSuccess(result, { status: 201 });
   } catch (err) {
+    locals.logger.error({ err }, 'unhandled ingestion error');
     const message = err instanceof Error ? err.message : 'Internal server error';
     return apiError(ErrorCode.INTERNAL_ERROR, message);
   }
