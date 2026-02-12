@@ -1,3 +1,5 @@
+import 'zod-openapi';
+import { z } from 'zod';
 import { sql } from 'drizzle-orm';
 import type { AppDatabase } from '../db/client.js';
 
@@ -5,16 +7,24 @@ import type { AppDatabase } from '../db/client.js';
 // Credit Utilization Trend
 // ---------------------------------------------------------------------------
 
-export interface UtilizationTrendPoint {
-  date: string;
-  totalBalance: number;
-  totalLimit: number;
-  utilizationPct: number;
-}
+export const utilizationTrendPointSchema = z
+  .object({
+    date: z.string(),
+    totalBalance: z.number(),
+    totalLimit: z.number(),
+    utilizationPct: z.number(),
+  })
+  .meta({ id: 'UtilizationTrendPoint' });
 
-export interface UtilizationTrendData {
-  points: UtilizationTrendPoint[];
-}
+export type UtilizationTrendPoint = z.infer<typeof utilizationTrendPointSchema>;
+
+export const utilizationTrendDataSchema = z
+  .object({
+    points: z.array(utilizationTrendPointSchema),
+  })
+  .meta({ id: 'UtilizationTrendData' });
+
+export type UtilizationTrendData = z.infer<typeof utilizationTrendDataSchema>;
 
 export function getCreditUtilizationTrend(
   db: AppDatabase,
@@ -56,24 +66,36 @@ export function getCreditUtilizationTrend(
 // Score-Event Correlation
 // ---------------------------------------------------------------------------
 
-export interface ScoreCorrelationPoint {
-  scoreId: string;
-  scoreValue: number;
-  calculatedAt: string;
-}
+export const scoreCorrelationPointSchema = z
+  .object({
+    scoreId: z.string(),
+    scoreValue: z.number(),
+    calculatedAt: z.string(),
+  })
+  .meta({ id: 'ScoreCorrelationPoint' });
 
-export interface CorrelationEvent {
-  eventId: string;
-  eventType: string;
-  eventDate: string;
-  tradelineId: string;
-  furnisherName: string | null;
-}
+export type ScoreCorrelationPoint = z.infer<typeof scoreCorrelationPointSchema>;
 
-export interface ScoreEventCorrelationData {
-  scoreSeries: Record<string, ScoreCorrelationPoint[]>;
-  events: CorrelationEvent[];
-}
+export const correlationEventSchema = z
+  .object({
+    eventId: z.string(),
+    eventType: z.string(),
+    eventDate: z.string(),
+    tradelineId: z.string(),
+    furnisherName: z.string().nullable(),
+  })
+  .meta({ id: 'CorrelationEvent' });
+
+export type CorrelationEvent = z.infer<typeof correlationEventSchema>;
+
+export const scoreEventCorrelationDataSchema = z
+  .object({
+    scoreSeries: z.record(z.string(), z.array(scoreCorrelationPointSchema)),
+    events: z.array(correlationEventSchema),
+  })
+  .meta({ id: 'ScoreEventCorrelationData' });
+
+export type ScoreEventCorrelationData = z.infer<typeof scoreEventCorrelationDataSchema>;
 
 export function getScoreEventCorrelation(
   db: AppDatabase,
@@ -137,16 +159,24 @@ export function getScoreEventCorrelation(
 // Payment Pattern Analysis
 // ---------------------------------------------------------------------------
 
-export interface PaymentPeriod {
-  period: string;
-  onTimeCount: number;
-  lateCount: number;
-  totalAccounts: number;
-}
+export const paymentPeriodSchema = z
+  .object({
+    period: z.string(),
+    onTimeCount: z.number(),
+    lateCount: z.number(),
+    totalAccounts: z.number(),
+  })
+  .meta({ id: 'PaymentPeriod' });
 
-export interface PaymentPatternData {
-  periods: PaymentPeriod[];
-}
+export type PaymentPeriod = z.infer<typeof paymentPeriodSchema>;
+
+export const paymentPatternDataSchema = z
+  .object({
+    periods: z.array(paymentPeriodSchema),
+  })
+  .meta({ id: 'PaymentPatternData' });
+
+export type PaymentPatternData = z.infer<typeof paymentPatternDataSchema>;
 
 export function getPaymentPatternAnalysis(
   db: AppDatabase,

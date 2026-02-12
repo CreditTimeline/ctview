@@ -10,6 +10,8 @@ export const configSchema = z.object({
     .string()
     .default('true')
     .transform((v) => v === 'true' || v === '1'),
+  BACKUP_DIR: z.string().optional(),
+  RATE_LIMIT_INGEST_RPM: z.coerce.number().int().min(0).default(30),
 });
 
 export type AppConfig = z.infer<typeof configSchema>;

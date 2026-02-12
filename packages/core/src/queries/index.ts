@@ -18,6 +18,13 @@ export {
   getCreditUtilizationTrend,
   getScoreEventCorrelation,
   getPaymentPatternAnalysis,
+  utilizationTrendPointSchema,
+  utilizationTrendDataSchema,
+  scoreCorrelationPointSchema,
+  correlationEventSchema,
+  scoreEventCorrelationDataSchema,
+  paymentPeriodSchema,
+  paymentPatternDataSchema,
 } from './trends.js';
 export type {
   UtilizationTrendPoint,
@@ -28,3 +35,10 @@ export type {
   PaymentPeriod,
   PaymentPatternData,
 } from './trends.js';
+export {
+  getRetentionConfig,
+  compactRawArtifacts,
+  compactAuditLog,
+  runCompaction,
+} from './maintenance.js';
+export type { RetentionConfig, CompactResult } from './maintenance.js';

@@ -29,6 +29,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
   return {
     ...listResult,
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
     timeline,
     frequency,
     filters: {

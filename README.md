@@ -2,111 +2,109 @@
 
 A personal credit timeline viewer. Ingest credit report data from multiple bureaux into a normalised store, then browse and analyse it through a web UI or REST API.
 
-## Prerequisites
+## Key Features
 
-- **Node.js** >= 22
-- **pnpm** 9.x (`corepack enable && corepack prepare pnpm@9.15.4 --activate`)
+- **Multi-bureau ingestion** — ingest JSON credit files from any supported bureau into a unified schema
+- **Web dashboard** — interactive charts, tradeline heatmaps, score trends, and debt summaries
+- **Full REST API** — programmatic access to all data with filtering, pagination, and export
+- **Analysis engine** — automated anomaly detection and insight generation across tradelines
+- **Export** — JSON round-trip, CSV downloads, and printable HTML dashboards
+- **Backup/restore** — database backup with schema-version validation
+- **SQLite-powered** — zero-dependency database, single-file storage
 
-## Quick start (development)
+## Quick Start
+
+### Development
 
 ```bash
-# Install dependencies
+# Prerequisites: Node.js 22+, pnpm 10+
+corepack enable
+
+git clone <repo-url> ctview
+cd ctview
 pnpm install
-
-# Start the dev server (http://localhost:5173)
 pnpm dev
-```
+# App available at http://localhost:5173
 
-By default the app uses an SQLite database at `./data/credittimeline.db`. Copy `.env.example` to `.env` to customise.
-
-### Ingest a credit file
-
-Post a JSON credit file to the ingestion endpoint:
-
-```bash
+# Ingest a sample credit file
 curl -X POST http://localhost:5173/api/v1/ingest \
   -H 'Content-Type: application/json' \
   -d @spec/examples/credittimeline-file.v1.example.json
 ```
 
-If `INGEST_API_KEY` is set, add `-H 'Authorization: Bearer <key>'`.
-
-## Docker
-
-### SQLite (default)
+### Docker
 
 ```bash
 docker compose -f docker/docker-compose.yml up --build
+# App available at http://localhost:3000
 ```
 
-The app is available at `http://localhost:3000`. Data is persisted in a named Docker volume (`ctview-data`).
+Data is persisted in a Docker volume (`ctview-data`).
 
-## Project structure
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Setup Guide](docs/setup-guide.md) | Installation, configuration, and deployment |
+| [API Guide](docs/api-guide.md) | All REST endpoints with examples |
+| [Troubleshooting](docs/troubleshooting.md) | Common issues and solutions |
+
+Interactive API documentation is available at `/api/v1/docs` (Scalar UI) when the app is running.
+
+## Architecture
 
 ```
-packages/
-  core/     @ctview/core  — Pure TypeScript library (DB, schema, ingestion, queries)
-  web/      @ctview/web   — SvelteKit 2 application
-spec/
-  schemas/  — JSON Schema definitions (source of truth)
-  sql/      — Canonical DDL
-  examples/ — Sample credit file payloads
-docker/     — Dockerfile and compose files
+ctview/
+  packages/
+    core/     @ctview/core  — Pure TypeScript library (schema, ingestion, queries, analysis)
+    sdk/      @ctview/sdk   — Generated TypeScript SDK for the REST API
+    web/      @ctview/web   — SvelteKit 2 application (UI + API routes)
+  spec/
+    schemas/  — JSON Schema definitions (source of truth)
+    sql/      — Canonical DDL
+    examples/ — Sample credit file payloads
+  docker/     — Dockerfile and compose configuration
+  docs/       — User documentation
 ```
 
-## Common commands
+## Technology Stack
+
+- **Runtime:** Node.js 22+
+- **Language:** TypeScript (strict mode)
+- **Frontend:** SvelteKit 2, Svelte 5, Tailwind CSS
+- **Backend:** SvelteKit API routes consuming `@ctview/core`
+- **Database:** SQLite via better-sqlite3
+- **Validation:** Zod schemas with OpenAPI generation
+- **Testing:** Vitest (unit/integration), Playwright (E2E)
+- **Build:** pnpm workspaces monorepo
+
+## Common Commands
 
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start SvelteKit dev server (port 5173) |
-| `pnpm build` | Build core then web |
+| `pnpm build` | Build all packages (core, sdk, web) |
 | `pnpm test -- --run` | Run all tests (single run) |
+| `pnpm test:e2e` | Run Playwright E2E tests |
 | `pnpm check` | SvelteKit type checking |
 | `pnpm lint` | ESLint |
 | `pnpm format` | Prettier check |
-
-## API
-
-All endpoints are under `/api/v1/`. Key routes:
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/ingest` | Ingest a JSON credit file |
-| GET | `/dashboard` | Aggregated overview |
-| GET | `/subjects` | List subjects |
-| GET | `/tradelines` | List tradelines (filterable) |
-| GET | `/tradelines/:id` | Full tradeline detail |
-| GET | `/tradelines/:id/metrics` | Monthly metric time series |
-| GET | `/searches` | Search record history |
-| GET | `/scores` | Credit score history |
-| GET | `/imports` | Import batch history |
-| GET | `/addresses` | Address history |
-| GET | `/insights` | Generated insights |
-| GET | `/health` | Liveness probe |
-| GET | `/ready` | Readiness probe |
-
-List endpoints support `limit` and `offset` query parameters. Most also accept domain-specific filters — see the Zod schemas in `packages/core/src/queries/types.ts` for details.
+| `pnpm db:reset` | Delete the local database |
 
 ## Configuration
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `DATABASE_URL` | `./data/credittimeline.db` | Path to the SQLite database file |
-| `INGEST_API_KEY` | *(unset)* | Bearer token for `/api/v1/ingest`. If unset, ingestion is open. |
+| `DATABASE_URL` | `./data/credittimeline.db` | SQLite database path |
+| `INGEST_API_KEY` | *(unset)* | Bearer token for protected endpoints |
 | `PORT` | `3000` | Server port (production) |
-| `CORS_ALLOW_ORIGIN` | *(unset)* | CORS allowed origin. `*` for all, blank for same-origin only. |
 | `LOG_LEVEL` | `info` | `debug`, `info`, `warn`, or `error` |
+| `CORS_ALLOW_ORIGIN` | *(empty)* | CORS allowed origin |
+| `AUTO_MIGRATE` | `true` | Auto-migrate schema on startup |
+| `BACKUP_DIR` | *(unset)* | Backup directory path |
+| `RATE_LIMIT_INGEST_RPM` | `30` | Ingestion rate limit (requests/min) |
 
-## Troubleshooting
-
-### `SqliteError: no such column` on startup
-
-The app auto-detects DDL schema changes and recreates the database when needed.
-To reset the database manually:
-
-```bash
-pnpm db:reset
-```
+See the [Setup Guide](docs/setup-guide.md) for detailed configuration documentation.
 
 ## License
 

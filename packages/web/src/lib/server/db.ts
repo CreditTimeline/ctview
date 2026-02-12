@@ -25,3 +25,11 @@ export function getDb(): AppDatabase {
   }
   return _db;
 }
+
+/**
+ * Reset the DB singleton, forcing re-creation on next getDb() call.
+ * Used after backup restore to pick up the new database file.
+ */
+export function resetDb(): void {
+  _db = null;
+}

@@ -12,6 +12,7 @@
 <form method="GET" class="flex flex-wrap items-center gap-3 {className}">
   <select
     name="accountType"
+    aria-label="Filter by account type"
     value={accountType}
     onchange={(e) => e.currentTarget.form?.requestSubmit()}
     class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
@@ -32,6 +33,7 @@
 
   <select
     name="status"
+    aria-label="Filter by status"
     value={status}
     onchange={(e) => e.currentTarget.form?.requestSubmit()}
     class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
@@ -50,6 +52,7 @@
 
   <select
     name="sourceSystem"
+    aria-label="Filter by agency"
     value={sourceSystem}
     onchange={(e) => e.currentTarget.form?.requestSubmit()}
     class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"

@@ -30,9 +30,10 @@ AD-003: Ajv for JSON Schema validation
   - Compiled validator for fast repeated validation
   - Two schema files: main schema + enums
 
-AD-004: pnpm monorepo with two packages
+AD-004: pnpm monorepo with three packages
   - @ctview/core: pure TS library (no web deps)
   - @ctview/web: SvelteKit application
+  - @ctview/sdk: TypeScript HTTP client (zero runtime deps)
   - Core can be imported by future CLI tools
 
 AD-005: Single Docker container
@@ -76,68 +77,7 @@ AD-008: Zod for runtime validation at system boundaries
 
 
 
-================================================================================
-PHASE 8: REMOVE POSTGRES REFERENCES (COMPLETED)
-================================================================================
 
-[x] Remove DATABASE_DIALECT from config, Docker, and .env.example
-[x] Delete docker-compose.postgres.yml
-[x] Remove Postgres sections from README.md and CLAUDE.md files
-[x] Update ADRs (AD-002, AD-005) to reflect SQLite-only design
-[x] Rename dbDialect → dbEngine in settings query, types, and UI
-
-================================================================================
-PHASE 9: POLISH & PRODUCTION
-================================================================================
-
-[ ] API documentation — OpenAPI spec (AD-007)
-    [ ] Generate an OpenAPI 3.1 specification for all /api/v1/* routes
-    [ ] Options for generation:
-        - Manual: maintain a spec/openapi.yaml file updated as routes change
-        - Auto: use a library to generate spec from route definitions (e.g.
-          sveltekit-openapi or a custom Zod-to-OpenAPI pipeline)
-    [ ] Serve the OpenAPI spec at GET /api/v1/openapi.json
-    [ ] Optionally serve Swagger UI or Scalar at /api/docs for interactive
-        API exploration
-    [ ] The spec should be accurate enough that external clients can generate
-        typed client code from it
-
-[ ] Client SDK package (AD-007)
-    [ ] Create @ctview/sdk package in the monorepo
-    [ ] Lightweight TypeScript HTTP client wrapping all /api/v1/* endpoints
-    [ ] Type-safe request/response types (shared with or generated from the
-        API's Zod schemas)
-    [ ] Zero runtime dependencies beyond fetch (works in Node, browser, Deno)
-    [ ] Publish as npm package (or just use via workspace dependency)
-    [ ] This enables external TypeScript consumers to integrate without
-        hand-crafting HTTP calls
-
-[ ] Authentication (optional, for multi-user households)
-[ ] Data export (JSON, CSV)
-    [ ] Export full credit file as JSON (reversible, re-importable)
-    [ ] Export tradeline/search/score data as CSV
-    [ ] Export dashboard as printable HTML or PDF
-[ ] Backup/restore tooling
-    [ ] SQLite: file-level backup with VACUUM INTO for consistent snapshots
-    [ ] Restore command with validation
-[ ] Rate limiting on ingestion endpoint
-[ ] Comprehensive error pages
-[ ] Mobile-responsive layout
-[ ] Performance optimization (pagination, lazy loading)
-[ ] Accessibility audit (WCAG 2.1 AA)
-[ ] End-to-end Playwright test suite
-[ ] CI/CD pipeline (GitHub Actions)
-    [ ] Lint + format check
-    [ ] Type check (svelte-check + tsc)
-    [ ] Unit tests (vitest)
-    [ ] E2E tests (playwright)
-    [ ] Docker build verification
-    [ ] Automated release tagging
-[ ] User documentation (setup guide, API guide, troubleshooting)
-[ ] Data retention policies
-    [ ] Configurable max age for raw artifacts
-    [ ] Archive vs. delete semantics
-    [ ] Compact old audit_log entries
 
 ================================================================================
 FUTURE IDEAS (UNSCHEDULED)

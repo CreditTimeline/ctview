@@ -1,3 +1,5 @@
+import 'zod-openapi';
+import { z } from 'zod';
 import { eq } from 'drizzle-orm';
 import type { AppDatabase } from '../db/client.js';
 import type { CreditFile } from '../types/canonical.js';
@@ -43,6 +45,20 @@ import {
 } from './inserters/records.js';
 import { insertQualityWarnings } from './inserters/insights.js';
 import { insertIngestReceipt, insertAuditLogEntry } from './inserters/app.js';
+
+export const ingestResultSchema = z
+  .object({
+    success: z.boolean(),
+    importIds: z.array(z.string()),
+    errors: z.array(z.string()).optional(),
+    warnings: z.array(z.unknown()).optional(),
+    duplicate: z.boolean().optional(),
+    receiptId: z.string().optional(),
+    durationMs: z.number().optional(),
+    summary: z.record(z.string(), z.number()).optional(),
+    analysisResult: z.unknown().optional(),
+  })
+  .meta({ id: 'IngestResult' });
 
 export interface IngestResult {
   success: boolean;

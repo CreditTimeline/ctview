@@ -8,6 +8,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
   const params = parsed.success ? parsed.data : { limit: 50, offset: 0 };
   return {
     ...listTradelines(locals.db, params),
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
     filters: {
       accountType: params.accountType ?? '',
       status: params.status ?? '',

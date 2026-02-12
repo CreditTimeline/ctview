@@ -5,6 +5,7 @@
   import DateDisplay from '$lib/components/DateDisplay.svelte';
   import StatCard from '$lib/components/StatCard.svelte';
   import AgencyBadge from '$lib/components/AgencyBadge.svelte';
+  import Pagination from '$lib/components/Pagination.svelte';
 
   let { data } = $props();
 
@@ -92,6 +93,7 @@
         </div>
       {/each}
     </div>
+    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/addresses" />
   {:else}
     <div class="panel text-center text-muted">
       <p>No addresses found.</p>

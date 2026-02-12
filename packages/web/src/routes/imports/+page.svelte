@@ -2,7 +2,7 @@
   import type { ImportListItem } from '@ctview/core';
   import type { ColumnDef } from '@tanstack/svelte-table';
   import { renderComponent } from '@tanstack/svelte-table';
-  import { DataTable, DateDisplay, AgencyBadge } from '$lib/components';
+  import { DataTable, DateDisplay, AgencyBadge, Pagination } from '$lib/components';
   import FileUpload from '$lib/components/FileUpload.svelte';
   import ImportStatusBadge from '$lib/components/ImportStatusBadge.svelte';
   import ImportViewLink from '$lib/components/ImportViewLink.svelte';
@@ -86,6 +86,7 @@
       <span class="text-sm text-muted">{data.total} import{data.total !== 1 ? 's' : ''}</span>
     </div>
     <DataTable data={data.items} {columns} />
+    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/imports" />
   {:else}
     <div class="panel text-center">
       <p class="text-muted">No imports yet. Upload a credit file to get started.</p>

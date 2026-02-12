@@ -32,6 +32,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
   return {
     ...listResult,
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
     scoreTrend,
     latestScores: Array.from(latestByAgency.values()).map((s) => ({
       scoreId: s.scoreId,

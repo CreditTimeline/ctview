@@ -43,6 +43,7 @@
         <tr class="border-b border-soft">
           {#each headerGroup.headers as header (header.id)}
             <th
+              scope="col"
               class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted"
               class:cursor-pointer={header.column.getCanSort()}
               onclick={header.column.getToggleSortingHandler()}

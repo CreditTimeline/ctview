@@ -15,4 +15,5 @@ export { default as VisibilityBadge } from './VisibilityBadge.svelte';
 export { default as RecordTypeBadge } from './RecordTypeBadge.svelte';
 export { default as FileUpload } from './FileUpload.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
+export { default as Pagination } from './Pagination.svelte';
 export { getSeverityClasses } from './insight-helpers.js';

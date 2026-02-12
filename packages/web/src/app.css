@@ -83,3 +83,8 @@ body {
 .badge {
   @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
 }
+
+/* Focus ring for keyboard navigation */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-accent;
+}

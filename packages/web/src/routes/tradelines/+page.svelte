@@ -11,6 +11,7 @@
     DateDisplay,
     TradelineFilters,
     TradelineLink,
+    Pagination,
   } from '$lib/components';
 
   let { data } = $props();
@@ -106,6 +107,7 @@
 
   {#if data.items.length > 0}
     <DataTable data={data.items} {columns} {globalFilter} />
+    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/tradelines" />
   {:else}
     <div class="panel text-center">
       <p class="text-muted">No tradelines found matching your filters.</p>

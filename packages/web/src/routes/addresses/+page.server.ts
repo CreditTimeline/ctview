@@ -22,5 +22,10 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     addressLinks = getAddressLinks(locals.db, subjectId);
   }
 
-  return { ...listResult, addressLinks };
+  return {
+    ...listResult,
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
+    addressLinks,
+  };
 };

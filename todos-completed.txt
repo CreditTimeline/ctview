@@ -416,3 +416,87 @@ PHASE 7: ANALYSIS & INSIGHTS  ✅ COMPLETED
     [x] Quality warnings (missing data, sparse imports) — done in Phase 2
     [x] Cross-agency comparison insights — covered by cross-agency discrepancy rule
     [x] Payment pattern analysis
+
+================================================================================
+PHASE 9: POLISH & PRODUCTION [COMPLETED]
+================================================================================
+
+--- Sub-Phase 9A: API Infrastructure [COMPLETED] ---
+
+[x] API documentation — OpenAPI spec (AD-007)
+    [x] Generate an OpenAPI 3.1 specification for all /api/v1/* routes
+        - Auto-generated from Zod schemas via zod-openapi library
+        - All response types converted to Zod schemas with .meta({ id })
+    [x] Serve the OpenAPI spec at GET /api/v1/openapi.json
+    [x] Serve Scalar API docs at /api/docs for interactive API exploration
+    [x] The spec is accurate enough for typed client code generation
+
+[x] Client SDK package (AD-007)
+    [x] Create @ctview/sdk package in the monorepo
+    [x] Lightweight TypeScript HTTP client wrapping all /api/v1/* endpoints
+    [x] Type-safe request/response types (shared from @ctview/core via import type)
+    [x] Zero runtime dependencies beyond fetch (works in Node, browser, Deno)
+    [x] Available as workspace dependency
+    [x] Full test suite (39 SDK tests)
+
+--- Sub-Phase 9B: Data Operations [COMPLETED] ---
+
+[x] Data export (JSON, CSV)
+    [x] Export full credit file as JSON (reversible, re-importable)
+        - Round-trip reconstruction from DB back to CreditFile format
+        - GET /api/v1/export/json?fileId=xxx
+    [x] Export tradeline/search/score data as CSV
+        - RFC 4180 compliant, no external dependencies
+        - GET /api/v1/export/csv/:entity?subjectId=xxx
+    [x] Export dashboard as printable HTML
+        - Self-contained HTML with inline CSS and @media print rules
+        - GET /api/v1/export/dashboard?subjectId=xxx
+[x] Backup/restore tooling
+    [x] SQLite: file-level backup via better-sqlite3 .backup() method
+    [x] Timestamped backups with JSON metadata sidecars
+    [x] Restore with DDL hash validation
+    [x] API routes: GET/POST /api/v1/backup, POST /api/v1/restore
+[x] Data retention policies
+    [x] Configurable max age for raw artifacts (default: 365 days)
+    [x] Compact old audit_log entries (default: 90 days)
+    [x] POST /api/v1/maintenance/compact endpoint
+    [x] Data Retention section in settings UI
+
+--- Sub-Phase 9C: UI Polish & Quality [COMPLETED] ---
+
+[x] Rate limiting on ingestion endpoint
+    - Fixed-window rate limiter, configurable via RATE_LIMIT_INGEST_RPM
+    - Returns 429 with Retry-After header
+[x] Comprehensive error pages
+    - +error.svelte with status-specific messages, back-to-dashboard link
+[x] Mobile-responsive layout
+    - Collapsible sidebar with hamburger toggle on mobile
+    - Slide-in overlay with backdrop
+    - Closes on navigation
+[x] Performance optimization (pagination, lazy loading)
+    - Pagination component on all list pages
+    - ECharts lazy-loaded via dynamic import()
+[x] Accessibility audit (WCAG 2.1 AA)
+    - Skip-to-content link
+    - Focus trap on mobile sidebar, Escape to close
+    - ARIA labels on charts, tables, filters
+    - :focus-visible ring styles
+
+--- Sub-Phase 9D: Testing & Deployment [COMPLETED] ---
+
+[x] End-to-end Playwright test suite
+    - Global setup ingests example credit file
+    - Tests: ingestion, dashboard, tradelines, navigation, settings
+    - Desktop Chrome + Mobile Safari projects
+[x] CI/CD pipeline (GitHub Actions)
+    [x] Lint + format check
+    [x] Type check (svelte-check + tsc)
+    [x] Unit tests (vitest)
+    [x] E2E tests (playwright)
+    [x] Docker build verification
+    [x] Automated release tagging (manual dispatch with semver validation)
+[x] User documentation (setup guide, API guide, troubleshooting)
+    - docs/setup-guide.md — Dev setup, Docker deployment, env vars
+    - docs/api-guide.md — All endpoints with curl examples
+    - docs/troubleshooting.md — Common issues and solutions
+    - README.md updated with features overview and doc links

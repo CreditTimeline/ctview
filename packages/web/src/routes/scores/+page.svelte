@@ -9,6 +9,7 @@
     DateDisplay,
     EChart,
     ScoreGauge,
+    Pagination,
   } from '$lib/components';
 
   let { data } = $props();
@@ -144,6 +145,8 @@
       <h3 class="mb-4 text-lg font-semibold text-ink">Score History</h3>
       <DataTable data={data.items} {columns} />
     </section>
+
+    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/scores" />
   {:else}
     <div class="panel text-center">
       <p class="text-muted">No credit scores found matching your filters.</p>

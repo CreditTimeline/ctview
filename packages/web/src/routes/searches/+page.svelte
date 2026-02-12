@@ -3,7 +3,7 @@
   import type { ColumnDef } from '@tanstack/svelte-table';
   import { renderComponent } from '@tanstack/svelte-table';
   import type { ECOption } from '$lib/components/chart-types.js';
-  import { DataTable, DateDisplay, StatCard, EChart } from '$lib/components';
+  import { DataTable, DateDisplay, StatCard, EChart, Pagination } from '$lib/components';
   import VisibilityBadge from '$lib/components/VisibilityBadge.svelte';
 
   let { data } = $props();
@@ -102,6 +102,7 @@
   <form method="GET" class="flex flex-wrap items-center gap-4">
     <select
       name="visibility"
+      aria-label="Filter by visibility"
       value={data.filters.visibility}
       onchange={(e) => e.currentTarget.form?.requestSubmit()}
       class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
@@ -159,6 +160,8 @@
     <section>
       <DataTable data={data.items} {columns} {globalFilter} />
     </section>
+
+    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/searches" />
   {:else}
     <div class="panel text-center">
       <p class="text-muted">No searches found matching your filters.</p>

@@ -29,6 +29,15 @@ export * from './queries/index.js';
 // Analysis
 export * from './analysis/index.js';
 
+// Export
+export * from './export/index.js';
+
+// Backup
+export * from './backup/index.js';
+
+// OpenAPI
+export { generateOpenApiSpec } from './openapi/index.js';
+
 // Types
 export * from './types/enums.js';
 export type * from './types/canonical.js';

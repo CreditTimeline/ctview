@@ -3,6 +3,7 @@ import type { Handle } from '@sveltejs/kit';
 import { getConfig } from '$lib/server/config';
 import { getDb } from '$lib/server/db';
 import { apiError, ErrorCode } from '$lib/server/api';
+import { createRateLimiter } from '$lib/server/rate-limit';
 
 /**
  * CORS handler for /api/* routes.
@@ -45,6 +46,40 @@ const handleCors: Handle = async ({ event, resolve }) => {
 };
 
 /**
+ * Rate limiter for ingestion endpoints.
+ * Uses a fixed window of 60 seconds keyed by client IP.
+ */
+const ingestLimiter = createRateLimiter(30, 60_000);
+
+const handleRateLimit: Handle = async ({ event, resolve }) => {
+  if (event.request.method !== 'POST' || !event.url.pathname.startsWith('/api/v1/ingest')) {
+    return resolve(event);
+  }
+
+  const config = getConfig();
+  const maxRpm = config.RATE_LIMIT_INGEST_RPM;
+
+  // 0 means rate limiting is disabled
+  if (maxRpm === 0) {
+    return resolve(event);
+  }
+
+  // Recreate limiter if config differs from default
+  const limiter = maxRpm === 30 ? ingestLimiter : createRateLimiter(maxRpm, 60_000);
+  const ip = event.getClientAddress();
+  const result = limiter.check(ip);
+
+  if (!result.allowed) {
+    const retryAfterSec = Math.ceil(result.retryAfterMs / 1000);
+    const response = apiError(ErrorCode.RATE_LIMITED, 'Rate limit exceeded');
+    response.headers.set('Retry-After', String(retryAfterSec));
+    return response;
+  }
+
+  return resolve(event);
+};
+
+/**
  * Main application handler.
  * Attaches database to locals and checks API key for ingestion endpoints.
  */
@@ -67,4 +102,4 @@ const handleApp: Handle = async ({ event, resolve }) => {
   return resolve(event);
 };
 
-export const handle = sequence(handleCors, handleApp);
+export const handle = sequence(handleCors, handleRateLimit, handleApp);

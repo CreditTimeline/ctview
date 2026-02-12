@@ -2,7 +2,7 @@
   import type { PublicRecordSummary } from '@ctview/core';
   import type { ColumnDef } from '@tanstack/svelte-table';
   import { renderComponent } from '@tanstack/svelte-table';
-  import { DataTable, DateDisplay, MoneyDisplay, AgencyBadge, StatCard } from '$lib/components';
+  import { DataTable, DateDisplay, MoneyDisplay, AgencyBadge, StatCard, Pagination } from '$lib/components';
   import RecordTypeBadge from '$lib/components/RecordTypeBadge.svelte';
 
   let { data } = $props();
@@ -118,6 +118,8 @@
         </div>
       </section>
     {/if}
+
+    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/public-records" />
   {:else}
     <div class="rounded-xl border border-success/30 bg-success-light p-8 text-center">
       <h3 class="text-lg font-semibold text-success">No Public Records</h3>

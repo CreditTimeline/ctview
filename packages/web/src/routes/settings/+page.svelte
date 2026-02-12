@@ -349,6 +349,37 @@
     </div>
   </section>
 
+  <!-- Data Retention -->
+  <section class="panel">
+    <h3 class="text-lg font-semibold text-ink">Data Retention</h3>
+    <div class="mt-4 space-y-3 text-sm">
+      <div class="grid grid-cols-2 gap-x-8 gap-y-3 md:grid-cols-3">
+        <div>
+          <p class="text-muted">Raw Artifact Retention</p>
+          <p class="font-medium text-ink">{data.retention.rawArtifactDays} days</p>
+        </div>
+        <div>
+          <p class="text-muted">Audit Log Retention</p>
+          <p class="font-medium text-ink">{data.retention.auditLogDays} days</p>
+        </div>
+        <div>
+          <p class="text-muted">Last Compaction</p>
+          {#if data.lastCompactionAt}
+            <p><DateDisplay date={data.lastCompactionAt} relative /></p>
+          {:else}
+            <p class="text-muted">Never</p>
+          {/if}
+        </div>
+      </div>
+      <p class="text-xs text-muted">
+        Configure retention via app settings keys:
+        <code class="font-mono">retention.raw_artifact_days</code> and
+        <code class="font-mono">retention.audit_log_days</code>.
+        Run compaction via API: <code class="font-mono">POST /api/v1/maintenance/compact</code>.
+      </p>
+    </div>
+  </section>
+
   <!-- Export Placeholder -->
   <section class="panel opacity-60">
     <h3 class="text-lg font-semibold text-ink">Export</h3>

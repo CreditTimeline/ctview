@@ -8,7 +8,7 @@
   "packageManager": "pnpm@10.29.3",
   "scripts": {
     "dev": "pnpm -F @ctview/web dev",
-    "build": "pnpm -F @ctview/core build && pnpm -F @ctview/web build",
+    "build": "pnpm -F @ctview/core build && pnpm -F @ctview/sdk build && pnpm -F @ctview/web build",
     "preview": "pnpm -F @ctview/web preview",
     "check": "pnpm -F @ctview/web check",
     "test": "vitest",
