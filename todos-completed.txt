@@ -358,3 +358,61 @@ PHASE 6: UI - REMAINING SECTIONS  ✅ COMPLETED
         - Notification preferences (if notification system exists)
     [x] Export functionality (see Phase 9)
     [x] System health summary (last ingest, DB size, total records)
+
+
+================================================================================
+PHASE 7: ANALYSIS & INSIGHTS  ✅ COMPLETED
+================================================================================
+
+[x] Anomaly detection rule engine
+    [x] Design a pluggable rule architecture:
+        - Each rule is a function: (db, importContext) → InsightResult[]
+        - Rules run automatically after successful ingestion
+        - Each rule returns zero or more generated_insight records
+        - Rules are registered in a central array and executed sequentially
+        - New rules can be added without modifying the orchestrator
+    [x] Severity classification for all generated insights:
+        - info: Informational, no action needed (e.g. "new tradeline opened")
+        - low: Minor observation (e.g. "address changed between imports")
+        - medium: Warrants attention (e.g. "hard search from unknown org")
+        - high: Requires investigation (e.g. "large unexpected balance jump",
+          "payment status degraded to default")
+    [x] Entity linking for all insights:
+        - Every generated_insight links to the relevant entities via
+          generated_insight_entity join table
+        - Enables "show me all anomalies for this tradeline" queries
+
+[x] Core anomaly rules
+    [x] Hard search detection
+        - Flag hard searches appearing since last import
+        - Classify by frequency: occasional (low), frequent (medium),
+          burst pattern (high)
+        - Cross-reference search organisation against known tradeline lenders
+          to distinguish expected searches (you applied) from unexpected ones
+    [x] Payment status degradation
+        - Compare tradeline payment_status between consecutive snapshots
+        - Flag any worsening (e.g. current → 1-month-late → 3-months-late)
+        - Severity scales with degradation magnitude
+    [x] Unexpected balance changes
+        - Flag balance increases/decreases that exceed a configurable threshold
+          percentage between consecutive snapshots
+        - Useful for spotting unauthorized charges or data errors
+    [x] New tradeline detection
+        - Flag tradelines appearing for the first time in an import
+        - Distinguish between expected (new account) and unexpected
+    [x] Status changes
+        - Flag tradeline status transitions (active → settled, active → default)
+        - Credit score movements exceeding threshold
+    [x] Cross-agency discrepancy detection
+        - Compare tradeline data reported by different agencies for the same
+          account (matched via canonical_id)
+        - Flag material differences in balance, limit, or status
+
+[x] Trend analysis
+    [ ] Debt-to-income trend (if income data available) — deferred, requires income data not in schema
+    [x] Credit utilization trend
+    [x] Score movement correlation with account events
+[x] Generated insights pipeline
+    [x] Quality warnings (missing data, sparse imports) — done in Phase 2
+    [x] Cross-agency comparison insights — covered by cross-agency discrepancy rule
+    [x] Payment pattern analysis
