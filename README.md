@@ -41,16 +41,6 @@ docker compose -f docker/docker-compose.yml up --build
 
 The app is available at `http://localhost:3000`. Data is persisted in a named Docker volume (`ctview-data`).
 
-### With Postgres
-
-```bash
-docker compose -f docker/docker-compose.yml \
-               -f docker/docker-compose.postgres.yml \
-               up --build
-```
-
-This starts a Postgres 17 sidecar and configures ctview to use it.
-
 ## Project structure
 
 ```
@@ -101,8 +91,7 @@ List endpoints support `limit` and `offset` query parameters. Most also accept d
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `DATABASE_DIALECT` | `sqlite` | `sqlite` or `postgres` |
-| `DATABASE_URL` | `./data/credittimeline.db` | DB path (SQLite) or connection string (Postgres) |
+| `DATABASE_URL` | `./data/credittimeline.db` | Path to the SQLite database file |
 | `INGEST_API_KEY` | *(unset)* | Bearer token for `/api/v1/ingest`. If unset, ingestion is open. |
 | `PORT` | `3000` | Server port (production) |
 | `CORS_ALLOW_ORIGIN` | *(unset)* | CORS allowed origin. `*` for all, blank for same-origin only. |

@@ -29,7 +29,6 @@ pnpm format
 pnpm db:reset
 
 docker compose -f docker/docker-compose.yml up --build
-docker compose -f docker/docker-compose.yml -f docker/docker-compose.postgres.yml up --build
 ```
 
 ## Global Guardrails

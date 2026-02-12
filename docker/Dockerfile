@@ -43,7 +43,6 @@ USER ctview
 
 ENV NODE_ENV=production
 ENV PORT=3000
-ENV DATABASE_DIALECT=sqlite
 ENV DATABASE_URL=/data/credittimeline.db
 
 EXPOSE 3000

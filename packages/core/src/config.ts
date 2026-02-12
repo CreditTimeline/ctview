@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const configSchema = z.object({
-  DATABASE_DIALECT: z.enum(['sqlite', 'postgres']).default('sqlite'),
   DATABASE_URL: z.string().default('./data/credittimeline.db'),
   INGEST_API_KEY: z.string().optional(),
   PORT: z.coerce.number().int().positive().default(3000),

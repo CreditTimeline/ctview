@@ -8,7 +8,6 @@ services:
     volumes:
       - ctview-data:/data
     environment:
-      - DATABASE_DIALECT=sqlite
       - DATABASE_URL=/data/credittimeline.db
       - PORT=3000
     restart: unless-stopped
