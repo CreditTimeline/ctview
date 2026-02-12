@@ -1,7 +1,7 @@
 # Usage: docker compose -f docker/docker-compose.yml -f docker/docker-compose.postgres.yml up
 services:
   postgres:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     volumes:
       - pg-data:/var/lib/postgresql/data
     environment:
