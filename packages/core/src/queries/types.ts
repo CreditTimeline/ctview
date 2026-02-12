@@ -404,7 +404,7 @@ export interface PublicRecordSummary {
 export interface SystemHealth {
   tableCounts: Record<string, number>;
   lastIngestAt: string | null;
-  dbDialect: string;
+  dbEngine: string;
   schemaVersion: string | null;
 }
 

@@ -20,7 +20,7 @@ describe('getSystemHealth', () => {
     expect(health.tableCounts.addresses).toBe(0);
     expect(health.tableCounts.publicRecords).toBe(0);
     expect(health.lastIngestAt).toBeNull();
-    expect(health.dbDialect).toBe('sqlite');
+    expect(health.dbEngine).toBe('sqlite');
   });
 
   it('returns counts after ingestion', async () => {

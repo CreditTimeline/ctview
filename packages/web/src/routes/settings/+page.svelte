@@ -146,8 +146,8 @@
     <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       <StatCard label="Total Records" value={totalRecords} />
       <StatCard
-        label="DB Dialect"
-        value={data.health.dbDialect.toUpperCase()}
+        label="DB Engine"
+        value={data.health.dbEngine.toUpperCase()}
       />
       <StatCard
         label="Schema Hash"
@@ -163,8 +163,8 @@
       class="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-3"
     >
       <div>
-        <p class="text-muted">Dialect</p>
-        <p class="font-medium text-ink capitalize">{data.health.dbDialect}</p>
+        <p class="text-muted">Engine</p>
+        <p class="font-medium text-ink capitalize">{data.health.dbEngine}</p>
       </div>
       <div>
         <p class="text-muted">Schema Version</p>

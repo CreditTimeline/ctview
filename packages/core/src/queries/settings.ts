@@ -32,7 +32,7 @@ export function getSystemHealth(db: AppDatabase): SystemHealth {
   return {
     tableCounts,
     lastIngestAt,
-    dbDialect: 'sqlite',
+    dbEngine: 'sqlite',
     schemaVersion,
   };
 }
