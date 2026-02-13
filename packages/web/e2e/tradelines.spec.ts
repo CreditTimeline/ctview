@@ -34,7 +34,7 @@ test.describe('Tradelines', () => {
     await firstLink.click();
 
     // Should navigate to a detail page with tradeline info
-    await expect(page.url()).toContain('/tradelines/');
+    await expect(page).toHaveURL(/\/tradelines\/.+/);
     await expect(page.getByText('All Tradelines')).toBeVisible();
   });
 

@@ -4,7 +4,7 @@ test.describe('Settings', () => {
   test('page loads with heading', async ({ page }) => {
     await page.goto('/settings');
     await expect(page).toHaveTitle(/Settings - CreditTimeline/);
-    await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Settings', exact: true })).toBeVisible();
   });
 
   test('shows System Health section', async ({ page }) => {
@@ -18,7 +18,7 @@ test.describe('Settings', () => {
   test('shows Database section with engine info', async ({ page }) => {
     await page.goto('/settings');
     await expect(page.getByRole('heading', { name: 'Database' })).toBeVisible();
-    await expect(page.getByText('Engine')).toBeVisible();
+    await expect(page.getByText('Engine', { exact: true })).toBeVisible();
     await expect(page.getByText('Schema Version')).toBeVisible();
     await expect(page.getByText('Last Ingest')).toBeVisible();
   });

@@ -9,9 +9,10 @@ test.describe('Dashboard', () => {
     await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 
     // Stat cards — the example file has tradelines, searches, etc.
-    await expect(page.getByText('Tradelines')).toBeVisible();
-    await expect(page.getByText('Searches')).toBeVisible();
-    await expect(page.getByText('Addresses')).toBeVisible();
+    const main = page.locator('#main-content');
+    await expect(main.getByText('Tradelines')).toBeVisible();
+    await expect(main.getByText('Searches')).toBeVisible();
+    await expect(main.getByText('Addresses')).toBeVisible();
   });
 
   test('shows debt summary cards', async ({ page }) => {
@@ -19,7 +20,7 @@ test.describe('Dashboard', () => {
 
     await expect(page.getByText('Total Balance')).toBeVisible();
     await expect(page.getByText('Credit Limit')).toBeVisible();
-    await expect(page.getByText('Open Accounts')).toBeVisible();
+    await expect(page.getByText('Open Accounts', { exact: true })).toBeVisible();
     await expect(page.getByText('Utilization')).toBeVisible();
   });
 

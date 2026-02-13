@@ -12,6 +12,8 @@ const navRoutes = [
 ];
 
 test.describe('Navigation (Desktop)', () => {
+  test.use({ viewport: { width: 1280, height: 720 } });
+
   for (const route of navRoutes) {
     test(`sidebar link to ${route.label} works`, async ({ page }) => {
       await page.goto('/');
@@ -32,8 +34,9 @@ test.describe('Navigation (Desktop)', () => {
 
   test('sidebar shows branding', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('CreditTimeline')).toBeVisible();
-    await expect(page.getByText('Personal Credit Vault')).toBeVisible();
+    const sidebar = page.locator('aside');
+    await expect(sidebar.getByRole('heading', { name: 'CreditTimeline' })).toBeVisible();
+    await expect(sidebar.getByText('Personal Credit Vault')).toBeVisible();
   });
 });
 
