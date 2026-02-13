@@ -34,6 +34,10 @@ npm-debug.log*
 # Test coverage
 coverage/
 
+# Playwright
+playwright-report/
+test-results/
+
 # pnpm
 .pnpm-debug.log
 .pnpm-store/
