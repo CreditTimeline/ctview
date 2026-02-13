@@ -3,7 +3,6 @@
   import type { ECOption } from '$lib/components/chart-types.js';
   import {
     StatCard,
-    MoneyDisplay,
     DateDisplay,
     AgencyBadge,
     EChart,
@@ -22,9 +21,7 @@
 
   const utilization = $derived.by(() => {
     if (!data.debtSummary.totalCreditLimit) return null;
-    return Math.round(
-      (data.debtSummary.totalBalance / data.debtSummary.totalCreditLimit) * 100,
-    );
+    return Math.round((data.debtSummary.totalBalance / data.debtSummary.totalCreditLimit) * 100);
   });
 
   const utilizationColor = $derived.by(() => {
@@ -102,17 +99,17 @@
 
 <div class="space-y-8">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Dashboard</h2>
-    <p class="mt-1 text-muted">Overview of your credit file data.</p>
+    <h2 class="text-ink text-2xl font-bold">Dashboard</h2>
+    <p class="text-muted mt-1">Overview of your credit file data.</p>
   </div>
 
   {#if data.counts.imports === 0}
     <!-- Empty state -->
-    <div class="rounded-xl border border-accent/30 bg-accent-light p-8 text-center">
-      <h3 class="text-lg font-semibold text-accent-dark">No data yet</h3>
-      <p class="mt-2 text-accent-dark/80">
+    <div class="border-accent/30 bg-accent-light rounded-xl border p-8 text-center">
+      <h3 class="text-accent-dark text-lg font-semibold">No data yet</h3>
+      <p class="text-accent-dark/80 mt-2">
         Import your first credit report by sending a POST request to
-        <code class="rounded bg-accent/10 px-2 py-0.5 text-sm font-mono">/api/v1/ingest</code>
+        <code class="bg-accent/10 rounded px-2 py-0.5 font-mono text-sm">/api/v1/ingest</code>
       </p>
     </div>
   {:else}
@@ -130,7 +127,7 @@
     <!-- Score Trend Chart -->
     {#if hasTrend}
       <section class="panel">
-        <h3 class="mb-4 text-lg font-semibold text-ink">Score Trend</h3>
+        <h3 class="text-ink mb-4 text-lg font-semibold">Score Trend</h3>
         <EChart option={trendOption} height="350px" class="w-full" />
       </section>
     {/if}
@@ -148,17 +145,14 @@
           value={formatPence(data.debtSummary.totalCreditLimit)}
           subtext="Total available credit"
         />
-        <StatCard
-          label="Open Accounts"
-          value={data.debtSummary.openTradelineCount}
-        />
+        <StatCard label="Open Accounts" value={data.debtSummary.openTradelineCount} />
         <div class="panel">
-          <p class="text-sm font-medium text-muted">Utilization</p>
+          <p class="text-muted text-sm font-medium">Utilization</p>
           <p class="mt-2 text-3xl font-bold {utilizationColor}">
             {utilization !== null ? `${utilization}%` : 'N/A'}
           </p>
           {#if utilization !== null}
-            <p class="mt-1 text-sm text-muted">Balance / limit ratio</p>
+            <p class="text-muted mt-1 text-sm">Balance / limit ratio</p>
           {/if}
         </div>
       </div>
@@ -168,17 +162,17 @@
     <section class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <!-- Recent Imports Timeline -->
       <div class="panel">
-        <h3 class="text-lg font-semibold text-ink">Recent Imports</h3>
+        <h3 class="text-ink text-lg font-semibold">Recent Imports</h3>
         {#if hasImports}
           <div class="mt-4 space-y-4">
             {#each data.recentImports as imp (imp.importId)}
-              <div class="flex items-start gap-3 border-l-2 border-accent pl-4">
+              <div class="border-accent flex items-start gap-3 border-l-2 pl-4">
                 <div class="flex-1">
                   <div class="flex items-center gap-2">
                     <AgencyBadge agency={imp.sourceSystem} />
                     <DateDisplay date={imp.importedAt} relative />
                   </div>
-                  <p class="mt-1 text-sm text-muted">
+                  <p class="text-muted mt-1 text-sm">
                     {imp.acquisitionMethod}
                     {#if imp.entityCounts}
                       — {Object.values(imp.entityCounts).reduce((a, b) => a + b, 0)} entities
@@ -189,21 +183,21 @@
             {/each}
           </div>
         {:else}
-          <p class="mt-4 text-sm text-muted">No imports yet.</p>
+          <p class="text-muted mt-4 text-sm">No imports yet.</p>
         {/if}
       </div>
 
       <!-- Alerts & Insights -->
       <div class="panel">
-        <h3 class="text-lg font-semibold text-ink">Alerts &amp; Insights</h3>
+        <h3 class="text-ink text-lg font-semibold">Alerts &amp; Insights</h3>
         {#if hasInsights}
           <div class="mt-4 space-y-3">
             {#each data.recentInsights as insight (insight.insightId)}
               <div class="rounded-lg border-l-4 p-3 {getSeverityClasses(insight.severity)}">
-                <p class="text-sm font-medium text-ink">
+                <p class="text-ink text-sm font-medium">
                   {insight.summary ?? insight.kind}
                 </p>
-                <div class="mt-1 flex items-center gap-2 text-xs text-muted">
+                <div class="text-muted mt-1 flex items-center gap-2 text-xs">
                   <DateDisplay date={insight.generatedAt} relative />
                   <span class="badge bg-soft text-muted">{insight.kind}</span>
                 </div>
@@ -211,7 +205,7 @@
             {/each}
           </div>
         {:else}
-          <p class="mt-4 text-sm text-muted">No insights generated yet.</p>
+          <p class="text-muted mt-4 text-sm">No insights generated yet.</p>
         {/if}
       </div>
     </section>

@@ -42,9 +42,9 @@ function computeDdlHash(ddl: string): string {
 
 function getStoredDdlHash(sqlite: InstanceType<typeof Database>): string | null {
   try {
-    const row = sqlite
-      .prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'")
-      .get() as { value: string } | undefined;
+    const row = sqlite.prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'").get() as
+      | { value: string }
+      | undefined;
     return row?.value ?? null;
   } catch {
     // Table doesn't exist yet (brand-new database)
@@ -64,9 +64,7 @@ function hasExistingTables(sqlite: InstanceType<typeof Database>): boolean {
 function dropAllTables(sqlite: InstanceType<typeof Database>): void {
   sqlite.pragma('foreign_keys = OFF');
   const tables = sqlite
-    .prepare(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
-    )
+    .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     .all() as { name: string }[];
   for (const { name } of tables) {
     sqlite.exec(`DROP TABLE IF EXISTS "${name}"`);

@@ -19,7 +19,10 @@ function findSpecDir(): string {
 const tempFiles: string[] = [];
 
 function tempDbPath(): string {
-  const p = resolve(tmpdir(), `ctview-test-${Date.now()}-${Math.random().toString(36).slice(2)}.db`);
+  const p = resolve(
+    tmpdir(),
+    `ctview-test-${Date.now()}-${Math.random().toString(36).slice(2)}.db`,
+  );
   tempFiles.push(p);
   return p;
 }
@@ -50,9 +53,11 @@ describe('DDL staleness detection', () => {
 
     // Open raw connection to verify the hash was stored
     const raw = new Database(dbPath, { readonly: true });
-    const row = raw.prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'").get() as {
-      value: string;
-    } | undefined;
+    const row = raw.prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'").get() as
+      | {
+          value: string;
+        }
+      | undefined;
     raw.close();
 
     expect(row).toBeDefined();
@@ -76,9 +81,9 @@ describe('DDL staleness detection', () => {
     createDatabase(dbPath);
 
     const rawCheck = new Database(dbPath, { readonly: true });
-    const row = rawCheck
-      .prepare("SELECT value FROM app_settings WHERE key = 'canary'")
-      .get() as { value: string } | undefined;
+    const row = rawCheck.prepare("SELECT value FROM app_settings WHERE key = 'canary'").get() as
+      | { value: string }
+      | undefined;
     rawCheck.close();
 
     expect(row?.value).toBe('alive');
@@ -119,9 +124,9 @@ describe('DDL staleness detection', () => {
       name: string;
     }[];
     // Canary should be gone (tables were dropped)
-    const canary = rawCheck
-      .prepare("SELECT value FROM app_settings WHERE key = 'canary'")
-      .get() as { value: string } | undefined;
+    const canary = rawCheck.prepare("SELECT value FROM app_settings WHERE key = 'canary'").get() as
+      | { value: string }
+      | undefined;
     rawCheck.close();
 
     expect(cols.map((c) => c.name)).toContain('severity');
@@ -151,9 +156,9 @@ describe('DDL staleness detection', () => {
 
     // Verify canary is gone (tables were dropped and recreated)
     const rawCheck = new Database(dbPath, { readonly: true });
-    const canary = rawCheck
-      .prepare("SELECT value FROM app_settings WHERE key = 'canary'")
-      .get() as { value: string } | undefined;
+    const canary = rawCheck.prepare("SELECT value FROM app_settings WHERE key = 'canary'").get() as
+      | { value: string }
+      | undefined;
     const hash = rawCheck
       .prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'")
       .get() as { value: string };

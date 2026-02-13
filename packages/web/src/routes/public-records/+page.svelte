@@ -2,7 +2,14 @@
   import type { PublicRecordSummary } from '@ctview/core';
   import type { ColumnDef } from '@tanstack/svelte-table';
   import { renderComponent } from '@tanstack/svelte-table';
-  import { DataTable, DateDisplay, MoneyDisplay, AgencyBadge, StatCard, Pagination } from '$lib/components';
+  import {
+    DataTable,
+    DateDisplay,
+    MoneyDisplay,
+    AgencyBadge,
+    StatCard,
+    Pagination,
+  } from '$lib/components';
   import RecordTypeBadge from '$lib/components/RecordTypeBadge.svelte';
 
   let { data } = $props();
@@ -31,25 +38,22 @@
 
   // --- Table columns ---
 
-  const columns: ColumnDef<PublicRecordSummary, any>[] = [
+  const columns: ColumnDef<PublicRecordSummary, unknown>[] = [
     {
       accessorKey: 'recordType',
       header: 'Type',
-      cell: ({ row }) =>
-        renderComponent(RecordTypeBadge, { recordType: row.original.recordType }),
+      cell: ({ row }) => renderComponent(RecordTypeBadge, { recordType: row.original.recordType }),
     },
     { accessorKey: 'courtOrRegister', header: 'Court/Register' },
     {
       accessorKey: 'amount',
       header: 'Amount',
-      cell: ({ row }) =>
-        renderComponent(MoneyDisplay, { amount: row.original.amount }),
+      cell: ({ row }) => renderComponent(MoneyDisplay, { amount: row.original.amount }),
     },
     {
       accessorKey: 'recordedAt',
       header: 'Recorded',
-      cell: ({ row }) =>
-        renderComponent(DateDisplay, { date: row.original.recordedAt }),
+      cell: ({ row }) => renderComponent(DateDisplay, { date: row.original.recordedAt }),
     },
     {
       accessorKey: 'satisfiedAt',
@@ -65,8 +69,7 @@
     {
       accessorKey: 'sourceSystem',
       header: 'Source',
-      cell: ({ row }) =>
-        renderComponent(AgencyBadge, { agency: row.original.sourceSystem }),
+      cell: ({ row }) => renderComponent(AgencyBadge, { agency: row.original.sourceSystem }),
     },
   ];
 </script>
@@ -75,8 +78,8 @@
 
 <div class="space-y-8">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Public Records</h2>
-    <p class="mt-1 text-muted">CCJs, bankruptcies, and other public records.</p>
+    <h2 class="text-ink text-2xl font-bold">Public Records</h2>
+    <p class="text-muted mt-1">CCJs, bankruptcies, and other public records.</p>
   </div>
 
   {#if data.items.length > 0}
@@ -88,7 +91,7 @@
     </div>
 
     <!-- Result count -->
-    <span class="text-sm text-muted">{data.total} result{data.total !== 1 ? 's' : ''}</span>
+    <span class="text-muted text-sm">{data.total} result{data.total !== 1 ? 's' : ''}</span>
 
     <!-- Public Records Table -->
     <section>
@@ -98,19 +101,21 @@
     <!-- Outstanding records age summary -->
     {#if activeCount > 0}
       <section class="panel">
-        <h3 class="mb-4 text-lg font-semibold text-ink">Outstanding Records</h3>
+        <h3 class="text-ink mb-4 text-lg font-semibold">Outstanding Records</h3>
         <div class="space-y-2">
-          {#each data.items.filter((r) => !r.satisfiedAt) as record}
+          {#each data.items.filter((r) => !r.satisfiedAt) as record (record.publicRecordId)}
             {@const days = daysSince(record.recordedAt)}
-            <div class="flex items-center justify-between rounded-lg border border-soft/50 px-4 py-3">
+            <div
+              class="border-soft/50 flex items-center justify-between rounded-lg border px-4 py-3"
+            >
               <div class="flex items-center gap-3">
                 <RecordTypeBadge recordType={record.recordType} />
-                <span class="text-sm text-ink">{record.courtOrRegister ?? 'Unknown court'}</span>
+                <span class="text-ink text-sm">{record.courtOrRegister ?? 'Unknown court'}</span>
               </div>
               <div class="flex items-center gap-4">
                 <MoneyDisplay amount={record.amount} />
                 {#if days !== null}
-                  <span class="text-sm text-muted">{days} days outstanding</span>
+                  <span class="text-muted text-sm">{days} days outstanding</span>
                 {/if}
               </div>
             </div>
@@ -119,11 +124,16 @@
       </section>
     {/if}
 
-    <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/public-records" />
+    <Pagination
+      total={data.total}
+      limit={data.limit}
+      offset={data.offset}
+      baseUrl="/public-records"
+    />
   {:else}
-    <div class="rounded-xl border border-success/30 bg-success-light p-8 text-center">
-      <h3 class="text-lg font-semibold text-success">No Public Records</h3>
-      <p class="mt-2 text-success/80">No CCJs, IVAs, or bankruptcies on file.</p>
+    <div class="border-success/30 bg-success-light rounded-xl border p-8 text-center">
+      <h3 class="text-success text-lg font-semibold">No Public Records</h3>
+      <p class="text-success/80 mt-2">No CCJs, IVAs, or bankruptcies on file.</p>
     </div>
   {/if}
 </div>

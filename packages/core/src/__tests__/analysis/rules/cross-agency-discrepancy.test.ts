@@ -6,7 +6,10 @@ import { DEFAULT_CONFIG } from '../../../analysis/config.js';
 import type { AnalysisContext } from '../../../analysis/types.js';
 import type { CreditFile } from '../../../types/canonical.js';
 
-function buildCtx(db: ReturnType<typeof createTestDb>, subjectId = 'subj_test_001'): AnalysisContext {
+function buildCtx(
+  db: ReturnType<typeof createTestDb>,
+  subjectId = 'subj_test_001',
+): AnalysisContext {
   return {
     db: db as AnalysisContext['db'],
     file: { subject: { subject_id: subjectId } } as CreditFile,
@@ -30,19 +33,37 @@ describe('Cross-Agency Discrepancy Detection', () => {
       created_at: '2026-01-01T00:00:00Z',
       currency_code: 'GBP',
       imports: [
-        { import_id: 'imp_eq_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' },
+        {
+          import_id: 'imp_eq_001',
+          imported_at: '2026-01-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
       ],
-      subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' }] },
-      tradelines: [{
-        tradeline_id: 'tl_no_canon',
-        account_type: 'credit_card',
-        furnisher_name_raw: 'Test Bank',
-        status_current: 'up_to_date',
-        source_import_id: 'imp_eq_001',
-        snapshots: [
-          { snapshot_id: 'snap_nc1', as_of_date: '2025-12-01', current_balance: 50000, credit_limit: 200000, source_import_id: 'imp_eq_001' },
+      subject: {
+        subject_id: 'subj_test_001',
+        names: [
+          { name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' },
         ],
-      }],
+      },
+      tradelines: [
+        {
+          tradeline_id: 'tl_no_canon',
+          account_type: 'credit_card',
+          furnisher_name_raw: 'Test Bank',
+          status_current: 'up_to_date',
+          source_import_id: 'imp_eq_001',
+          snapshots: [
+            {
+              snapshot_id: 'snap_nc1',
+              as_of_date: '2025-12-01',
+              current_balance: 50000,
+              credit_limit: 200000,
+              source_import_id: 'imp_eq_001',
+            },
+          ],
+        },
+      ],
     };
     ingestCreditFile(db, file);
 
@@ -63,20 +84,38 @@ describe('Cross-Agency Discrepancy Detection', () => {
       created_at: '2026-01-01T00:00:00Z',
       currency_code: 'GBP',
       imports: [
-        { import_id: 'imp_eq_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' },
+        {
+          import_id: 'imp_eq_001',
+          imported_at: '2026-01-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
       ],
-      subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' }] },
-      tradelines: [{
-        tradeline_id: 'tl_eq_001',
-        canonical_id: 'canon_001',
-        account_type: 'credit_card',
-        furnisher_name_raw: 'Test Bank',
-        status_current: 'up_to_date',
-        source_import_id: 'imp_eq_001',
-        snapshots: [
-          { snapshot_id: 'snap_eq1', as_of_date: '2025-12-01', current_balance: 100000, credit_limit: 200000, source_import_id: 'imp_eq_001' },
+      subject: {
+        subject_id: 'subj_test_001',
+        names: [
+          { name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' },
         ],
-      }],
+      },
+      tradelines: [
+        {
+          tradeline_id: 'tl_eq_001',
+          canonical_id: 'canon_001',
+          account_type: 'credit_card',
+          furnisher_name_raw: 'Test Bank',
+          status_current: 'up_to_date',
+          source_import_id: 'imp_eq_001',
+          snapshots: [
+            {
+              snapshot_id: 'snap_eq1',
+              as_of_date: '2025-12-01',
+              current_balance: 100000,
+              credit_limit: 200000,
+              source_import_id: 'imp_eq_001',
+            },
+          ],
+        },
+      ],
     };
     ingestCreditFile(db, file1);
 
@@ -88,20 +127,38 @@ describe('Cross-Agency Discrepancy Detection', () => {
       created_at: '2026-01-02T00:00:00Z',
       currency_code: 'GBP',
       imports: [
-        { import_id: 'imp_tu_001', imported_at: '2026-01-02T00:00:00Z', source_system: 'transunion', acquisition_method: 'api' },
+        {
+          import_id: 'imp_tu_001',
+          imported_at: '2026-01-02T00:00:00Z',
+          source_system: 'transunion',
+          acquisition_method: 'api',
+        },
       ],
-      subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n2', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_tu_001' }] },
-      tradelines: [{
-        tradeline_id: 'tl_tu_001',
-        canonical_id: 'canon_001',
-        account_type: 'credit_card',
-        furnisher_name_raw: 'Test Bank',
-        status_current: 'up_to_date',
-        source_import_id: 'imp_tu_001',
-        snapshots: [
-          { snapshot_id: 'snap_tu1', as_of_date: '2025-12-01', current_balance: 150000, credit_limit: 200000, source_import_id: 'imp_tu_001' },
+      subject: {
+        subject_id: 'subj_test_001',
+        names: [
+          { name_id: 'n2', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_tu_001' },
         ],
-      }],
+      },
+      tradelines: [
+        {
+          tradeline_id: 'tl_tu_001',
+          canonical_id: 'canon_001',
+          account_type: 'credit_card',
+          furnisher_name_raw: 'Test Bank',
+          status_current: 'up_to_date',
+          source_import_id: 'imp_tu_001',
+          snapshots: [
+            {
+              snapshot_id: 'snap_tu1',
+              as_of_date: '2025-12-01',
+              current_balance: 150000,
+              credit_limit: 200000,
+              source_import_id: 'imp_tu_001',
+            },
+          ],
+        },
+      ],
     };
     ingestCreditFile(db, file2);
 
@@ -127,17 +184,29 @@ describe('Cross-Agency Discrepancy Detection', () => {
       created_at: '2026-01-01T00:00:00Z',
       currency_code: 'GBP',
       imports: [
-        { import_id: 'imp_eq_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' },
+        {
+          import_id: 'imp_eq_001',
+          imported_at: '2026-01-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
       ],
-      subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' }] },
-      tradelines: [{
-        tradeline_id: 'tl_eq_002',
-        canonical_id: 'canon_002',
-        account_type: 'unsecured_loan',
-        furnisher_name_raw: 'Test Bank',
-        status_current: 'up_to_date',
-        source_import_id: 'imp_eq_001',
-      }],
+      subject: {
+        subject_id: 'subj_test_001',
+        names: [
+          { name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' },
+        ],
+      },
+      tradelines: [
+        {
+          tradeline_id: 'tl_eq_002',
+          canonical_id: 'canon_002',
+          account_type: 'unsecured_loan',
+          furnisher_name_raw: 'Test Bank',
+          status_current: 'up_to_date',
+          source_import_id: 'imp_eq_001',
+        },
+      ],
     };
     ingestCreditFile(db, file1);
 
@@ -148,17 +217,29 @@ describe('Cross-Agency Discrepancy Detection', () => {
       created_at: '2026-01-02T00:00:00Z',
       currency_code: 'GBP',
       imports: [
-        { import_id: 'imp_tu_001', imported_at: '2026-01-02T00:00:00Z', source_system: 'transunion', acquisition_method: 'api' },
+        {
+          import_id: 'imp_tu_001',
+          imported_at: '2026-01-02T00:00:00Z',
+          source_system: 'transunion',
+          acquisition_method: 'api',
+        },
       ],
-      subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n2', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_tu_001' }] },
-      tradelines: [{
-        tradeline_id: 'tl_tu_002',
-        canonical_id: 'canon_002',
-        account_type: 'unsecured_loan',
-        furnisher_name_raw: 'Test Bank',
-        status_current: 'default',
-        source_import_id: 'imp_tu_001',
-      }],
+      subject: {
+        subject_id: 'subj_test_001',
+        names: [
+          { name_id: 'n2', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_tu_001' },
+        ],
+      },
+      tradelines: [
+        {
+          tradeline_id: 'tl_tu_002',
+          canonical_id: 'canon_002',
+          account_type: 'unsecured_loan',
+          furnisher_name_raw: 'Test Bank',
+          status_current: 'default',
+          source_import_id: 'imp_tu_001',
+        },
+      ],
     };
     ingestCreditFile(db, file2);
 
@@ -182,9 +263,19 @@ describe('Cross-Agency Discrepancy Detection', () => {
       created_at: '2026-01-01T00:00:00Z',
       currency_code: 'GBP',
       imports: [
-        { import_id: 'imp_eq_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' },
+        {
+          import_id: 'imp_eq_001',
+          imported_at: '2026-01-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
       ],
-      subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' }] },
+      subject: {
+        subject_id: 'subj_test_001',
+        names: [
+          { name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_eq_001' },
+        ],
+      },
       tradelines: [
         {
           tradeline_id: 'tl_same_1',
@@ -193,7 +284,14 @@ describe('Cross-Agency Discrepancy Detection', () => {
           furnisher_name_raw: 'Test Bank',
           status_current: 'up_to_date',
           source_import_id: 'imp_eq_001',
-          snapshots: [{ snapshot_id: 'snap_same1', as_of_date: '2025-12-01', current_balance: 100000, source_import_id: 'imp_eq_001' }],
+          snapshots: [
+            {
+              snapshot_id: 'snap_same1',
+              as_of_date: '2025-12-01',
+              current_balance: 100000,
+              source_import_id: 'imp_eq_001',
+            },
+          ],
         },
         {
           tradeline_id: 'tl_same_2',
@@ -202,7 +300,14 @@ describe('Cross-Agency Discrepancy Detection', () => {
           furnisher_name_raw: 'Test Bank',
           status_current: 'up_to_date',
           source_import_id: 'imp_eq_001',
-          snapshots: [{ snapshot_id: 'snap_same2', as_of_date: '2025-12-01', current_balance: 200000, source_import_id: 'imp_eq_001' }],
+          snapshots: [
+            {
+              snapshot_id: 'snap_same2',
+              as_of_date: '2025-12-01',
+              current_balance: 200000,
+              source_import_id: 'imp_eq_001',
+            },
+          ],
         },
       ],
     };

@@ -1,4 +1,4 @@
-import { sql, eq } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import type { AppDatabase } from '../db/client.js';
 import { appSettings } from '../schema/sqlite/app.js';
 
@@ -21,9 +21,7 @@ export function getRetentionConfig(db: AppDatabase): RetentionConfig {
   const rows = db
     .select()
     .from(appSettings)
-    .where(
-      sql`${appSettings.key} IN ('retention.raw_artifact_days', 'retention.audit_log_days')`,
-    )
+    .where(sql`${appSettings.key} IN ('retention.raw_artifact_days', 'retention.audit_log_days')`)
     .all();
 
   let rawArtifactDays = DEFAULT_RAW_ARTIFACT_DAYS;

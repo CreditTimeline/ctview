@@ -2,7 +2,10 @@ import { exportTradelinesCsv, exportSearchesCsv, exportScoresCsv } from '@ctview
 import { apiError, ErrorCode } from '$lib/server/api';
 import type { RequestHandler } from './$types';
 
-const exporters: Record<string, (db: Parameters<typeof exportTradelinesCsv>[0], subjectId: string) => string> = {
+const exporters: Record<
+  string,
+  (db: Parameters<typeof exportTradelinesCsv>[0], subjectId: string) => string
+> = {
   tradelines: exportTradelinesCsv,
   searches: exportSearchesCsv,
   scores: exportScoresCsv,

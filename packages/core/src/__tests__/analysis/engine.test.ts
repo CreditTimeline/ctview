@@ -38,9 +38,7 @@ describe('Analysis Engine', () => {
     const ruleA: AnomalyRule = {
       id: 'test_rule_a',
       name: 'Test Rule A',
-      evaluate: () => [
-        { kind: 'test_a', severity: 'info', summary: 'Info A' },
-      ],
+      evaluate: () => [{ kind: 'test_a', severity: 'info', summary: 'Info A' }],
     };
     const ruleB: AnomalyRule = {
       id: 'test_rule_b',

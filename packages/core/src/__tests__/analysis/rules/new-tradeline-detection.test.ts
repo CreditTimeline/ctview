@@ -7,7 +7,11 @@ import { DEFAULT_CONFIG } from '../../../analysis/config.js';
 import type { AnalysisContext } from '../../../analysis/types.js';
 import type { CreditFile } from '../../../types/canonical.js';
 
-function buildCtx(db: ReturnType<typeof createTestDb>, file: unknown, importIds: string[]): AnalysisContext {
+function buildCtx(
+  db: ReturnType<typeof createTestDb>,
+  file: unknown,
+  importIds: string[],
+): AnalysisContext {
   const f = file as CreditFile;
   const sourceMap = new Map<string, string>();
   for (const imp of f.imports) sourceMap.set(imp.import_id, imp.source_system);

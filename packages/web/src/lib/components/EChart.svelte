@@ -65,8 +65,21 @@
 </script>
 
 {#if !loaded}
-  <div class={className} style:height style:display="flex" style:align-items="center" style:justify-content="center">
-    <span class="text-sm text-muted">Loading chart...</span>
+  <div
+    class={className}
+    style:height
+    style:display="flex"
+    style:align-items="center"
+    style:justify-content="center"
+  >
+    <span class="text-muted text-sm">Loading chart...</span>
   </div>
 {/if}
-<div bind:this={container} class={className} style:height style:display={loaded ? undefined : 'none'} role="img" aria-label={ariaLabel}></div>
+<div
+  bind:this={container}
+  class={className}
+  style:height
+  style:display={loaded ? undefined : 'none'}
+  role="img"
+  aria-label={ariaLabel}
+></div>

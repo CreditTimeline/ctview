@@ -14,7 +14,9 @@
   };
 
   const normalized = $derived((recordType ?? '').toLowerCase());
-  const style = $derived(config[normalized] ?? { label: recordType ?? 'Unknown', bg: 'bg-soft', text: 'text-muted' });
+  const style = $derived(
+    config[normalized] ?? { label: recordType ?? 'Unknown', bg: 'bg-soft', text: 'text-muted' },
+  );
 </script>
 
 <span class="badge {style.bg} {style.text} {className}">{style.label}</span>

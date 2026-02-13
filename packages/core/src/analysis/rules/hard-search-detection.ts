@@ -15,7 +15,10 @@ export const hardSearchDetection: AnomalyRule = {
     const { burstThreshold, frequentThreshold, burstWindowDays } = config.hardSearch;
 
     // Find the previous import date to determine the lookback window
-    interface ImportRow { import_id: string; imported_at: string }
+    interface ImportRow {
+      import_id: string;
+      imported_at: string;
+    }
     const allImports = db.all<ImportRow>(sql`
       SELECT ib.import_id, ib.imported_at
       FROM import_batch ib
@@ -62,7 +65,9 @@ export const hardSearchDetection: AnomalyRule = {
 
     // Get known tradeline furnisher org IDs for cross-reference
     const knownFurnisherIds = new Set<string>();
-    interface FurnisherRow { furnisher_organisation_id: string | null }
+    interface FurnisherRow {
+      furnisher_organisation_id: string | null;
+    }
     const furnishers = db.all<FurnisherRow>(sql`
       SELECT DISTINCT furnisher_organisation_id
       FROM tradeline

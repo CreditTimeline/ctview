@@ -1,5 +1,3 @@
-<svelte:head><title>Addresses - CreditTimeline</title></svelte:head>
-
 <script lang="ts">
   import type { AddressWithAssociations } from '@ctview/core';
   import DateDisplay from '$lib/components/DateDisplay.svelte';
@@ -20,10 +18,12 @@
   );
 </script>
 
+<svelte:head><title>Addresses - CreditTimeline</title></svelte:head>
+
 <div class="space-y-8">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Addresses</h2>
-    <p class="mt-1 text-sm text-muted">Address history, electoral roll, and move history.</p>
+    <h2 class="text-ink text-2xl font-bold">Addresses</h2>
+    <p class="text-muted mt-1 text-sm">Address history, electoral roll, and move history.</p>
   </div>
 
   <!-- KPI Stats -->
@@ -38,7 +38,7 @@
     <div class="space-y-6">
       {#each data.items as addr (addr.addressId)}
         <div class="panel">
-          <h3 class="text-lg font-semibold text-ink">{formatAddress(addr)}</h3>
+          <h3 class="text-ink text-lg font-semibold">{formatAddress(addr)}</h3>
 
           <!-- Associations -->
           {#if addr.associations.length > 0}
@@ -68,8 +68,8 @@
 
           <!-- Electoral Roll -->
           {#if addr.electoralRollEntries.length > 0}
-            <div class="mt-4 border-t border-soft pt-4">
-              <p class="text-xs font-semibold uppercase tracking-wider text-muted">
+            <div class="border-soft mt-4 border-t pt-4">
+              <p class="text-muted text-xs font-semibold tracking-wider uppercase">
                 Electoral Roll
               </p>
               <div class="mt-2 space-y-1">
@@ -95,7 +95,7 @@
     </div>
     <Pagination total={data.total} limit={data.limit} offset={data.offset} baseUrl="/addresses" />
   {:else}
-    <div class="panel text-center text-muted">
+    <div class="panel text-muted text-center">
       <p>No addresses found.</p>
     </div>
   {/if}
@@ -103,23 +103,23 @@
   <!-- Move History Timeline -->
   {#if data.addressLinks.length > 0}
     <section>
-      <h3 class="mb-4 text-lg font-semibold text-ink">Move History</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Move History</h3>
       <div class="space-y-4">
         {#each data.addressLinks as link (link.linkId)}
           <div class="flex items-start gap-4">
             <div class="flex flex-col items-center">
-              <div class="h-3 w-3 rounded-full bg-accent"></div>
-              <div class="h-full w-0.5 bg-soft"></div>
+              <div class="bg-accent h-3 w-3 rounded-full"></div>
+              <div class="bg-soft h-full w-0.5"></div>
             </div>
             <div class="panel flex-1">
-              <div class="flex items-center gap-2 text-sm text-muted">
+              <div class="text-muted flex items-center gap-2 text-sm">
                 {#if link.linkedAt}<DateDisplay date={link.linkedAt} />{/if}
                 <AgencyBadge agency={link.sourceSystem} />
               </div>
               <div class="mt-2 flex items-center gap-3 text-sm">
                 <span class="text-muted">{link.fromAddress}</span>
-                <span class="font-medium text-accent">&rarr;</span>
-                <span class="font-medium text-ink">{link.toAddress}</span>
+                <span class="text-accent font-medium">&rarr;</span>
+                <span class="text-ink font-medium">{link.toAddress}</span>
               </div>
             </div>
           </div>

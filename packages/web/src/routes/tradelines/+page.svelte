@@ -18,7 +18,7 @@
 
   let globalFilter = $state('');
 
-  const columns: ColumnDef<TradelineSummary, any>[] = [
+  const columns: ColumnDef<TradelineSummary, unknown>[] = [
     {
       accessorKey: 'furnisherName',
       header: 'Furnisher',
@@ -37,38 +37,32 @@
     {
       accessorKey: 'statusCurrent',
       header: 'Status',
-      cell: ({ row }) =>
-        renderComponent(StatusBadge, { status: row.original.statusCurrent }),
+      cell: ({ row }) => renderComponent(StatusBadge, { status: row.original.statusCurrent }),
     },
     {
       accessorKey: 'sourceSystem',
       header: 'Agency',
-      cell: ({ row }) =>
-        renderComponent(AgencyBadge, { agency: row.original.sourceSystem }),
+      cell: ({ row }) => renderComponent(AgencyBadge, { agency: row.original.sourceSystem }),
     },
     {
       accessorKey: 'latestBalance',
       header: 'Balance',
-      cell: ({ row }) =>
-        renderComponent(MoneyDisplay, { amount: row.original.latestBalance }),
+      cell: ({ row }) => renderComponent(MoneyDisplay, { amount: row.original.latestBalance }),
     },
     {
       accessorKey: 'latestCreditLimit',
       header: 'Credit Limit',
-      cell: ({ row }) =>
-        renderComponent(MoneyDisplay, { amount: row.original.latestCreditLimit }),
+      cell: ({ row }) => renderComponent(MoneyDisplay, { amount: row.original.latestCreditLimit }),
     },
     {
       accessorKey: 'openedAt',
       header: 'Opened',
-      cell: ({ row }) =>
-        renderComponent(DateDisplay, { date: row.original.openedAt }),
+      cell: ({ row }) => renderComponent(DateDisplay, { date: row.original.openedAt }),
     },
     {
       accessorKey: 'closedAt',
       header: 'Closed',
-      cell: ({ row }) =>
-        renderComponent(DateDisplay, { date: row.original.closedAt }),
+      cell: ({ row }) => renderComponent(DateDisplay, { date: row.original.closedAt }),
     },
     {
       accessorKey: 'latestSnapshotDate',
@@ -86,8 +80,8 @@
 
 <div class="space-y-6">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Tradelines</h2>
-    <p class="mt-1 text-muted">Credit agreements and account history.</p>
+    <h2 class="text-ink text-2xl font-bold">Tradelines</h2>
+    <p class="text-muted mt-1">Credit agreements and account history.</p>
   </div>
 
   <div class="flex flex-wrap items-center gap-4">
@@ -100,9 +94,9 @@
       type="text"
       placeholder="Search tradelines…"
       bind:value={globalFilter}
-      class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted"
+      class="border-soft bg-surface text-ink placeholder:text-muted rounded-lg border px-3 py-2 text-sm"
     />
-    <span class="text-sm text-muted">{data.total} result{data.total !== 1 ? 's' : ''}</span>
+    <span class="text-muted text-sm">{data.total} result{data.total !== 1 ? 's' : ''}</span>
   </div>
 
   {#if data.items.length > 0}

@@ -17,8 +17,6 @@
   const resolved = $derived(config[agency] ?? config.other);
 </script>
 
-<span
-  class="badge {resolved.colorClass} {size === 'md' ? 'px-3 py-1 text-sm' : ''} {className}"
->
+<span class="badge {resolved.colorClass} {size === 'md' ? 'px-3 py-1 text-sm' : ''} {className}">
   {resolved.label}
 </span>

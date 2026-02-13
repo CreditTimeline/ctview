@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { CtviewClient } from '../client.js';
 import { CtviewApiError } from '../errors.js';
 
@@ -46,7 +46,12 @@ describe('CtviewClient', () => {
 
   describe('health endpoints', () => {
     it('getHealth calls settings/health', async () => {
-      const fetch = createMockFetch({ tableCounts: {}, lastIngestAt: null, dbEngine: 'sqlite', schemaVersion: null });
+      const fetch = createMockFetch({
+        tableCounts: {},
+        lastIngestAt: null,
+        dbEngine: 'sqlite',
+        schemaVersion: null,
+      });
       const client = new CtviewClient({ baseUrl: 'http://localhost:3000', fetch });
       const result = await client.getHealth();
       expect(fetch.mock.calls[0][0]).toContain('/settings/health');
@@ -248,10 +253,7 @@ describe('CtviewClient', () => {
     });
 
     it('throws CtviewApiError on 400', async () => {
-      const fetch = createMockFetch(
-        { code: 'VALIDATION_FAILED', message: 'Invalid input' },
-        400,
-      );
+      const fetch = createMockFetch({ code: 'VALIDATION_FAILED', message: 'Invalid input' }, 400);
       const client = new CtviewClient({ baseUrl: 'http://localhost:3000', fetch });
       await expect(client.listTradelines({ limit: -1 })).rejects.toThrow(CtviewApiError);
     });

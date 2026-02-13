@@ -53,18 +53,16 @@
     };
   });
 
-  const columns: ColumnDef<ScoreEntry, any>[] = [
+  const columns: ColumnDef<ScoreEntry, unknown>[] = [
     {
       accessorKey: 'calculatedAt',
       header: 'Date',
-      cell: ({ row }) =>
-        renderComponent(DateDisplay, { date: row.original.calculatedAt }),
+      cell: ({ row }) => renderComponent(DateDisplay, { date: row.original.calculatedAt }),
     },
     {
       accessorKey: 'sourceSystem',
       header: 'Agency',
-      cell: ({ row }) =>
-        renderComponent(AgencyBadge, { agency: row.original.sourceSystem }),
+      cell: ({ row }) => renderComponent(AgencyBadge, { agency: row.original.sourceSystem }),
     },
     {
       accessorKey: 'scoreValue',
@@ -96,18 +94,18 @@
 
 <div class="space-y-8">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Credit Scores</h2>
-    <p class="mt-1 text-muted">Score history and trends across agencies.</p>
+    <h2 class="text-ink text-2xl font-bold">Credit Scores</h2>
+    <p class="text-muted mt-1">Score history and trends across agencies.</p>
   </div>
 
   <!-- Filter bar -->
   <div class="flex flex-wrap items-center gap-4">
     <form method="get" class="flex items-center gap-3">
-      <label for="sourceSystem" class="text-sm font-medium text-muted">Agency</label>
+      <label for="sourceSystem" class="text-muted text-sm font-medium">Agency</label>
       <select
         id="sourceSystem"
         name="sourceSystem"
-        class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
+        class="border-soft bg-surface text-ink rounded-lg border px-3 py-2 text-sm"
         value={data.filters.sourceSystem}
         onchange={(e) => e.currentTarget.form?.submit()}
       >
@@ -117,7 +115,7 @@
         <option value="experian">Experian</option>
       </select>
     </form>
-    <span class="text-sm text-muted">{data.total} result{data.total !== 1 ? 's' : ''}</span>
+    <span class="text-muted text-sm">{data.total} result{data.total !== 1 ? 's' : ''}</span>
   </div>
 
   <!-- Latest Score Gauges -->
@@ -134,7 +132,7 @@
   <!-- Score Trend Chart -->
   {#if hasTrend}
     <section class="panel">
-      <h3 class="mb-4 text-lg font-semibold text-ink">Score Trend</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Score Trend</h3>
       <EChart option={trendOption} height="320px" />
     </section>
   {/if}
@@ -142,7 +140,7 @@
   <!-- Score History Table -->
   {#if data.items.length > 0}
     <section>
-      <h3 class="mb-4 text-lg font-semibold text-ink">Score History</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Score History</h3>
       <DataTable data={data.items} {columns} />
     </section>
 

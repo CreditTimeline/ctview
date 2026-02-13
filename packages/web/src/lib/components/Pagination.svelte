@@ -26,36 +26,40 @@
 
 {#if totalPages > 1}
   <nav class="flex items-center justify-between" aria-label="Pagination">
-    <p class="text-sm text-muted">
+    <p class="text-muted text-sm">
       Showing {rangeStart}–{rangeEnd} of {total}
     </p>
     <div class="flex items-center gap-2">
       {#if hasPrev}
         <a
           href={pageUrl(offset - limit)}
-          class="rounded-lg border border-soft bg-surface px-3 py-1.5 text-sm font-medium text-accent transition-colors hover:bg-accent-light"
+          class="border-soft bg-surface text-accent hover:bg-accent-light rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
         >
           Previous
         </a>
       {:else}
-        <span class="rounded-lg border border-soft bg-surface px-3 py-1.5 text-sm font-medium text-muted/50 cursor-not-allowed">
+        <span
+          class="border-soft bg-surface text-muted/50 cursor-not-allowed rounded-lg border px-3 py-1.5 text-sm font-medium"
+        >
           Previous
         </span>
       {/if}
 
-      <span class="text-sm text-muted">
+      <span class="text-muted text-sm">
         Page {currentPage} of {totalPages}
       </span>
 
       {#if hasNext}
         <a
           href={pageUrl(offset + limit)}
-          class="rounded-lg border border-soft bg-surface px-3 py-1.5 text-sm font-medium text-accent transition-colors hover:bg-accent-light"
+          class="border-soft bg-surface text-accent hover:bg-accent-light rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
         >
           Next
         </a>
       {:else}
-        <span class="rounded-lg border border-soft bg-surface px-3 py-1.5 text-sm font-medium text-muted/50 cursor-not-allowed">
+        <span
+          class="border-soft bg-surface text-muted/50 cursor-not-allowed rounded-lg border px-3 py-1.5 text-sm font-medium"
+        >
           Next
         </span>
       {/if}

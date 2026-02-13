@@ -47,9 +47,7 @@ export function listSubjects(
     LIMIT ${limit} OFFSET ${offset}
   `);
 
-  const totalRow = db.all<{ count: number }>(
-    sql`SELECT COUNT(*) as count FROM subject`,
-  );
+  const totalRow = db.all<{ count: number }>(sql`SELECT COUNT(*) as count FROM subject`);
   const total = totalRow[0]?.count ?? 0;
 
   const items: SubjectListItem[] = rows.map((r) => ({
@@ -63,16 +61,9 @@ export function listSubjects(
   return paginate(items, total, limit, offset);
 }
 
-export function getSubjectSummary(
-  db: AppDatabase,
-  subjectId: string,
-): SubjectSummary | null {
+export function getSubjectSummary(db: AppDatabase, subjectId: string): SubjectSummary | null {
   // Check subject exists
-  const subj = db
-    .select()
-    .from(subject)
-    .where(eq(subject.subject_id, subjectId))
-    .get();
+  const subj = db.select().from(subject).where(eq(subject.subject_id, subjectId)).get();
   if (!subj) return null;
 
   // Names

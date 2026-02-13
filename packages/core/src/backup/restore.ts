@@ -28,9 +28,9 @@ export function validateBackup(
   try {
     const db = new Database(backupPath, { readonly: true });
     try {
-      const row = db
-        .prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'")
-        .get() as { value: string } | undefined;
+      const row = db.prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'").get() as
+        | { value: string }
+        | undefined;
       backupDdlHash = row?.value ?? null;
     } catch {
       errors.push('Backup database does not contain app_settings table');

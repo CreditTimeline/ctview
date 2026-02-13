@@ -23,8 +23,7 @@ export function listSearches(
   if (from) conditions.push(sql`sr.searched_at >= ${from}`);
   if (to) conditions.push(sql`sr.searched_at <= ${to}`);
 
-  const where =
-    conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
+  const where = conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
 
   interface Row {
     search_id: string;
@@ -67,10 +66,7 @@ export function listSearches(
   return paginate(items, total, limit, offset);
 }
 
-export function getSearchTimeline(
-  db: AppDatabase,
-  subjectId: string,
-): SearchTimelineData {
+export function getSearchTimeline(db: AppDatabase, subjectId: string): SearchTimelineData {
   interface Row {
     month: string;
     visibility: string | null;
@@ -104,10 +100,7 @@ export function getSearchTimeline(
   return { hardSearches, softSearches };
 }
 
-export function getSearchFrequency(
-  db: AppDatabase,
-  subjectId: string,
-): SearchFrequencyData {
+export function getSearchFrequency(db: AppDatabase, subjectId: string): SearchFrequencyData {
   interface Row {
     organisation_name: string | null;
     search_type: string | null;

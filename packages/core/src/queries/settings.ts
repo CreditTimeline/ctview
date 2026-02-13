@@ -5,7 +5,7 @@ import type { SystemHealth, AppSettingEntry } from './types.js';
 
 export function getSystemHealth(db: AppDatabase): SystemHealth {
   const count = (table: string) =>
-    (db.all<{ count: number }>(sql.raw(`SELECT COUNT(*) as count FROM ${table}`))[0]?.count ?? 0);
+    db.all<{ count: number }>(sql.raw(`SELECT COUNT(*) as count FROM ${table}`))[0]?.count ?? 0;
 
   const tableCounts: Record<string, number> = {
     reports: count('credit_file'),
@@ -38,11 +38,7 @@ export function getSystemHealth(db: AppDatabase): SystemHealth {
 }
 
 export function getAppSettings(db: AppDatabase): AppSettingEntry[] {
-  const rows = db
-    .select()
-    .from(appSettings)
-    .orderBy(appSettings.key)
-    .all();
+  const rows = db.select().from(appSettings).orderBy(appSettings.key).all();
 
   return rows.map((r) => ({
     key: r.key,
@@ -51,11 +47,7 @@ export function getAppSettings(db: AppDatabase): AppSettingEntry[] {
   }));
 }
 
-export function updateAppSetting(
-  db: AppDatabase,
-  key: string,
-  value: string,
-): AppSettingEntry {
+export function updateAppSetting(db: AppDatabase, key: string, value: string): AppSettingEntry {
   const now = new Date().toISOString();
 
   db.insert(appSettings)

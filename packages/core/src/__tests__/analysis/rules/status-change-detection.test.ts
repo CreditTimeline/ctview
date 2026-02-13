@@ -6,7 +6,10 @@ import { DEFAULT_CONFIG } from '../../../analysis/config.js';
 import type { AnalysisContext } from '../../../analysis/types.js';
 import type { CreditFile } from '../../../types/canonical.js';
 
-function buildCtx(db: ReturnType<typeof createTestDb>, subjectId = 'subj_test_001'): AnalysisContext {
+function buildCtx(
+  db: ReturnType<typeof createTestDb>,
+  subjectId = 'subj_test_001',
+): AnalysisContext {
   return {
     db: db as AnalysisContext['db'],
     file: { subject: { subject_id: subjectId } } as CreditFile,
@@ -27,19 +30,48 @@ describe('Status Change Detection', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
-        tradelines: [{
-          tradeline_id: 'tl_sc_001',
-          account_type: 'credit_card',
-          furnisher_name_raw: 'Test Bank',
-          status_current: 'default',
-          source_import_id: 'imp_test_001',
-          snapshots: [
-            { snapshot_id: 'snap_1', as_of_date: '2025-11-01', status_current: 'up_to_date', source_import_id: 'imp_test_001' },
-            { snapshot_id: 'snap_2', as_of_date: '2025-12-01', status_current: 'default', source_import_id: 'imp_test_001' },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
           ],
-        }],
+        },
+        tradelines: [
+          {
+            tradeline_id: 'tl_sc_001',
+            account_type: 'credit_card',
+            furnisher_name_raw: 'Test Bank',
+            status_current: 'default',
+            source_import_id: 'imp_test_001',
+            snapshots: [
+              {
+                snapshot_id: 'snap_1',
+                as_of_date: '2025-11-01',
+                status_current: 'up_to_date',
+                source_import_id: 'imp_test_001',
+              },
+              {
+                snapshot_id: 'snap_2',
+                as_of_date: '2025-12-01',
+                status_current: 'default',
+                source_import_id: 'imp_test_001',
+              },
+            ],
+          },
+        ],
       };
       ingestCreditFile(db, file);
 
@@ -59,19 +91,48 @@ describe('Status Change Detection', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
-        tradelines: [{
-          tradeline_id: 'tl_sc_002',
-          account_type: 'unsecured_loan',
-          furnisher_name_raw: 'Test Bank',
-          status_current: 'settled',
-          source_import_id: 'imp_test_001',
-          snapshots: [
-            { snapshot_id: 'snap_3', as_of_date: '2025-11-01', status_current: 'up_to_date', source_import_id: 'imp_test_001' },
-            { snapshot_id: 'snap_4', as_of_date: '2025-12-01', status_current: 'settled', source_import_id: 'imp_test_001' },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
           ],
-        }],
+        },
+        tradelines: [
+          {
+            tradeline_id: 'tl_sc_002',
+            account_type: 'unsecured_loan',
+            furnisher_name_raw: 'Test Bank',
+            status_current: 'settled',
+            source_import_id: 'imp_test_001',
+            snapshots: [
+              {
+                snapshot_id: 'snap_3',
+                as_of_date: '2025-11-01',
+                status_current: 'up_to_date',
+                source_import_id: 'imp_test_001',
+              },
+              {
+                snapshot_id: 'snap_4',
+                as_of_date: '2025-12-01',
+                status_current: 'settled',
+                source_import_id: 'imp_test_001',
+              },
+            ],
+          },
+        ],
       };
       ingestCreditFile(db, file);
 
@@ -91,19 +152,48 @@ describe('Status Change Detection', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
-        tradelines: [{
-          tradeline_id: 'tl_sc_003',
-          account_type: 'credit_card',
-          furnisher_name_raw: 'Test Bank',
-          status_current: 'no_update',
-          source_import_id: 'imp_test_001',
-          snapshots: [
-            { snapshot_id: 'snap_5', as_of_date: '2025-11-01', status_current: 'up_to_date', source_import_id: 'imp_test_001' },
-            { snapshot_id: 'snap_6', as_of_date: '2025-12-01', status_current: 'no_update', source_import_id: 'imp_test_001' },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
           ],
-        }],
+        },
+        tradelines: [
+          {
+            tradeline_id: 'tl_sc_003',
+            account_type: 'credit_card',
+            furnisher_name_raw: 'Test Bank',
+            status_current: 'no_update',
+            source_import_id: 'imp_test_001',
+            snapshots: [
+              {
+                snapshot_id: 'snap_5',
+                as_of_date: '2025-11-01',
+                status_current: 'up_to_date',
+                source_import_id: 'imp_test_001',
+              },
+              {
+                snapshot_id: 'snap_6',
+                as_of_date: '2025-12-01',
+                status_current: 'no_update',
+                source_import_id: 'imp_test_001',
+              },
+            ],
+          },
+        ],
       };
       ingestCreditFile(db, file);
 
@@ -123,11 +213,40 @@ describe('Status Change Detection', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
         credit_scores: [
-          { score_id: 'score_1', score_type: 'credit_score', score_value: 720, calculated_at: '2025-11-01', source_import_id: 'imp_test_001' },
-          { score_id: 'score_2', score_type: 'credit_score', score_value: 650, calculated_at: '2025-12-01', source_import_id: 'imp_test_001' },
+          {
+            score_id: 'score_1',
+            score_type: 'credit_score',
+            score_value: 720,
+            calculated_at: '2025-11-01',
+            source_import_id: 'imp_test_001',
+          },
+          {
+            score_id: 'score_2',
+            score_type: 'credit_score',
+            score_value: 650,
+            calculated_at: '2025-12-01',
+            source_import_id: 'imp_test_001',
+          },
         ],
       };
       ingestCreditFile(db, file);
@@ -149,11 +268,40 @@ describe('Status Change Detection', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
         credit_scores: [
-          { score_id: 'score_3', score_type: 'credit_score', score_value: 650, calculated_at: '2025-11-01', source_import_id: 'imp_test_001' },
-          { score_id: 'score_4', score_type: 'credit_score', score_value: 720, calculated_at: '2025-12-01', source_import_id: 'imp_test_001' },
+          {
+            score_id: 'score_3',
+            score_type: 'credit_score',
+            score_value: 650,
+            calculated_at: '2025-11-01',
+            source_import_id: 'imp_test_001',
+          },
+          {
+            score_id: 'score_4',
+            score_type: 'credit_score',
+            score_value: 720,
+            calculated_at: '2025-12-01',
+            source_import_id: 'imp_test_001',
+          },
         ],
       };
       ingestCreditFile(db, file);
@@ -174,11 +322,40 @@ describe('Status Change Detection', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
         credit_scores: [
-          { score_id: 'score_5', score_type: 'credit_score', score_value: 720, calculated_at: '2025-11-01', source_import_id: 'imp_test_001' },
-          { score_id: 'score_6', score_type: 'credit_score', score_value: 730, calculated_at: '2025-12-01', source_import_id: 'imp_test_001' },
+          {
+            score_id: 'score_5',
+            score_type: 'credit_score',
+            score_value: 720,
+            calculated_at: '2025-11-01',
+            source_import_id: 'imp_test_001',
+          },
+          {
+            score_id: 'score_6',
+            score_type: 'credit_score',
+            score_value: 730,
+            calculated_at: '2025-12-01',
+            source_import_id: 'imp_test_001',
+          },
         ],
       };
       ingestCreditFile(db, file);

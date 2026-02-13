@@ -44,9 +44,9 @@ export async function createBackup(
 
   let ddlHash: string | null = null;
   try {
-    const row = sourceDb
-      .prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'")
-      .get() as { value: string } | undefined;
+    const row = sourceDb.prepare("SELECT value FROM app_settings WHERE key = 'ddl_hash'").get() as
+      | { value: string }
+      | undefined;
     ddlHash = row?.value ?? null;
   } catch {
     // Table may not exist
@@ -64,9 +64,9 @@ export async function createBackup(
   ];
   for (const table of tables) {
     try {
-      const row = sourceDb
-        .prepare(`SELECT COUNT(*) AS count FROM ${table}`)
-        .get() as { count: number };
+      const row = sourceDb.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get() as {
+        count: number;
+      };
       entityCounts[table] = row.count;
     } catch {
       // Table may not exist

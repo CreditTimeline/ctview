@@ -6,7 +6,7 @@
  * so the reconstructed JSON will omit them from subject.
  */
 
-import { sql, eq, inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import type { AppDatabase } from '../db/client.js';
 import {
   creditFile,
@@ -81,11 +81,7 @@ export function reconstructCreditFile(db: AppDatabase, fileId: string): CreditFi
   if (!fileRow) return null;
 
   // 2. Get import batches
-  const importRows = db
-    .select()
-    .from(importBatch)
-    .where(eq(importBatch.file_id, fileId))
-    .all();
+  const importRows = db.select().from(importBatch).where(eq(importBatch.file_id, fileId)).all();
 
   const importIds = importRows.map((i) => i.import_id);
   if (importIds.length === 0) return null;
@@ -304,10 +300,7 @@ function buildAddresses(db: AppDatabase, importIds: string[]): Address[] {
   });
 }
 
-function buildAddressAssociations(
-  db: AppDatabase,
-  importIds: string[],
-): AddressAssociation[] {
+function buildAddressAssociations(db: AppDatabase, importIds: string[]): AddressAssociation[] {
   const rows = db
     .select()
     .from(addressAssociation)
@@ -478,10 +471,7 @@ function buildTradelines(db: AppDatabase, importIds: string[]): Tradeline[] {
   });
 }
 
-function buildTradelineIdentifiers(
-  db: AppDatabase,
-  tradelineId: string,
-): TradelineIdentifier[] {
+function buildTradelineIdentifiers(db: AppDatabase, tradelineId: string): TradelineIdentifier[] {
   const rows = db
     .select()
     .from(tradelineIdentifier)
@@ -521,10 +511,7 @@ function buildTradelineParties(db: AppDatabase, tradelineId: string): TradelineP
   });
 }
 
-function buildTradelineTermsObj(
-  db: AppDatabase,
-  tradelineId: string,
-): TradelineTerms | undefined {
+function buildTradelineTermsObj(db: AppDatabase, tradelineId: string): TradelineTerms | undefined {
   // Terms is a single object per tradeline in canonical JSON
   const row = db
     .select()
@@ -836,11 +823,7 @@ function buildAttributableItems(db: AppDatabase, importIds: string[]): Attributa
 }
 
 function buildDisputes(db: AppDatabase, importIds: string[]): Dispute[] {
-  const rows = db
-    .select()
-    .from(dispute)
-    .where(inArray(dispute.source_import_id, importIds))
-    .all();
+  const rows = db.select().from(dispute).where(inArray(dispute.source_import_id, importIds)).all();
 
   return rows.map((row) => {
     const d: Dispute = {

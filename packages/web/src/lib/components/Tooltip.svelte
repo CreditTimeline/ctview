@@ -19,13 +19,15 @@
   {@render children()}
   {#if visible}
     <span
-      class="pointer-events-none absolute z-50 w-56 rounded-lg bg-ink px-3 py-2 text-left text-xs leading-relaxed text-white shadow-lg
-        {position === 'top' ? 'bottom-full left-1/2 mb-2 -translate-x-1/2' : 'top-full left-1/2 mt-2 -translate-x-1/2'}"
+      class="bg-ink pointer-events-none absolute z-50 w-56 rounded-lg px-3 py-2 text-left text-xs leading-relaxed text-white shadow-lg
+        {position === 'top'
+        ? 'bottom-full left-1/2 mb-2 -translate-x-1/2'
+        : 'top-full left-1/2 mt-2 -translate-x-1/2'}"
     >
       {text}
       <span
         class="absolute left-1/2 -translate-x-1/2 border-[5px] border-transparent
-          {position === 'top' ? 'top-full border-t-ink' : 'bottom-full border-b-ink'}"
+          {position === 'top' ? 'border-t-ink top-full' : 'border-b-ink bottom-full'}"
       ></span>
     </span>
   {/if}

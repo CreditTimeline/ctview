@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SvelteMap } from 'svelte/reactivity';
   import type { ECOption } from '$lib/components/chart-types.js';
   import {
     StatCard,
@@ -116,11 +117,11 @@
   // --- Utilization Chart ---
 
   const utilizationData = $derived.by(() => {
-    const balanceByPeriod = new Map<string, number>();
+    const balanceByPeriod = new SvelteMap<string, number>();
     for (const m of balanceMetrics) {
       if (m.valueNumeric !== null) balanceByPeriod.set(m.period, m.valueNumeric);
     }
-    const limitByPeriod = new Map<string, number>();
+    const limitByPeriod = new SvelteMap<string, number>();
     for (const m of creditLimitMetrics) {
       if (m.valueNumeric !== null) limitByPeriod.set(m.period, m.valueNumeric);
     }
@@ -168,7 +169,7 @@
 
 <div class="space-y-8">
   <!-- Breadcrumb -->
-  <a href="/tradelines" class="inline-flex items-center gap-1 text-sm text-accent hover:underline">
+  <a href="/tradelines" class="text-accent inline-flex items-center gap-1 text-sm hover:underline">
     ← All Tradelines
   </a>
 
@@ -176,7 +177,9 @@
   <div class="panel">
     <div class="flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h2 class="text-2xl font-bold text-ink">{detail.furnisherName ?? detail.furnisherNameRaw ?? 'Unknown Furnisher'}</h2>
+        <h2 class="text-ink text-2xl font-bold">
+          {detail.furnisherName ?? detail.furnisherNameRaw ?? 'Unknown Furnisher'}
+        </h2>
         <div class="mt-2 flex flex-wrap items-center gap-2">
           <AccountTypeBadge accountType={detail.accountType} />
           <StatusBadge status={detail.statusCurrent} />
@@ -188,29 +191,31 @@
     <div class="mt-6 grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-4">
       <div>
         <p class="text-muted">Opened</p>
-        <p class="font-medium text-ink"><DateDisplay date={detail.openedAt} /></p>
+        <p class="text-ink font-medium"><DateDisplay date={detail.openedAt} /></p>
       </div>
       <div>
         <p class="text-muted">Closed</p>
-        <p class="font-medium text-ink"><DateDisplay date={detail.closedAt} /></p>
+        <p class="text-ink font-medium"><DateDisplay date={detail.closedAt} /></p>
       </div>
       {#if detail.repaymentFrequency}
         <div>
           <p class="text-muted">Repayment Frequency</p>
-          <p class="font-medium text-ink capitalize">{detail.repaymentFrequency.replace(/_/g, ' ')}</p>
+          <p class="text-ink font-medium capitalize">
+            {detail.repaymentFrequency.replace(/_/g, ' ')}
+          </p>
         </div>
       {/if}
       {#if detail.regularPaymentAmount !== null}
         <div>
           <p class="text-muted">Regular Payment</p>
-          <p class="font-medium text-ink"><MoneyDisplay amount={detail.regularPaymentAmount} /></p>
+          <p class="text-ink font-medium"><MoneyDisplay amount={detail.regularPaymentAmount} /></p>
         </div>
       {/if}
     </div>
 
     {#if detail.identifiers.length > 0}
-      <div class="mt-4 border-t border-soft pt-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted">Identifiers</p>
+      <div class="border-soft mt-4 border-t pt-4">
+        <p class="text-muted text-xs font-semibold tracking-wider uppercase">Identifiers</p>
         <div class="mt-2 flex flex-wrap gap-2">
           {#each detail.identifiers as id (id.identifierId)}
             <span class="badge bg-soft text-muted font-mono">{id.identifierType}: {id.value}</span>
@@ -220,26 +225,33 @@
     {/if}
 
     {#if detail.parties.length > 0}
-      <div class="mt-4 border-t border-soft pt-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted">Parties</p>
+      <div class="border-soft mt-4 border-t pt-4">
+        <p class="text-muted text-xs font-semibold tracking-wider uppercase">Parties</p>
         <div class="mt-2 flex flex-wrap gap-3 text-sm">
           {#each detail.parties as party (party.partyId)}
-            <span>{party.name ?? 'Unknown'} <span class="text-muted">({party.partyRole ?? 'unknown'})</span></span>
+            <span
+              >{party.name ?? 'Unknown'}
+              <span class="text-muted">({party.partyRole ?? 'unknown'})</span></span
+            >
           {/each}
         </div>
       </div>
     {/if}
 
     {#if detail.terms.length > 0}
-      <div class="mt-4 border-t border-soft pt-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted">Terms</p>
+      <div class="border-soft mt-4 border-t pt-4">
+        <p class="text-muted text-xs font-semibold tracking-wider uppercase">Terms</p>
         <div class="mt-2 space-y-2 text-sm">
           {#each detail.terms as term (term.termsId)}
             <div class="flex flex-wrap gap-4">
-              {#if term.termType}<span class="text-muted">Type:</span> <span class="capitalize">{term.termType.replace(/_/g, ' ')}</span>{/if}
-              {#if term.termCount !== null}<span class="text-muted">Length:</span> <span>{term.termCount} months</span>{/if}
-              {#if term.termPaymentAmount !== null}<span class="text-muted">Payment:</span> <MoneyDisplay amount={term.termPaymentAmount} />{/if}
-              {#if term.paymentStartDate}<span class="text-muted">Start:</span> <DateDisplay date={term.paymentStartDate} />{/if}
+              {#if term.termType}<span class="text-muted">Type:</span>
+                <span class="capitalize">{term.termType.replace(/_/g, ' ')}</span>{/if}
+              {#if term.termCount !== null}<span class="text-muted">Length:</span>
+                <span>{term.termCount} months</span>{/if}
+              {#if term.termPaymentAmount !== null}<span class="text-muted">Payment:</span>
+                <MoneyDisplay amount={term.termPaymentAmount} />{/if}
+              {#if term.paymentStartDate}<span class="text-muted">Start:</span>
+                <DateDisplay date={term.paymentStartDate} />{/if}
             </div>
           {/each}
         </div>
@@ -251,27 +263,29 @@
   <section class="grid grid-cols-2 gap-6 lg:grid-cols-4">
     <StatCard
       label="Latest Balance"
-      value={latestSnapshot?.currentBalance !== null && latestSnapshot?.currentBalance !== undefined ? formatPence(latestSnapshot.currentBalance) : '—'}
+      value={latestSnapshot?.currentBalance !== null && latestSnapshot?.currentBalance !== undefined
+        ? formatPence(latestSnapshot.currentBalance)
+        : '—'}
     />
     <StatCard
       label="Credit Limit"
-      value={latestSnapshot?.creditLimit !== null && latestSnapshot?.creditLimit !== undefined ? formatPence(latestSnapshot.creditLimit) : '—'}
+      value={latestSnapshot?.creditLimit !== null && latestSnapshot?.creditLimit !== undefined
+        ? formatPence(latestSnapshot.creditLimit)
+        : '—'}
     />
     <StatCard
       label="Opening Balance"
-      value={latestSnapshot?.openingBalance !== null && latestSnapshot?.openingBalance !== undefined ? formatPence(latestSnapshot.openingBalance) : '—'}
+      value={latestSnapshot?.openingBalance !== null && latestSnapshot?.openingBalance !== undefined
+        ? formatPence(latestSnapshot.openingBalance)
+        : '—'}
     />
-    <StatCard
-      label="Snapshots"
-      value={snapshotCount}
-      subtext="Historical data points"
-    />
+    <StatCard label="Snapshots" value={snapshotCount} subtext="Historical data points" />
   </section>
 
   <!-- Balance Over Time Chart -->
   {#if balanceMetrics.length > 0}
     <section class="panel">
-      <h3 class="mb-4 text-lg font-semibold text-ink">Balance Over Time</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Balance Over Time</h3>
       <EChart option={balanceChartOption} height="300px" class="w-full" />
     </section>
   {/if}
@@ -279,7 +293,7 @@
   <!-- Credit Limit Over Time Chart -->
   {#if creditLimitMetrics.length > 0}
     <section class="panel">
-      <h3 class="mb-4 text-lg font-semibold text-ink">Credit Limit Over Time</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Credit Limit Over Time</h3>
       <EChart option={creditLimitChartOption} height="300px" class="w-full" />
     </section>
   {/if}
@@ -287,7 +301,7 @@
   <!-- Utilization Ratio Chart -->
   {#if utilizationData.length > 0}
     <section class="panel">
-      <h3 class="mb-4 text-lg font-semibold text-ink">Utilization Ratio</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Utilization Ratio</h3>
       <EChart option={utilizationChartOption} height="300px" class="w-full" />
     </section>
   {/if}
@@ -300,23 +314,37 @@
   <!-- Snapshot Comparison Table -->
   {#if detail.snapshots.length > 0}
     <section class="panel">
-      <h3 class="mb-4 text-lg font-semibold text-ink">Snapshot History</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Snapshot History</h3>
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm">
           <thead>
-            <tr class="border-b border-soft">
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Date</th>
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Status</th>
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Balance</th>
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Credit Limit</th>
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Opening Balance</th>
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Delinquent</th>
-              <th class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Payment</th>
+            <tr class="border-soft border-b">
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Date</th
+              >
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Status</th
+              >
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Balance</th
+              >
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Credit Limit</th
+              >
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Opening Balance</th
+              >
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Delinquent</th
+              >
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
+                >Payment</th
+              >
             </tr>
           </thead>
           <tbody>
             {#each detail.snapshots as snap (snap.snapshotId)}
-              <tr class="border-b border-soft/50 transition-colors hover:bg-canvas">
+              <tr class="border-soft/50 hover:bg-canvas border-b transition-colors">
                 <td class="px-3 py-3"><DateDisplay date={snap.asOfDate} /></td>
                 <td class="px-3 py-3"><StatusBadge status={snap.statusCurrent} /></td>
                 <td class="px-3 py-3"><MoneyDisplay amount={snap.currentBalance} /></td>
@@ -335,7 +363,7 @@
   <!-- Event Timeline -->
   {#if detail.events.length > 0}
     <section>
-      <h3 class="mb-4 text-lg font-semibold text-ink">Events</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Events</h3>
       <EventTimeline events={detail.events} />
     </section>
   {/if}
@@ -343,15 +371,15 @@
   <!-- Cross-Agency Comparison -->
   {#if detail.crossAgencyPeers.length > 0}
     <section>
-      <h3 class="mb-4 text-lg font-semibold text-ink">Cross-Agency Comparison</h3>
+      <h3 class="text-ink mb-4 text-lg font-semibold">Cross-Agency Comparison</h3>
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {#each detail.crossAgencyPeers as peer (peer.tradelineId)}
           <a
             href="/tradelines/{peer.tradelineId}"
-            class="panel flex items-center gap-3 transition-colors hover:bg-canvas"
+            class="panel hover:bg-canvas flex items-center gap-3 transition-colors"
           >
             <AgencyBadge agency={peer.sourceSystem} size="md" />
-            <span class="font-medium text-ink">{peer.furnisherName ?? 'Unknown'}</span>
+            <span class="text-ink font-medium">{peer.furnisherName ?? 'Unknown'}</span>
           </a>
         {/each}
       </div>

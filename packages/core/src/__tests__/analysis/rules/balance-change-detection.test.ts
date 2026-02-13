@@ -7,7 +7,10 @@ import { DEFAULT_CONFIG } from '../../../analysis/config.js';
 import type { AnalysisContext } from '../../../analysis/types.js';
 import type { CreditFile } from '../../../types/canonical.js';
 
-function buildCtx(db: ReturnType<typeof createTestDb>, subjectId = 'subj_test_001'): AnalysisContext {
+function buildCtx(
+  db: ReturnType<typeof createTestDb>,
+  subjectId = 'subj_test_001',
+): AnalysisContext {
   return {
     db: db as AnalysisContext['db'],
     file: { subject: { subject_id: subjectId } } as CreditFile,
@@ -48,7 +51,14 @@ describe('Balance Change Detection', () => {
       ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_001', full_name: 'Test Person', name_type: 'legal', source_import_id: 'imp_test_001' }],
+        names: [
+          {
+            name_id: 'name_001',
+            full_name: 'Test Person',
+            name_type: 'legal',
+            source_import_id: 'imp_test_001',
+          },
+        ],
       },
       tradelines: [
         {
@@ -58,8 +68,20 @@ describe('Balance Change Detection', () => {
           status_current: 'up_to_date',
           source_import_id: 'imp_test_001',
           snapshots: [
-            { snapshot_id: 'snap_a', as_of_date: '2025-11-01', current_balance: 50000, credit_limit: 200000, source_import_id: 'imp_test_001' },
-            { snapshot_id: 'snap_b', as_of_date: '2025-12-01', current_balance: 150000, credit_limit: 200000, source_import_id: 'imp_test_001' },
+            {
+              snapshot_id: 'snap_a',
+              as_of_date: '2025-11-01',
+              current_balance: 50000,
+              credit_limit: 200000,
+              source_import_id: 'imp_test_001',
+            },
+            {
+              snapshot_id: 'snap_b',
+              as_of_date: '2025-12-01',
+              current_balance: 150000,
+              credit_limit: 200000,
+              source_import_id: 'imp_test_001',
+            },
           ],
         },
       ],
@@ -98,7 +120,14 @@ describe('Balance Change Detection', () => {
       ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_001', full_name: 'Test Person', name_type: 'legal', source_import_id: 'imp_test_001' }],
+        names: [
+          {
+            name_id: 'name_001',
+            full_name: 'Test Person',
+            name_type: 'legal',
+            source_import_id: 'imp_test_001',
+          },
+        ],
       },
       tradelines: [
         {
@@ -108,8 +137,20 @@ describe('Balance Change Detection', () => {
           status_current: 'up_to_date',
           source_import_id: 'imp_test_001',
           snapshots: [
-            { snapshot_id: 'snap_c', as_of_date: '2025-11-01', current_balance: 100000, credit_limit: 200000, source_import_id: 'imp_test_001' },
-            { snapshot_id: 'snap_d', as_of_date: '2025-12-01', current_balance: 110000, credit_limit: 200000, source_import_id: 'imp_test_001' },
+            {
+              snapshot_id: 'snap_c',
+              as_of_date: '2025-11-01',
+              current_balance: 100000,
+              credit_limit: 200000,
+              source_import_id: 'imp_test_001',
+            },
+            {
+              snapshot_id: 'snap_d',
+              as_of_date: '2025-12-01',
+              current_balance: 110000,
+              credit_limit: 200000,
+              source_import_id: 'imp_test_001',
+            },
           ],
         },
       ],
@@ -142,7 +183,14 @@ describe('Balance Change Detection', () => {
       ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_001', full_name: 'Test Person', name_type: 'legal', source_import_id: 'imp_test_001' }],
+        names: [
+          {
+            name_id: 'name_001',
+            full_name: 'Test Person',
+            name_type: 'legal',
+            source_import_id: 'imp_test_001',
+          },
+        ],
       },
       tradelines: [
         {
@@ -152,8 +200,20 @@ describe('Balance Change Detection', () => {
           status_current: 'up_to_date',
           source_import_id: 'imp_test_001',
           snapshots: [
-            { snapshot_id: 'snap_e', as_of_date: '2025-11-01', current_balance: 1000, credit_limit: 200000, source_import_id: 'imp_test_001' },
-            { snapshot_id: 'snap_f', as_of_date: '2025-12-01', current_balance: 5000, credit_limit: 200000, source_import_id: 'imp_test_001' },
+            {
+              snapshot_id: 'snap_e',
+              as_of_date: '2025-11-01',
+              current_balance: 1000,
+              credit_limit: 200000,
+              source_import_id: 'imp_test_001',
+            },
+            {
+              snapshot_id: 'snap_f',
+              as_of_date: '2025-12-01',
+              current_balance: 5000,
+              credit_limit: 200000,
+              source_import_id: 'imp_test_001',
+            },
           ],
         },
       ],
@@ -186,7 +246,14 @@ describe('Balance Change Detection', () => {
       ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_001', full_name: 'Test Person', name_type: 'legal', source_import_id: 'imp_test_001' }],
+        names: [
+          {
+            name_id: 'name_001',
+            full_name: 'Test Person',
+            name_type: 'legal',
+            source_import_id: 'imp_test_001',
+          },
+        ],
       },
       tradelines: [
         {
@@ -196,11 +263,29 @@ describe('Balance Change Detection', () => {
           status_current: 'up_to_date',
           source_import_id: 'imp_test_001',
           snapshots: [
-            { snapshot_id: 'snap_g', as_of_date: '2025-10-01', current_balance: 100000, credit_limit: 500000, source_import_id: 'imp_test_001' },
+            {
+              snapshot_id: 'snap_g',
+              as_of_date: '2025-10-01',
+              current_balance: 100000,
+              credit_limit: 500000,
+              source_import_id: 'imp_test_001',
+            },
             // 50% increase (medium)
-            { snapshot_id: 'snap_h', as_of_date: '2025-11-01', current_balance: 150000, credit_limit: 500000, source_import_id: 'imp_test_001' },
+            {
+              snapshot_id: 'snap_h',
+              as_of_date: '2025-11-01',
+              current_balance: 150000,
+              credit_limit: 500000,
+              source_import_id: 'imp_test_001',
+            },
             // 100%+ increase from previous (high)
-            { snapshot_id: 'snap_i', as_of_date: '2025-12-01', current_balance: 400000, credit_limit: 500000, source_import_id: 'imp_test_001' },
+            {
+              snapshot_id: 'snap_i',
+              as_of_date: '2025-12-01',
+              current_balance: 400000,
+              credit_limit: 500000,
+              source_import_id: 'imp_test_001',
+            },
           ],
         },
       ],

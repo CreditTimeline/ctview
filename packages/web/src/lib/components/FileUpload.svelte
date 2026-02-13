@@ -30,7 +30,10 @@
         result = { success: false, message: data.error?.message ?? 'Ingestion failed.' };
       }
     } catch (e) {
-      result = { success: false, message: e instanceof SyntaxError ? 'Invalid JSON file.' : 'Upload failed.' };
+      result = {
+        success: false,
+        message: e instanceof SyntaxError ? 'Invalid JSON file.' : 'Upload failed.',
+      };
     } finally {
       uploading = false;
     }
@@ -60,7 +63,9 @@
 </script>
 
 <div
-  class="panel border-2 border-dashed text-center transition-colors {dragOver ? 'border-accent bg-accent-light' : 'border-soft'}"
+  class="panel border-2 border-dashed text-center transition-colors {dragOver
+    ? 'border-accent bg-accent-light'
+    : 'border-soft'}"
   ondrop={onDrop}
   ondragover={onDragOver}
   ondragleave={onDragLeave}
@@ -68,16 +73,16 @@
   tabindex="0"
 >
   <div class="py-8">
-    <p class="text-lg font-medium text-ink">
+    <p class="text-ink text-lg font-medium">
       {uploading ? 'Uploading...' : 'Drop a CreditTimeline file here'}
     </p>
-    <p class="mt-1 text-sm text-muted">
-      Upload a normalised JSON file produced by a CreditTimeline tool.
-      ctview stores, visualises and analyses your credit data.
+    <p class="text-muted mt-1 text-sm">
+      Upload a normalised JSON file produced by a CreditTimeline tool. ctview stores, visualises and
+      analyses your credit data.
     </p>
     <button
       type="button"
-      class="mt-4 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-dark"
+      class="bg-accent hover:bg-accent-dark mt-4 rounded-lg px-4 py-2 text-sm font-medium text-white"
       onclick={() => fileInput.click()}
       disabled={uploading}
     >
@@ -90,14 +95,23 @@
       class="hidden"
       onchange={onFileSelect}
     />
-    <p class="mt-3 text-xs text-muted">
+    <p class="text-muted mt-3 text-xs">
       Need a file? Find conversion tools at
-      <a href="https://github.com/CreditTimeline" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">CreditTimeline on GitHub</a>.
+      <a
+        href="https://github.com/CreditTimeline"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-accent hover:underline">CreditTimeline on GitHub</a
+      >.
     </p>
   </div>
 
   {#if result}
-    <div class="mt-4 rounded-lg p-3 text-sm {result.success ? 'bg-success-light text-success' : 'bg-danger-light text-danger'}">
+    <div
+      class="mt-4 rounded-lg p-3 text-sm {result.success
+        ? 'bg-success-light text-success'
+        : 'bg-danger-light text-danger'}"
+    >
       {result.message}
     </div>
   {/if}

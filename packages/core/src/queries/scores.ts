@@ -9,10 +9,7 @@ import type {
   ScoreTrendPoint,
 } from './types.js';
 
-export function listScores(
-  db: AppDatabase,
-  params: ScoreListParams,
-): PaginatedResult<ScoreEntry> {
+export function listScores(db: AppDatabase, params: ScoreListParams): PaginatedResult<ScoreEntry> {
   const { limit, offset, subjectId, sourceSystem, from, to } = params;
 
   const conditions: SQL[] = [];
@@ -21,8 +18,7 @@ export function listScores(
   if (from) conditions.push(sql`cs.calculated_at >= ${from}`);
   if (to) conditions.push(sql`cs.calculated_at <= ${to}`);
 
-  const where =
-    conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
+  const where = conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
 
   interface Row {
     score_id: string;
@@ -68,10 +64,7 @@ export function listScores(
   return paginate(items, total, limit, offset);
 }
 
-export function getScoreTrend(
-  db: AppDatabase,
-  subjectId: string,
-): ScoreTrendData {
+export function getScoreTrend(db: AppDatabase, subjectId: string): ScoreTrendData {
   interface Row {
     score_id: string;
     score_value: number | null;

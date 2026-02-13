@@ -135,10 +135,7 @@ export function listAddresses(
   return paginate(items, total, limit, offset);
 }
 
-export function getAddressLinks(
-  db: AppDatabase,
-  subjectId: string,
-): AddressLinkEntry[] {
+export function getAddressLinks(db: AppDatabase, subjectId: string): AddressLinkEntry[] {
   interface Row {
     address_link_id: string;
     from_single_line: string | null;

@@ -15,9 +15,7 @@ export function getLogger(): Logger {
 
     _logger = pino({
       level: config.LOG_LEVEL,
-      ...(isDev
-        ? { transport: { target: 'pino-pretty', options: { colorize: true } } }
-        : {}),
+      ...(isDev ? { transport: { target: 'pino-pretty', options: { colorize: true } } } : {}),
     });
   }
   return _logger as unknown as Logger;

@@ -15,14 +15,14 @@
 <svelte:head><title>{$page.status} - CreditTimeline</title></svelte:head>
 
 <div class="flex min-h-[60vh] flex-col items-center justify-center text-center">
-  <p class="text-8xl font-bold text-accent">{$page.status}</p>
-  <h1 class="mt-4 text-2xl font-bold text-ink">{heading}</h1>
+  <p class="text-accent text-8xl font-bold">{$page.status}</p>
+  <h1 class="text-ink mt-4 text-2xl font-bold">{heading}</h1>
   {#if $page.error?.message}
-    <p class="mt-2 text-muted">{$page.error.message}</p>
+    <p class="text-muted mt-2">{$page.error.message}</p>
   {/if}
   <a
     href="/"
-    class="mt-8 inline-block rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-dark"
+    class="bg-accent hover:bg-accent-dark mt-8 inline-block rounded-lg px-6 py-3 text-sm font-medium text-white transition-colors"
   >
     Back to Dashboard
   </a>

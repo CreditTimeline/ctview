@@ -20,9 +20,7 @@
   const timelineOption: ECOption = $derived.by(() => {
     const hardMap = new Map(data.timeline.hardSearches.map((b) => [b.month, b.count]));
     const softMap = new Map(data.timeline.softSearches.map((b) => [b.month, b.count]));
-    const allMonths = [
-      ...new Set([...hardMap.keys(), ...softMap.keys()]),
-    ].sort();
+    const allMonths = [...new Set([...hardMap.keys(), ...softMap.keys()])].sort();
 
     return {
       tooltip: { trigger: 'axis' },
@@ -71,20 +69,18 @@
 
   // --- Table columns ---
 
-  const columns: ColumnDef<SearchSummary, any>[] = [
+  const columns: ColumnDef<SearchSummary, unknown>[] = [
     {
       accessorKey: 'searchedAt',
       header: 'Date',
-      cell: ({ row }) =>
-        renderComponent(DateDisplay, { date: row.original.searchedAt }),
+      cell: ({ row }) => renderComponent(DateDisplay, { date: row.original.searchedAt }),
     },
     { accessorKey: 'organisationName', header: 'Organisation' },
     { accessorKey: 'searchType', header: 'Type' },
     {
       accessorKey: 'visibility',
       header: 'Visibility',
-      cell: ({ row }) =>
-        renderComponent(VisibilityBadge, { visibility: row.original.visibility }),
+      cell: ({ row }) => renderComponent(VisibilityBadge, { visibility: row.original.visibility }),
     },
     { accessorKey: 'purposeText', header: 'Purpose' },
   ];
@@ -94,8 +90,8 @@
 
 <div class="space-y-6">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Searches</h2>
-    <p class="mt-1 text-muted">Credit search and enquiry history.</p>
+    <h2 class="text-ink text-2xl font-bold">Searches</h2>
+    <p class="text-muted mt-1">Credit search and enquiry history.</p>
   </div>
 
   <!-- Filter bar -->
@@ -105,7 +101,7 @@
       aria-label="Filter by visibility"
       value={data.filters.visibility}
       onchange={(e) => e.currentTarget.form?.requestSubmit()}
-      class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
+      class="border-soft bg-surface text-ink rounded-lg border px-3 py-2 text-sm"
     >
       <option value="">All Visibility</option>
       <option value="hard">Hard</option>
@@ -118,17 +114,17 @@
       value={data.filters.searchType}
       placeholder="Filter by type..."
       onchange={(e) => e.currentTarget.form?.requestSubmit()}
-      class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted"
+      class="border-soft bg-surface text-ink placeholder:text-muted rounded-lg border px-3 py-2 text-sm"
     />
 
     <input
       type="text"
       placeholder="Search table..."
       bind:value={globalFilter}
-      class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted"
+      class="border-soft bg-surface text-ink placeholder:text-muted rounded-lg border px-3 py-2 text-sm"
     />
 
-    <span class="text-sm text-muted">{data.total} result{data.total !== 1 ? 's' : ''}</span>
+    <span class="text-muted text-sm">{data.total} result{data.total !== 1 ? 's' : ''}</span>
   </form>
 
   {#if data.items.length > 0}
@@ -143,14 +139,14 @@
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {#if hasTimeline}
         <section class="panel">
-          <h3 class="mb-4 text-lg font-semibold text-ink">Search Timeline</h3>
+          <h3 class="text-ink mb-4 text-lg font-semibold">Search Timeline</h3>
           <EChart option={timelineOption} height="300px" class="w-full" />
         </section>
       {/if}
 
       {#if hasFrequency}
         <section class="panel">
-          <h3 class="mb-4 text-lg font-semibold text-ink">Organisation Breakdown</h3>
+          <h3 class="text-ink mb-4 text-lg font-semibold">Organisation Breakdown</h3>
           <EChart option={frequencyOption} height="300px" class="w-full" />
         </section>
       {/if}

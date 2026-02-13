@@ -15,7 +15,7 @@
     aria-label="Filter by account type"
     value={accountType}
     onchange={(e) => e.currentTarget.form?.requestSubmit()}
-    class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
+    class="border-soft bg-surface text-ink rounded-lg border px-3 py-2 text-sm"
   >
     <option value="">All Account Types</option>
     <option value="credit_card">Credit Card</option>
@@ -36,7 +36,7 @@
     aria-label="Filter by status"
     value={status}
     onchange={(e) => e.currentTarget.form?.requestSubmit()}
-    class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
+    class="border-soft bg-surface text-ink rounded-lg border px-3 py-2 text-sm"
   >
     <option value="">All Statuses</option>
     <option value="up_to_date">Up to Date</option>
@@ -55,7 +55,7 @@
     aria-label="Filter by agency"
     value={sourceSystem}
     onchange={(e) => e.currentTarget.form?.requestSubmit()}
-    class="rounded-lg border border-soft bg-surface px-3 py-2 text-sm text-ink"
+    class="border-soft bg-surface text-ink rounded-lg border px-3 py-2 text-sm"
   >
     <option value="">All Agencies</option>
     <option value="equifax">Equifax</option>

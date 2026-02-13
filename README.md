@@ -43,11 +43,11 @@ Data is persisted in a Docker volume (`ctview-data`).
 
 ## Documentation
 
-| Document | Description |
-|----------|-------------|
-| [Setup Guide](docs/setup-guide.md) | Installation, configuration, and deployment |
-| [API Guide](docs/api-guide.md) | All REST endpoints with examples |
-| [Troubleshooting](docs/troubleshooting.md) | Common issues and solutions |
+| Document                                   | Description                                 |
+| ------------------------------------------ | ------------------------------------------- |
+| [Setup Guide](docs/setup-guide.md)         | Installation, configuration, and deployment |
+| [API Guide](docs/api-guide.md)             | All REST endpoints with examples            |
+| [Troubleshooting](docs/troubleshooting.md) | Common issues and solutions                 |
 
 Interactive API documentation is available at `/api/v1/docs` (Scalar UI) when the app is running.
 
@@ -80,29 +80,29 @@ ctview/
 
 ## Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start SvelteKit dev server (port 5173) |
-| `pnpm build` | Build all packages (core, sdk, web) |
-| `pnpm test -- --run` | Run all tests (single run) |
-| `pnpm test:e2e` | Run Playwright E2E tests |
-| `pnpm check` | SvelteKit type checking |
-| `pnpm lint` | ESLint |
-| `pnpm format` | Prettier check |
-| `pnpm db:reset` | Delete the local database |
+| Command              | Description                            |
+| -------------------- | -------------------------------------- |
+| `pnpm dev`           | Start SvelteKit dev server (port 5173) |
+| `pnpm build`         | Build all packages (core, sdk, web)    |
+| `pnpm test -- --run` | Run all tests (single run)             |
+| `pnpm test:e2e`      | Run Playwright E2E tests               |
+| `pnpm check`         | SvelteKit type checking                |
+| `pnpm lint`          | ESLint                                 |
+| `pnpm format`        | Prettier check                         |
+| `pnpm db:reset`      | Delete the local database              |
 
 ## Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DATABASE_URL` | `./data/credittimeline.db` | SQLite database path |
-| `INGEST_API_KEY` | *(unset)* | Bearer token for protected endpoints |
-| `PORT` | `3000` | Server port (production) |
-| `LOG_LEVEL` | `info` | `debug`, `info`, `warn`, or `error` |
-| `CORS_ALLOW_ORIGIN` | *(empty)* | CORS allowed origin |
-| `AUTO_MIGRATE` | `true` | Auto-migrate schema on startup |
-| `BACKUP_DIR` | *(unset)* | Backup directory path |
-| `RATE_LIMIT_INGEST_RPM` | `30` | Ingestion rate limit (requests/min) |
+| Variable                | Default                    | Description                          |
+| ----------------------- | -------------------------- | ------------------------------------ |
+| `DATABASE_URL`          | `./data/credittimeline.db` | SQLite database path                 |
+| `INGEST_API_KEY`        | _(unset)_                  | Bearer token for protected endpoints |
+| `PORT`                  | `3000`                     | Server port (production)             |
+| `LOG_LEVEL`             | `info`                     | `debug`, `info`, `warn`, or `error`  |
+| `CORS_ALLOW_ORIGIN`     | _(empty)_                  | CORS allowed origin                  |
+| `AUTO_MIGRATE`          | `true`                     | Auto-migrate schema on startup       |
+| `BACKUP_DIR`            | _(unset)_                  | Backup directory path                |
+| `RATE_LIMIT_INGEST_RPM` | `30`                       | Ingestion rate limit (requests/min)  |
 
 See the [Setup Guide](docs/setup-guide.md) for detailed configuration documentation.
 

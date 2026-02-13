@@ -13,7 +13,10 @@ export const newTradelineDetection: AnomalyRule = {
     const { db, importIds } = ctx;
 
     // Check if this is the first import for the subject — skip if so
-    interface ImportRow { import_id: string; imported_at: string }
+    interface ImportRow {
+      import_id: string;
+      imported_at: string;
+    }
     const allImports = db.all<ImportRow>(sql`
       SELECT ib.import_id, ib.imported_at
       FROM import_batch ib
@@ -54,7 +57,10 @@ export const newTradelineDetection: AnomalyRule = {
     const priorTradelineIds = new Set<string>();
     const priorCanonicalIds = new Set<string>();
 
-    interface PriorRow { tradeline_id: string; canonical_id: string | null }
+    interface PriorRow {
+      tradeline_id: string;
+      canonical_id: string | null;
+    }
     const priorRows = db.all<PriorRow>(sql`
       SELECT tradeline_id, canonical_id
       FROM tradeline
@@ -84,9 +90,10 @@ export const newTradelineDetection: AnomalyRule = {
       results.push({
         kind: 'new_tradeline_detected',
         severity: classification === 'expected' ? 'info' : 'low',
-        summary: classification === 'expected'
-          ? `New tradeline detected: ${t.account_type ?? 'unknown'} from ${t.furnisher_name ?? 'unknown'} (recently opened)`
-          : `Unexpected new tradeline: ${t.account_type ?? 'unknown'} from ${t.furnisher_name ?? 'unknown'}`,
+        summary:
+          classification === 'expected'
+            ? `New tradeline detected: ${t.account_type ?? 'unknown'} from ${t.furnisher_name ?? 'unknown'} (recently opened)`
+            : `Unexpected new tradeline: ${t.account_type ?? 'unknown'} from ${t.furnisher_name ?? 'unknown'}`,
         entityIds: [t.tradeline_id],
         extensions: {
           tradelineId: t.tradeline_id,

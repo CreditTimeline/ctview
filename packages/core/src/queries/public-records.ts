@@ -1,11 +1,7 @@
 import { sql, type SQL } from 'drizzle-orm';
 import type { AppDatabase } from '../db/client.js';
 import { paginate } from './helpers.js';
-import type {
-  PublicRecordListParams,
-  PaginatedResult,
-  PublicRecordSummary,
-} from './types.js';
+import type { PublicRecordListParams, PaginatedResult, PublicRecordSummary } from './types.js';
 
 export function listPublicRecords(
   db: AppDatabase,
@@ -16,8 +12,7 @@ export function listPublicRecords(
   const conditions: SQL[] = [];
   if (subjectId) conditions.push(sql`pr.subject_id = ${subjectId}`);
 
-  const where =
-    conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
+  const where = conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
 
   interface Row {
     public_record_id: string;

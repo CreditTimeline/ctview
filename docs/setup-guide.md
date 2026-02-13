@@ -54,12 +54,12 @@ pnpm test:e2e
 
 ### 6. Other commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm build` | Build all packages (core, sdk, web) |
-| `pnpm check` | TypeScript/Svelte type checking |
-| `pnpm lint` | ESLint |
-| `pnpm format` | Prettier check |
+| Command         | Description                                 |
+| --------------- | ------------------------------------------- |
+| `pnpm build`    | Build all packages (core, sdk, web)         |
+| `pnpm check`    | TypeScript/Svelte type checking             |
+| `pnpm lint`     | ESLint                                      |
+| `pnpm format`   | Prettier check                              |
 | `pnpm db:reset` | Delete the local database for a fresh start |
 
 ## Docker Deployment
@@ -93,24 +93,24 @@ docker run -d \
 
 ### Volumes
 
-| Path | Purpose |
-|------|---------|
+| Path    | Purpose                                                |
+| ------- | ------------------------------------------------------ |
 | `/data` | Database storage (mount a volume here for persistence) |
 
 ## Configuration
 
 All configuration is via environment variables. The app validates them on startup using Zod and will fail fast with clear error messages if values are invalid.
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DATABASE_URL` | `./data/credittimeline.db` | Path to the SQLite database file |
-| `INGEST_API_KEY` | *(unset)* | Bearer token for protected endpoints (ingest, backup, restore, compact). If unset, these endpoints are open. |
-| `PORT` | `3000` | Server port (production builds only; dev uses 5173) |
-| `LOG_LEVEL` | `info` | Logging level: `debug`, `info`, `warn`, or `error` |
-| `CORS_ALLOW_ORIGIN` | *(empty)* | CORS allowed origin. `*` for all origins, blank for same-origin only, or a specific origin like `https://myapp.com` |
-| `AUTO_MIGRATE` | `true` | Auto-run database schema migration on startup (`true` or `false`) |
-| `BACKUP_DIR` | *(unset)* | Directory for database backups. Required for backup/restore endpoints to work. |
-| `RATE_LIMIT_INGEST_RPM` | `30` | Maximum ingestion requests per minute per client. Set to `0` to disable rate limiting. |
+| Variable                | Default                    | Description                                                                                                         |
+| ----------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`          | `./data/credittimeline.db` | Path to the SQLite database file                                                                                    |
+| `INGEST_API_KEY`        | _(unset)_                  | Bearer token for protected endpoints (ingest, backup, restore, compact). If unset, these endpoints are open.        |
+| `PORT`                  | `3000`                     | Server port (production builds only; dev uses 5173)                                                                 |
+| `LOG_LEVEL`             | `info`                     | Logging level: `debug`, `info`, `warn`, or `error`                                                                  |
+| `CORS_ALLOW_ORIGIN`     | _(empty)_                  | CORS allowed origin. `*` for all origins, blank for same-origin only, or a specific origin like `https://myapp.com` |
+| `AUTO_MIGRATE`          | `true`                     | Auto-run database schema migration on startup (`true` or `false`)                                                   |
+| `BACKUP_DIR`            | _(unset)_                  | Directory for database backups. Required for backup/restore endpoints to work.                                      |
+| `RATE_LIMIT_INGEST_RPM` | `30`                       | Maximum ingestion requests per minute per client. Set to `0` to disable rate limiting.                              |
 
 ### Authentication
 

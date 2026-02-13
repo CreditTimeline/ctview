@@ -32,33 +32,31 @@ All endpoints are served under `/api/v1/`. The interactive OpenAPI documentation
   "error": {
     "code": "VALIDATION_FAILED",
     "message": "Description of the error",
-    "details": [
-      { "message": "field-level error" }
-    ]
+    "details": [{ "message": "field-level error" }]
   }
 }
 ```
 
 ### Error codes
 
-| Code | HTTP Status | Description |
-|------|------------|-------------|
-| `VALIDATION_FAILED` | 400 | Invalid input or query parameters |
-| `NOT_FOUND` | 404 | Resource does not exist |
-| `UNAUTHORIZED` | 401 | Missing or invalid API key |
-| `DUPLICATE_IMPORT` | 409 | Credit file already ingested |
-| `RATE_LIMITED` | 429 | Too many requests |
-| `NOT_READY` | 503 | Database not available |
-| `INTERNAL_ERROR` | 500 | Unexpected server error |
+| Code                | HTTP Status | Description                       |
+| ------------------- | ----------- | --------------------------------- |
+| `VALIDATION_FAILED` | 400         | Invalid input or query parameters |
+| `NOT_FOUND`         | 404         | Resource does not exist           |
+| `UNAUTHORIZED`      | 401         | Missing or invalid API key        |
+| `DUPLICATE_IMPORT`  | 409         | Credit file already ingested      |
+| `RATE_LIMITED`      | 429         | Too many requests                 |
+| `NOT_READY`         | 503         | Database not available            |
+| `INTERNAL_ERROR`    | 500         | Unexpected server error           |
 
 ### Pagination
 
 List endpoints accept `limit` and `offset` query parameters:
 
-| Parameter | Default | Range | Description |
-|-----------|---------|-------|-------------|
-| `limit` | 50 | 1-200 | Number of items per page |
-| `offset` | 0 | 0+ | Number of items to skip |
+| Parameter | Default | Range | Description              |
+| --------- | ------- | ----- | ------------------------ |
+| `limit`   | 50      | 1-200 | Number of items per page |
+| `offset`  | 0       | 0+    | Number of items to skip  |
 
 ---
 
@@ -175,10 +173,10 @@ curl http://localhost:3000/api/v1/dashboard
 
 List all credit subjects.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
+| Parameter | Type   | Description                  |
+| --------- | ------ | ---------------------------- |
+| `limit`   | number | Items per page (default: 50) |
+| `offset`  | number | Skip count (default: 0)      |
 
 ```bash
 curl 'http://localhost:3000/api/v1/subjects?limit=10'
@@ -234,14 +232,14 @@ curl http://localhost:3000/api/v1/subjects/subj-123/anomalies
 
 List tradelines with optional filters.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
-| `accountType` | string | Filter by account type |
-| `status` | string | Filter by current status |
-| `sourceSystem` | string | Filter by source system |
+| Parameter      | Type   | Description                  |
+| -------------- | ------ | ---------------------------- |
+| `limit`        | number | Items per page (default: 50) |
+| `offset`       | number | Skip count (default: 0)      |
+| `subjectId`    | string | Filter by subject            |
+| `accountType`  | string | Filter by account type       |
+| `status`       | string | Filter by current status     |
+| `sourceSystem` | string | Filter by source system      |
 
 ```bash
 curl 'http://localhost:3000/api/v1/tradelines?subjectId=subj-123&status=active&limit=20'
@@ -259,13 +257,13 @@ curl http://localhost:3000/api/v1/tradelines/tl-456
 
 Monthly metric time series for a tradeline.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `metricType` | string | Filter by metric type |
-| `from` | string | Start date (YYYY-MM-DD) |
-| `to` | string | End date (YYYY-MM-DD) |
+| Parameter    | Type   | Description                  |
+| ------------ | ------ | ---------------------------- |
+| `limit`      | number | Items per page (default: 50) |
+| `offset`     | number | Skip count (default: 0)      |
+| `metricType` | string | Filter by metric type        |
+| `from`       | string | Start date (YYYY-MM-DD)      |
+| `to`         | string | End date (YYYY-MM-DD)        |
 
 ```bash
 curl 'http://localhost:3000/api/v1/tradelines/tl-456/metrics?from=2023-01-01&to=2024-01-01'
@@ -279,15 +277,15 @@ curl 'http://localhost:3000/api/v1/tradelines/tl-456/metrics?from=2023-01-01&to=
 
 List credit search records.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
+| Parameter    | Type   | Description                             |
+| ------------ | ------ | --------------------------------------- |
+| `limit`      | number | Items per page (default: 50)            |
+| `offset`     | number | Skip count (default: 0)                 |
+| `subjectId`  | string | Filter by subject                       |
 | `visibility` | string | Filter by visibility (e.g., hard, soft) |
-| `searchType` | string | Filter by search type |
-| `from` | string | Start date |
-| `to` | string | End date |
+| `searchType` | string | Filter by search type                   |
+| `from`       | string | Start date                              |
+| `to`         | string | End date                                |
 
 ```bash
 curl 'http://localhost:3000/api/v1/searches?subjectId=subj-123&visibility=hard'
@@ -301,14 +299,14 @@ curl 'http://localhost:3000/api/v1/searches?subjectId=subj-123&visibility=hard'
 
 List credit scores.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
-| `sourceSystem` | string | Filter by bureau/source |
-| `from` | string | Start date |
-| `to` | string | End date |
+| Parameter      | Type   | Description                  |
+| -------------- | ------ | ---------------------------- |
+| `limit`        | number | Items per page (default: 50) |
+| `offset`       | number | Skip count (default: 0)      |
+| `subjectId`    | string | Filter by subject            |
+| `sourceSystem` | string | Filter by bureau/source      |
+| `from`         | string | Start date                   |
+| `to`           | string | End date                     |
 
 ```bash
 curl 'http://localhost:3000/api/v1/scores?subjectId=subj-123&sourceSystem=experian'
@@ -322,11 +320,11 @@ curl 'http://localhost:3000/api/v1/scores?subjectId=subj-123&sourceSystem=experi
 
 List import batches.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
+| Parameter   | Type   | Description                  |
+| ----------- | ------ | ---------------------------- |
+| `limit`     | number | Items per page (default: 50) |
+| `offset`    | number | Skip count (default: 0)      |
+| `subjectId` | string | Filter by subject            |
 
 ```bash
 curl 'http://localhost:3000/api/v1/imports?limit=10'
@@ -348,12 +346,12 @@ curl http://localhost:3000/api/v1/imports/imp-789
 
 List addresses with associations and electoral roll entries.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
-| `role` | string | Filter by address role |
+| Parameter   | Type   | Description                  |
+| ----------- | ------ | ---------------------------- |
+| `limit`     | number | Items per page (default: 50) |
+| `offset`    | number | Skip count (default: 0)      |
+| `subjectId` | string | Filter by subject            |
+| `role`      | string | Filter by address role       |
 
 ```bash
 curl 'http://localhost:3000/api/v1/addresses?subjectId=subj-123'
@@ -367,11 +365,11 @@ curl 'http://localhost:3000/api/v1/addresses?subjectId=subj-123'
 
 List public records (CCJs, bankruptcies, etc.).
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
+| Parameter   | Type   | Description                  |
+| ----------- | ------ | ---------------------------- |
+| `limit`     | number | Items per page (default: 50) |
+| `offset`    | number | Skip count (default: 0)      |
+| `subjectId` | string | Filter by subject            |
 
 ```bash
 curl 'http://localhost:3000/api/v1/public-records?subjectId=subj-123'
@@ -385,13 +383,13 @@ curl 'http://localhost:3000/api/v1/public-records?subjectId=subj-123'
 
 List generated insights and anomaly detections.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `limit` | number | Items per page (default: 50) |
-| `offset` | number | Skip count (default: 0) |
-| `subjectId` | string | Filter by subject |
-| `severity` | string | Filter by severity |
-| `kind` | string | Filter by insight kind |
+| Parameter   | Type   | Description                  |
+| ----------- | ------ | ---------------------------- |
+| `limit`     | number | Items per page (default: 50) |
+| `offset`    | number | Skip count (default: 0)      |
+| `subjectId` | string | Filter by subject            |
+| `severity`  | string | Filter by severity           |
+| `kind`      | string | Filter by insight kind       |
 
 ```bash
 curl 'http://localhost:3000/api/v1/insights?subjectId=subj-123&severity=warning'

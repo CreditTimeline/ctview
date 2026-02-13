@@ -31,18 +31,27 @@ describe('Hard Search Detection', () => {
 
     // Second import
     const file2 = {
-      ...buildMinimalCreditFile() as Record<string, unknown>,
+      ...(buildMinimalCreditFile() as Record<string, unknown>),
       file_id: 'file_test_002',
       created_at: '2026-02-01T00:00:00Z',
-      imports: [{
-        import_id: 'imp_test_002',
-        imported_at: '2026-02-01T00:00:00Z',
-        source_system: 'equifax',
-        acquisition_method: 'api',
-      }],
+      imports: [
+        {
+          import_id: 'imp_test_002',
+          imported_at: '2026-02-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
+      ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_002', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_002' }],
+        names: [
+          {
+            name_id: 'name_002',
+            full_name: 'Test',
+            name_type: 'legal',
+            source_import_id: 'imp_test_002',
+          },
+        ],
       },
     };
     ingestCreditFile(db, file2);
@@ -56,17 +65,24 @@ describe('Hard Search Detection', () => {
 
     // First import with organisation and tradeline (to create a known lender)
     const file1 = {
-      ...buildMinimalCreditFile() as Record<string, unknown>,
+      ...(buildMinimalCreditFile() as Record<string, unknown>),
       organisations: [
-        { organisation_id: 'org_lender', name: 'Known Bank', roles: ['furnisher'], source_import_id: 'imp_test_001' },
+        {
+          organisation_id: 'org_lender',
+          name: 'Known Bank',
+          roles: ['furnisher'],
+          source_import_id: 'imp_test_001',
+        },
       ],
-      tradelines: [{
-        tradeline_id: 'tl_001',
-        furnisher_organisation_id: 'org_lender',
-        account_type: 'credit_card',
-        status_current: 'up_to_date',
-        source_import_id: 'imp_test_001',
-      }],
+      tradelines: [
+        {
+          tradeline_id: 'tl_001',
+          furnisher_organisation_id: 'org_lender',
+          account_type: 'credit_card',
+          status_current: 'up_to_date',
+          source_import_id: 'imp_test_001',
+        },
+      ],
     };
     ingestCreditFile(db, file1);
 
@@ -77,24 +93,64 @@ describe('Hard Search Detection', () => {
       subject_id: 'subj_test_001',
       created_at: '2026-02-01T00:00:00Z',
       currency_code: 'GBP',
-      imports: [{
-        import_id: 'imp_test_002',
-        imported_at: '2026-02-01T00:00:00Z',
-        source_system: 'equifax',
-        acquisition_method: 'api',
-      }],
+      imports: [
+        {
+          import_id: 'imp_test_002',
+          imported_at: '2026-02-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
+      ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_002', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_002' }],
+        names: [
+          {
+            name_id: 'name_002',
+            full_name: 'Test',
+            name_type: 'legal',
+            source_import_id: 'imp_test_002',
+          },
+        ],
       },
       organisations: [
-        { organisation_id: 'org_lender', name: 'Known Bank', roles: ['furnisher'], source_import_id: 'imp_test_002' },
-        { organisation_id: 'org_unknown', name: 'Unknown Finance', roles: ['searcher'], source_import_id: 'imp_test_002' },
+        {
+          organisation_id: 'org_lender',
+          name: 'Known Bank',
+          roles: ['furnisher'],
+          source_import_id: 'imp_test_002',
+        },
+        {
+          organisation_id: 'org_unknown',
+          name: 'Unknown Finance',
+          roles: ['searcher'],
+          source_import_id: 'imp_test_002',
+        },
       ],
       searches: [
-        { search_id: 'sr_h1', searched_at: '2026-01-20', organisation_id: 'org_lender', search_type: 'credit_application', visibility: 'hard', source_import_id: 'imp_test_002' },
-        { search_id: 'sr_h2', searched_at: '2026-01-22', organisation_id: 'org_unknown', search_type: 'credit_application', visibility: 'hard', source_import_id: 'imp_test_002' },
-        { search_id: 'sr_h3', searched_at: '2026-01-25', organisation_id: 'org_unknown', search_type: 'credit_application', visibility: 'hard', source_import_id: 'imp_test_002' },
+        {
+          search_id: 'sr_h1',
+          searched_at: '2026-01-20',
+          organisation_id: 'org_lender',
+          search_type: 'credit_application',
+          visibility: 'hard',
+          source_import_id: 'imp_test_002',
+        },
+        {
+          search_id: 'sr_h2',
+          searched_at: '2026-01-22',
+          organisation_id: 'org_unknown',
+          search_type: 'credit_application',
+          visibility: 'hard',
+          source_import_id: 'imp_test_002',
+        },
+        {
+          search_id: 'sr_h3',
+          searched_at: '2026-01-25',
+          organisation_id: 'org_unknown',
+          search_type: 'credit_application',
+          visibility: 'hard',
+          source_import_id: 'imp_test_002',
+        },
       ],
     };
     ingestCreditFile(db, file2);
@@ -108,7 +164,10 @@ describe('Hard Search Detection', () => {
     expect(results[0]!.entityIds).toHaveLength(3);
 
     // Check known lender classification
-    const searches = results[0]!.extensions!.searches as Array<{ searchId: string; knownLender: boolean }>;
+    const searches = results[0]!.extensions!.searches as Array<{
+      searchId: string;
+      knownLender: boolean;
+    }>;
     const knownSearch = searches.find((s) => s.searchId === 'sr_h1');
     const unknownSearch = searches.find((s) => s.searchId === 'sr_h2');
     expect(knownSearch!.knownLender).toBe(true);
@@ -125,18 +184,34 @@ describe('Hard Search Detection', () => {
       subject_id: 'subj_test_001',
       created_at: '2026-02-01T00:00:00Z',
       currency_code: 'GBP',
-      imports: [{
-        import_id: 'imp_test_002',
-        imported_at: '2026-02-01T00:00:00Z',
-        source_system: 'equifax',
-        acquisition_method: 'api',
-      }],
+      imports: [
+        {
+          import_id: 'imp_test_002',
+          imported_at: '2026-02-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
+      ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_002', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_002' }],
+        names: [
+          {
+            name_id: 'name_002',
+            full_name: 'Test',
+            name_type: 'legal',
+            source_import_id: 'imp_test_002',
+          },
+        ],
       },
       searches: [
-        { search_id: 'sr_single', searched_at: '2026-01-25', search_type: 'credit_application', visibility: 'hard', organisation_name_raw: 'Some Corp', source_import_id: 'imp_test_002' },
+        {
+          search_id: 'sr_single',
+          searched_at: '2026-01-25',
+          search_type: 'credit_application',
+          visibility: 'hard',
+          organisation_name_raw: 'Some Corp',
+          source_import_id: 'imp_test_002',
+        },
       ],
     };
     ingestCreditFile(db, file2);
@@ -158,19 +233,42 @@ describe('Hard Search Detection', () => {
       subject_id: 'subj_test_001',
       created_at: '2026-02-01T00:00:00Z',
       currency_code: 'GBP',
-      imports: [{
-        import_id: 'imp_test_002',
-        imported_at: '2026-02-01T00:00:00Z',
-        source_system: 'equifax',
-        acquisition_method: 'api',
-      }],
+      imports: [
+        {
+          import_id: 'imp_test_002',
+          imported_at: '2026-02-01T00:00:00Z',
+          source_system: 'equifax',
+          acquisition_method: 'api',
+        },
+      ],
       subject: {
         subject_id: 'subj_test_001',
-        names: [{ name_id: 'name_002', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_002' }],
+        names: [
+          {
+            name_id: 'name_002',
+            full_name: 'Test',
+            name_type: 'legal',
+            source_import_id: 'imp_test_002',
+          },
+        ],
       },
       searches: [
-        { search_id: 'sr_soft1', searched_at: '2026-01-25', search_type: 'consumer_enquiry', visibility: 'soft', organisation_name_raw: 'Some Corp', source_import_id: 'imp_test_002' },
-        { search_id: 'sr_soft2', searched_at: '2026-01-26', search_type: 'consumer_enquiry', visibility: 'soft', organisation_name_raw: 'Some Corp', source_import_id: 'imp_test_002' },
+        {
+          search_id: 'sr_soft1',
+          searched_at: '2026-01-25',
+          search_type: 'consumer_enquiry',
+          visibility: 'soft',
+          organisation_name_raw: 'Some Corp',
+          source_import_id: 'imp_test_002',
+        },
+        {
+          search_id: 'sr_soft2',
+          searched_at: '2026-01-26',
+          search_type: 'consumer_enquiry',
+          visibility: 'soft',
+          organisation_name_raw: 'Some Corp',
+          source_import_id: 'imp_test_002',
+        },
       ],
     };
     ingestCreditFile(db, file2);

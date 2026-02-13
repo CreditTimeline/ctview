@@ -22,7 +22,7 @@ interface CountRow {
 
 function getEntityCounts(db: AppDatabase) {
   const count = (table: string) =>
-    (db.all<CountRow>(sql.raw(`SELECT COUNT(*) as count FROM ${table}`))[0]?.count ?? 0);
+    db.all<CountRow>(sql.raw(`SELECT COUNT(*) as count FROM ${table}`))[0]?.count ?? 0;
 
   return {
     tradelines: count('tradeline'),

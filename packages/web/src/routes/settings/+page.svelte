@@ -73,7 +73,8 @@
 
   const countTooltips: Record<string, string> = {
     reports: 'The number of credit report files uploaded to ctview.',
-    imports: 'The number of agency-specific data batches processed. A single report file may contain multiple imports if it includes data from more than one credit agency.',
+    imports:
+      'The number of agency-specific data batches processed. A single report file may contain multiple imports if it includes data from more than one credit agency.',
   };
 
   const readOnlyKeys = ['ddl_hash'];
@@ -136,39 +137,31 @@
 
 <div class="space-y-8">
   <div>
-    <h2 class="text-2xl font-bold text-ink">Settings</h2>
-    <p class="mt-1 text-muted">System configuration and health monitoring.</p>
+    <h2 class="text-ink text-2xl font-bold">Settings</h2>
+    <p class="text-muted mt-1">System configuration and health monitoring.</p>
   </div>
 
   <!-- System Health Summary -->
   <section>
-    <h3 class="mb-4 text-lg font-semibold text-ink">System Health</h3>
+    <h3 class="text-ink mb-4 text-lg font-semibold">System Health</h3>
     <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       <StatCard label="Total Records" value={totalRecords} />
-      <StatCard
-        label="DB Engine"
-        value={data.health.dbEngine.toUpperCase()}
-      />
-      <StatCard
-        label="Schema Hash"
-        value={data.health.schemaVersion?.slice(0, 8) ?? 'N/A'}
-      />
+      <StatCard label="DB Engine" value={data.health.dbEngine.toUpperCase()} />
+      <StatCard label="Schema Hash" value={data.health.schemaVersion?.slice(0, 8) ?? 'N/A'} />
     </div>
   </section>
 
   <!-- Database Info -->
   <section class="panel">
-    <h3 class="text-lg font-semibold text-ink">Database</h3>
-    <div
-      class="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-3"
-    >
+    <h3 class="text-ink text-lg font-semibold">Database</h3>
+    <div class="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-3">
       <div>
         <p class="text-muted">Engine</p>
-        <p class="font-medium text-ink capitalize">{data.health.dbEngine}</p>
+        <p class="text-ink font-medium capitalize">{data.health.dbEngine}</p>
       </div>
       <div>
         <p class="text-muted">Schema Version</p>
-        <p class="font-mono text-xs text-ink">
+        <p class="text-ink font-mono text-xs">
           {data.health.schemaVersion ?? 'Unknown'}
         </p>
       </div>
@@ -183,23 +176,22 @@
     </div>
 
     <!-- Table Row Counts -->
-    <div class="mt-4 border-t border-soft pt-4">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted">
-        Table Row Counts
-      </p>
-      <div
-        class="mt-2 grid grid-cols-2 gap-2 text-sm md:grid-cols-3 lg:grid-cols-6"
-      >
-        {#each Object.entries(data.health.tableCounts) as [table, count]}
-          <div class="relative rounded-lg bg-canvas p-3 text-center">
-            <p class="text-xl font-bold text-ink">{count}</p>
-            <p class="text-xs text-muted capitalize">
+    <div class="border-soft mt-4 border-t pt-4">
+      <p class="text-muted text-xs font-semibold tracking-wider uppercase">Table Row Counts</p>
+      <div class="mt-2 grid grid-cols-2 gap-2 text-sm md:grid-cols-3 lg:grid-cols-6">
+        {#each Object.entries(data.health.tableCounts) as [table, count] (table)}
+          <div class="bg-canvas relative rounded-lg p-3 text-center">
+            <p class="text-ink text-xl font-bold">{count}</p>
+            <p class="text-muted text-xs capitalize">
               {table.replace(/([A-Z])/g, ' $1').trim()}
             </p>
             {#if countTooltips[table]}
-              <span class="absolute bottom-1.5 right-1.5">
+              <span class="absolute right-1.5 bottom-1.5">
                 <Tooltip text={countTooltips[table]} position="top">
-                  <span class="flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-info/15 text-[10px] font-semibold text-info">i</span>
+                  <span
+                    class="bg-info/15 text-info flex h-4 w-4 cursor-help items-center justify-center rounded-full text-[10px] font-semibold"
+                    >i</span
+                  >
                 </Tooltip>
               </span>
             {/if}
@@ -211,7 +203,7 @@
 
   <!-- API Configuration -->
   <section class="panel">
-    <h3 class="text-lg font-semibold text-ink">API Configuration</h3>
+    <h3 class="text-ink text-lg font-semibold">API Configuration</h3>
     <div class="mt-4 space-y-4">
       <div class="flex items-center gap-3 text-sm">
         <span class="text-muted">Ingest API Key:</span>
@@ -226,18 +218,14 @@
       <div>
         <button
           type="button"
-          class="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-dark disabled:opacity-50"
+          class="bg-accent hover:bg-accent-dark rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
           onclick={testIngest}
           disabled={testingIngest}
         >
           {testingIngest ? 'Testing...' : 'Test Ingest'}
         </button>
         {#if testResult}
-          <span
-            class="ml-3 text-sm {testResult.success
-              ? 'text-success'
-              : 'text-danger'}"
-          >
+          <span class="ml-3 text-sm {testResult.success ? 'text-success' : 'text-danger'}">
             {testResult.message}
           </span>
         {/if}
@@ -247,69 +235,60 @@
 
   <!-- App Settings -->
   <section class="panel">
-    <h3 class="text-lg font-semibold text-ink">App Settings</h3>
+    <h3 class="text-ink text-lg font-semibold">App Settings</h3>
     {#if settingsState.length > 0}
       <div class="mt-4 overflow-x-auto">
         <table class="w-full text-left text-sm">
           <thead>
-            <tr class="border-b border-soft">
-              <th
-                class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted"
+            <tr class="border-soft border-b">
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
                 >Key</th
               >
-              <th
-                class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted"
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
                 >Value</th
               >
-              <th
-                class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted"
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
                 >Updated</th
               >
-              <th
-                class="px-3 py-3 text-xs font-semibold uppercase tracking-wider text-muted"
+              <th class="text-muted px-3 py-3 text-xs font-semibold tracking-wider uppercase"
                 >Actions</th
               >
             </tr>
           </thead>
           <tbody>
-            {#each settingsState as setting, i (setting.key)}
-              <tr class="border-b border-soft/50">
+            {#each settingsState as setting (setting.key)}
+              <tr class="border-soft/50 border-b">
                 <td class="px-3 py-3 font-mono text-xs">{setting.key}</td>
                 <td class="px-3 py-3">
                   {#if readOnlyKeys.includes(setting.key)}
-                    <span class="font-mono text-xs text-muted"
-                      >{setting.value}</span
-                    >
+                    <span class="text-muted font-mono text-xs">{setting.value}</span>
                   {:else if editingKey === setting.key}
                     <input
                       type="text"
                       bind:value={editValue}
-                      class="rounded border border-soft bg-canvas px-2 py-1 text-sm font-mono"
+                      class="border-soft bg-canvas rounded border px-2 py-1 font-mono text-sm"
                     />
                   {:else}
                     <span class="font-mono text-xs">{setting.value}</span>
                   {/if}
                 </td>
-                <td class="px-3 py-3"
-                  ><DateDisplay date={setting.updatedAt} relative /></td
-                >
+                <td class="px-3 py-3"><DateDisplay date={setting.updatedAt} relative /></td>
                 <td class="px-3 py-3">
                   {#if readOnlyKeys.includes(setting.key)}
-                    <span class="text-xs text-muted">Read-only</span>
+                    <span class="text-muted text-xs">Read-only</span>
                   {:else if editingKey === setting.key}
                     <button
-                      class="text-xs text-accent hover:underline"
+                      class="text-accent text-xs hover:underline"
                       onclick={() => saveSetting(setting.key)}>Save</button
                     >
                     <button
-                      class="ml-2 text-xs text-muted hover:underline"
+                      class="text-muted ml-2 text-xs hover:underline"
                       onclick={() => (editingKey = null)}>Cancel</button
                     >
                   {:else}
                     <button
-                      class="text-xs text-accent hover:underline"
-                      onclick={() => startEdit(setting.key, setting.value)}
-                      >Edit</button
+                      class="text-accent text-xs hover:underline"
+                      onclick={() => startEdit(setting.key, setting.value)}>Edit</button
                     >
                   {/if}
                 </td>
@@ -319,29 +298,27 @@
         </table>
       </div>
     {:else}
-      <p class="mt-4 text-sm text-muted">No settings configured.</p>
+      <p class="text-muted mt-4 text-sm">No settings configured.</p>
     {/if}
 
     <!-- Add New Setting -->
-    <div class="mt-4 border-t border-soft pt-4">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted">
-        Add Setting
-      </p>
+    <div class="border-soft mt-4 border-t pt-4">
+      <p class="text-muted text-xs font-semibold tracking-wider uppercase">Add Setting</p>
       <div class="mt-2 flex items-center gap-2">
         <input
           type="text"
           placeholder="Key"
           bind:value={newKey}
-          class="rounded border border-soft bg-canvas px-2 py-1 text-sm font-mono"
+          class="border-soft bg-canvas rounded border px-2 py-1 font-mono text-sm"
         />
         <input
           type="text"
           placeholder="Value"
           bind:value={newValue}
-          class="rounded border border-soft bg-canvas px-2 py-1 text-sm font-mono"
+          class="border-soft bg-canvas rounded border px-2 py-1 font-mono text-sm"
         />
         <button
-          class="rounded bg-accent px-3 py-1 text-sm font-medium text-white hover:bg-accent-dark disabled:opacity-50"
+          class="bg-accent hover:bg-accent-dark rounded px-3 py-1 text-sm font-medium text-white disabled:opacity-50"
           onclick={addSetting}
           disabled={!newKey || !newValue}>Add</button
         >
@@ -351,16 +328,16 @@
 
   <!-- Data Retention -->
   <section class="panel">
-    <h3 class="text-lg font-semibold text-ink">Data Retention</h3>
+    <h3 class="text-ink text-lg font-semibold">Data Retention</h3>
     <div class="mt-4 space-y-3 text-sm">
       <div class="grid grid-cols-2 gap-x-8 gap-y-3 md:grid-cols-3">
         <div>
           <p class="text-muted">Raw Artifact Retention</p>
-          <p class="font-medium text-ink">{data.retention.rawArtifactDays} days</p>
+          <p class="text-ink font-medium">{data.retention.rawArtifactDays} days</p>
         </div>
         <div>
           <p class="text-muted">Audit Log Retention</p>
-          <p class="font-medium text-ink">{data.retention.auditLogDays} days</p>
+          <p class="text-ink font-medium">{data.retention.auditLogDays} days</p>
         </div>
         <div>
           <p class="text-muted">Last Compaction</p>
@@ -371,20 +348,18 @@
           {/if}
         </div>
       </div>
-      <p class="text-xs text-muted">
+      <p class="text-muted text-xs">
         Configure retention via app settings keys:
         <code class="font-mono">retention.raw_artifact_days</code> and
-        <code class="font-mono">retention.audit_log_days</code>.
-        Run compaction via API: <code class="font-mono">POST /api/v1/maintenance/compact</code>.
+        <code class="font-mono">retention.audit_log_days</code>. Run compaction via API:
+        <code class="font-mono">POST /api/v1/maintenance/compact</code>.
       </p>
     </div>
   </section>
 
   <!-- Export Placeholder -->
   <section class="panel opacity-60">
-    <h3 class="text-lg font-semibold text-ink">Export</h3>
-    <p class="mt-2 text-sm text-muted">
-      Export functionality coming in Phase 9.
-    </p>
+    <h3 class="text-ink text-lg font-semibold">Export</h3>
+    <p class="text-muted mt-2 text-sm">Export functionality coming in Phase 9.</p>
   </section>
 </div>

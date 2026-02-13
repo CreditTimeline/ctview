@@ -65,20 +65,41 @@ export function loadAnomalyConfig(db: DB): AnomalyConfig {
 
   return {
     hardSearch: {
-      burstWindowDays: num('anomaly.hard_search.burst_window_days', DEFAULT_CONFIG.hardSearch.burstWindowDays),
-      burstThreshold: num('anomaly.hard_search.burst_threshold', DEFAULT_CONFIG.hardSearch.burstThreshold),
-      frequentThreshold: num('anomaly.hard_search.frequent_threshold', DEFAULT_CONFIG.hardSearch.frequentThreshold),
+      burstWindowDays: num(
+        'anomaly.hard_search.burst_window_days',
+        DEFAULT_CONFIG.hardSearch.burstWindowDays,
+      ),
+      burstThreshold: num(
+        'anomaly.hard_search.burst_threshold',
+        DEFAULT_CONFIG.hardSearch.burstThreshold,
+      ),
+      frequentThreshold: num(
+        'anomaly.hard_search.frequent_threshold',
+        DEFAULT_CONFIG.hardSearch.frequentThreshold,
+      ),
     },
     balanceChange: {
-      pctThreshold: num('anomaly.balance_change.pct_threshold', DEFAULT_CONFIG.balanceChange.pctThreshold),
-      absMinimum: num('anomaly.balance_change.abs_minimum', DEFAULT_CONFIG.balanceChange.absMinimum),
+      pctThreshold: num(
+        'anomaly.balance_change.pct_threshold',
+        DEFAULT_CONFIG.balanceChange.pctThreshold,
+      ),
+      absMinimum: num(
+        'anomaly.balance_change.abs_minimum',
+        DEFAULT_CONFIG.balanceChange.absMinimum,
+      ),
     },
     scoreChange: {
       threshold: num('anomaly.score_change.threshold', DEFAULT_CONFIG.scoreChange.threshold),
     },
     crossAgency: {
-      balancePctThreshold: num('anomaly.cross_agency.balance_pct_threshold', DEFAULT_CONFIG.crossAgency.balancePctThreshold),
-      limitPctThreshold: num('anomaly.cross_agency.limit_pct_threshold', DEFAULT_CONFIG.crossAgency.limitPctThreshold),
+      balancePctThreshold: num(
+        'anomaly.cross_agency.balance_pct_threshold',
+        DEFAULT_CONFIG.crossAgency.balancePctThreshold,
+      ),
+      limitPctThreshold: num(
+        'anomaly.cross_agency.limit_pct_threshold',
+        DEFAULT_CONFIG.crossAgency.limitPctThreshold,
+      ),
     },
   };
 }

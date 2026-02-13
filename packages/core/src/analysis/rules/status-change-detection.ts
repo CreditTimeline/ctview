@@ -5,8 +5,13 @@ import type { InsightSeverity } from '../../types/enums.js';
 /** Status severity bands for transition classification. */
 const ACTIVE_STATUSES = new Set(['up_to_date', 'no_update', 'inactive']);
 const ADVERSE_STATUSES = new Set([
-  'in_arrears', 'arrangement', 'query', 'gone_away',
-  'default', 'written_off', 'repossession',
+  'in_arrears',
+  'arrangement',
+  'query',
+  'gone_away',
+  'default',
+  'written_off',
+  'repossession',
 ]);
 const CLOSED_STATUSES = new Set(['settled', 'transferred']);
 

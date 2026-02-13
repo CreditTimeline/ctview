@@ -16,10 +16,10 @@
 <div class="panel {className}">
   <div class="flex items-start justify-between">
     <div>
-      <p class="text-sm font-medium text-muted">{label}</p>
-      <p class="mt-2 text-3xl font-bold text-ink">{value}</p>
+      <p class="text-muted text-sm font-medium">{label}</p>
+      <p class="text-ink mt-2 text-3xl font-bold">{value}</p>
       {#if subtext}
-        <p class="mt-1 text-sm text-muted">{subtext}</p>
+        <p class="text-muted mt-1 text-sm">{subtext}</p>
       {/if}
     </div>
     {#if icon}

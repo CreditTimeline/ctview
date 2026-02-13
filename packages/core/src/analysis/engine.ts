@@ -8,10 +8,7 @@ import type { AnalysisContext, AnomalyRule, InsightResult, AnalysisEngineResult 
  * Each rule is wrapped in try/catch — a failing rule logs a warning
  * but does not abort the transaction or other rules.
  */
-export function runAnomalyRules(
-  ctx: AnalysisContext,
-  rules: AnomalyRule[],
-): AnalysisEngineResult {
+export function runAnomalyRules(ctx: AnalysisContext, rules: AnomalyRule[]): AnalysisEngineResult {
   const log = ctx.logger ?? noopLogger;
   const allInsights: InsightResult[] = [];
   const ruleErrors: { ruleId: string; error: string }[] = [];

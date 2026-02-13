@@ -29,10 +29,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
 
   if (!body.backupFile || typeof body.backupFile !== 'string') {
-    return apiError(
-      ErrorCode.VALIDATION_FAILED,
-      'Request body must include "backupFile" string',
-    );
+    return apiError(ErrorCode.VALIDATION_FAILED, 'Request body must include "backupFile" string');
   }
 
   const backupPath = resolve(backupDir, body.backupFile);

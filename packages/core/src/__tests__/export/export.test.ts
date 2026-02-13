@@ -77,7 +77,13 @@ describe('parseJsonArray', () => {
 
 describe('toCsv', () => {
   it('produces correct headers and rows', () => {
-    const result = toCsv(['Name', 'Age'], [['Alice', '30'], ['Bob', '25']]);
+    const result = toCsv(
+      ['Name', 'Age'],
+      [
+        ['Alice', '30'],
+        ['Bob', '25'],
+      ],
+    );
     const lines = result.split('\r\n');
     expect(lines[0]).toBe('Name,Age');
     expect(lines[1]).toBe('Alice,30');
@@ -330,8 +336,7 @@ describe('reconstructCreditFile', () => {
       return obj;
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const remapArray = <T>(arr?: T[]) =>
-      arr?.map((item) => remap({ ...(item as any) }) as T);
+    const remapArray = <T>(arr?: T[]) => arr?.map((item) => remap({ ...(item as any) }) as T);
 
     reingested.subject = {
       ...reingested.subject,

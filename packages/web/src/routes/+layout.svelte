@@ -26,7 +26,7 @@
 
   // Close sidebar on navigation
   $effect(() => {
-    $page.url.pathname;
+    void $page.url.pathname;
     sidebarOpen = false;
   });
 
@@ -83,24 +83,31 @@
 
 <a
   href="#main-content"
-  class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
+  class="focus:bg-accent sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:px-4 focus:py-2 focus:text-white"
 >
   Skip to content
 </a>
 
-<div class="flex h-screen bg-canvas">
+<div class="bg-canvas flex h-screen">
   <!-- Mobile top bar -->
-  <div class="fixed top-0 right-0 left-0 z-30 flex items-center border-b border-soft bg-surface px-4 py-3 md:hidden">
+  <div
+    class="border-soft bg-surface fixed top-0 right-0 left-0 z-30 flex items-center border-b px-4 py-3 md:hidden"
+  >
     <button
       onclick={() => (sidebarOpen = true)}
-      class="rounded-lg p-1 text-ink hover:bg-soft/50"
+      class="text-ink hover:bg-soft/50 rounded-lg p-1"
       aria-label="Open navigation menu"
     >
       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
       </svg>
     </button>
-    <h1 class="ml-3 text-lg font-bold text-ink">CreditTimeline</h1>
+    <h1 class="text-ink ml-3 text-lg font-bold">CreditTimeline</h1>
   </div>
 
   <!-- Mobile sidebar backdrop -->
@@ -115,23 +122,28 @@
 
   <!-- Sidebar -->
   <aside
-    class="fixed z-50 flex h-full w-64 flex-col border-r border-soft bg-surface transition-transform duration-200
+    class="border-soft bg-surface fixed z-50 flex h-full w-64 flex-col border-r transition-transform duration-200
       {sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       md:static md:translate-x-0"
     use:trapFocus={sidebarOpen}
   >
-    <div class="flex items-center justify-between border-b border-soft p-6">
+    <div class="border-soft flex items-center justify-between border-b p-6">
       <div>
-        <h1 class="text-xl font-bold text-ink">CreditTimeline</h1>
-        <p class="mt-1 text-sm text-muted">Personal Credit Vault</p>
+        <h1 class="text-ink text-xl font-bold">CreditTimeline</h1>
+        <p class="text-muted mt-1 text-sm">Personal Credit Vault</p>
       </div>
       <button
-        class="rounded-lg p-1 text-ink hover:bg-soft/50 md:hidden"
+        class="text-ink hover:bg-soft/50 rounded-lg p-1 md:hidden"
         onclick={() => (sidebarOpen = false)}
         aria-label="Close navigation menu"
       >
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>
@@ -150,8 +162,8 @@
         </a>
       {/each}
     </nav>
-    <div class="border-t border-soft p-4">
-      <p class="text-xs text-muted">CreditTimeline v0.1.0</p>
+    <div class="border-soft border-t p-4">
+      <p class="text-muted text-xs">CreditTimeline v0.1.0</p>
     </div>
   </aside>
 

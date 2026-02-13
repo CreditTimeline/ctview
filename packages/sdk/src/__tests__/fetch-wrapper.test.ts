@@ -26,13 +26,10 @@ describe('apiFetch', () => {
   });
 
   it('throws CtviewApiError on non-2xx response', async () => {
-    const fetch = mockFetch(
-      { error: { code: 'NOT_FOUND', message: 'Subject not found' } },
-      404,
+    const fetch = mockFetch({ error: { code: 'NOT_FOUND', message: 'Subject not found' } }, 404);
+    await expect(apiFetch({ ...baseOptions, fetch }, 'subjects/123')).rejects.toThrow(
+      CtviewApiError,
     );
-    await expect(
-      apiFetch({ ...baseOptions, fetch }, 'subjects/123'),
-    ).rejects.toThrow(CtviewApiError);
 
     try {
       await apiFetch({ ...baseOptions, fetch }, 'subjects/123');
@@ -111,10 +108,7 @@ describe('apiFetch', () => {
 
   it('includes custom headers from options', async () => {
     const fetch = mockFetch({ data: {} });
-    await apiFetch(
-      { ...baseOptions, fetch, headers: { 'X-Custom': 'value' } },
-      'dashboard',
-    );
+    await apiFetch({ ...baseOptions, fetch, headers: { 'X-Custom': 'value' } }, 'dashboard');
     const calledHeaders = fetch.mock.calls[0][1].headers as Record<string, string>;
     expect(calledHeaders['X-Custom']).toBe('value');
   });

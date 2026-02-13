@@ -54,9 +54,7 @@ export function getCreditUtilizationTrend(
     totalBalance: r.total_balance,
     totalLimit: r.total_limit,
     utilizationPct:
-      r.total_limit > 0
-        ? Math.round((r.total_balance / r.total_limit) * 10000) / 100
-        : 0,
+      r.total_limit > 0 ? Math.round((r.total_balance / r.total_limit) * 10000) / 100 : 0,
   }));
 
   return { points };
@@ -178,10 +176,7 @@ export const paymentPatternDataSchema = z
 
 export type PaymentPatternData = z.infer<typeof paymentPatternDataSchema>;
 
-export function getPaymentPatternAnalysis(
-  db: AppDatabase,
-  subjectId: string,
-): PaymentPatternData {
+export function getPaymentPatternAnalysis(db: AppDatabase, subjectId: string): PaymentPatternData {
   interface Row {
     period: string;
     canonical_status: string | null;

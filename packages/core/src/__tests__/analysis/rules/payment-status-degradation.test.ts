@@ -6,7 +6,10 @@ import { DEFAULT_CONFIG } from '../../../analysis/config.js';
 import type { AnalysisContext } from '../../../analysis/types.js';
 import type { CreditFile } from '../../../types/canonical.js';
 
-function buildCtx(db: ReturnType<typeof createTestDb>, subjectId = 'subj_test_001'): AnalysisContext {
+function buildCtx(
+  db: ReturnType<typeof createTestDb>,
+  subjectId = 'subj_test_001',
+): AnalysisContext {
   return {
     db: db as AnalysisContext['db'],
     file: { subject: { subject_id: subjectId } } as CreditFile,
@@ -34,7 +37,14 @@ function buildFileWithStatuses(statuses: { snapshotId: string; date: string; sta
     ],
     subject: {
       subject_id: 'subj_test_001',
-      names: [{ name_id: 'name_001', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }],
+      names: [
+        {
+          name_id: 'name_001',
+          full_name: 'Test',
+          name_type: 'legal',
+          source_import_id: 'imp_test_001',
+        },
+      ],
     },
     tradelines: [
       {

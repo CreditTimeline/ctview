@@ -81,15 +81,9 @@ const paginatedTradelines = paginatedSchema(tradelineSummarySchema, 'PaginatedTr
 const paginatedSearches = paginatedSchema(searchSummarySchema, 'PaginatedSearches');
 const paginatedScores = paginatedSchema(scoreEntrySchema, 'PaginatedScores');
 const paginatedImports = paginatedSchema(importListItemSchema, 'PaginatedImports');
-const paginatedAddresses = paginatedSchema(
-  addressWithAssociationsSchema,
-  'PaginatedAddresses',
-);
+const paginatedAddresses = paginatedSchema(addressWithAssociationsSchema, 'PaginatedAddresses');
 const paginatedInsights = paginatedSchema(insightSummarySchema, 'PaginatedInsights');
-const paginatedPublicRecords = paginatedSchema(
-  publicRecordSummarySchema,
-  'PaginatedPublicRecords',
-);
+const paginatedPublicRecords = paginatedSchema(publicRecordSummarySchema, 'PaginatedPublicRecords');
 
 // ---------------------------------------------------------------------------
 // Simple response schemas for health/ready
@@ -146,8 +140,7 @@ export function generateOpenApiSpec(): Record<string, unknown> {
     info: {
       title: 'ctview API',
       version: '1.0.0',
-      description:
-        'Credit Timeline Viewer API — ingest, query, and analyse credit file data.',
+      description: 'Credit Timeline Viewer API — ingest, query, and analyse credit file data.',
     },
     servers: [{ url: '/api/v1', description: 'Default API base' }],
     tags: [
@@ -327,10 +320,7 @@ export function generateOpenApiSpec(): Record<string, unknown> {
             query: tradelineMetricsSchema,
           },
           responses: {
-            '200': jsonResponse(
-              tradelineMetricSeriesSchema,
-              'Tradeline metric series',
-            ),
+            '200': jsonResponse(tradelineMetricSeriesSchema, 'Tradeline metric series'),
             ...validationError,
           },
         },
@@ -452,10 +442,7 @@ export function generateOpenApiSpec(): Record<string, unknown> {
             query: publicRecordListSchema,
           },
           responses: {
-            '200': jsonResponse(
-              paginatedPublicRecords,
-              'Paginated list of public records',
-            ),
+            '200': jsonResponse(paginatedPublicRecords, 'Paginated list of public records'),
             ...validationError,
           },
         },
@@ -470,10 +457,7 @@ export function generateOpenApiSpec(): Record<string, unknown> {
           tags: ['Settings'],
           summary: 'Get all application settings',
           responses: {
-            '200': jsonResponse(
-              z.array(appSettingEntrySchema),
-              'List of settings',
-            ),
+            '200': jsonResponse(z.array(appSettingEntrySchema), 'List of settings'),
           },
         },
       },

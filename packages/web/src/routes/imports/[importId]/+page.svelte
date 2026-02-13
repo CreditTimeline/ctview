@@ -9,17 +9,17 @@
 
 <div class="space-y-8">
   <!-- Breadcrumb -->
-  <a href="/imports" class="inline-flex items-center gap-1 text-sm text-accent hover:underline">
+  <a href="/imports" class="text-accent inline-flex items-center gap-1 text-sm hover:underline">
     &larr; All Imports
   </a>
 
   <!-- Metadata Card -->
   <div class="panel">
-    <h2 class="text-2xl font-bold text-ink">Import Detail</h2>
+    <h2 class="text-ink text-2xl font-bold">Import Detail</h2>
     <div class="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-3">
       <div>
         <p class="text-muted">Import ID</p>
-        <p class="font-mono text-xs text-ink">{detail.importId}</p>
+        <p class="text-ink font-mono text-xs">{detail.importId}</p>
       </div>
       <div>
         <p class="text-muted">Source System</p>
@@ -47,9 +47,9 @@
       {/if}
     </div>
     {#if detail.confidenceNotes}
-      <div class="mt-4 border-t border-soft pt-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted">Confidence Notes</p>
-        <p class="mt-1 text-sm text-ink">{detail.confidenceNotes}</p>
+      <div class="border-soft mt-4 border-t pt-4">
+        <p class="text-muted text-xs font-semibold tracking-wider uppercase">Confidence Notes</p>
+        <p class="text-ink mt-1 text-sm">{detail.confidenceNotes}</p>
       </div>
     {/if}
   </div>
@@ -57,11 +57,15 @@
   <!-- Receipt Section -->
   {#if detail.receipt}
     <div class="panel">
-      <h3 class="text-lg font-semibold text-ink">Ingest Receipt</h3>
+      <h3 class="text-ink text-lg font-semibold">Ingest Receipt</h3>
       <div class="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-3">
         <div>
           <p class="text-muted">Status</p>
-          <span class="badge {detail.receipt.status === 'success' ? 'bg-success-light text-success' : 'bg-danger-light text-danger'}">
+          <span
+            class="badge {detail.receipt.status === 'success'
+              ? 'bg-success-light text-success'
+              : 'bg-danger-light text-danger'}"
+          >
             {detail.receipt.status}
           </span>
         </div>
@@ -72,18 +76,18 @@
         {#if detail.receipt.durationMs !== null}
           <div>
             <p class="text-muted">Duration</p>
-            <p class="font-mono text-ink">{detail.receipt.durationMs}ms</p>
+            <p class="text-ink font-mono">{detail.receipt.durationMs}ms</p>
           </div>
         {/if}
       </div>
       {#if detail.receipt.entityCounts}
-        <div class="mt-4 border-t border-soft pt-4">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted">Entity Counts</p>
+        <div class="border-soft mt-4 border-t pt-4">
+          <p class="text-muted text-xs font-semibold tracking-wider uppercase">Entity Counts</p>
           <div class="mt-2 grid grid-cols-2 gap-2 text-sm md:grid-cols-4">
-            {#each Object.entries(detail.receipt.entityCounts) as [entity, count]}
-              <div class="rounded-lg bg-canvas p-2">
-                <p class="font-medium text-ink">{count}</p>
-                <p class="text-xs text-muted">{entity}</p>
+            {#each Object.entries(detail.receipt.entityCounts) as [entity, count] (entity)}
+              <div class="bg-canvas rounded-lg p-2">
+                <p class="text-ink font-medium">{count}</p>
+                <p class="text-muted text-xs">{entity}</p>
               </div>
             {/each}
           </div>
@@ -95,16 +99,21 @@
   <!-- Raw Artifacts -->
   {#if detail.rawArtifacts.length > 0}
     <div class="panel">
-      <h3 class="text-lg font-semibold text-ink">Raw Artifacts</h3>
+      <h3 class="text-ink text-lg font-semibold">Raw Artifacts</h3>
       <div class="mt-4 space-y-3">
         {#each detail.rawArtifacts as artifact (artifact.artifactId)}
-          <div class="flex items-center gap-4 rounded-lg bg-canvas p-3 text-sm">
+          <div class="bg-canvas flex items-center gap-4 rounded-lg p-3 text-sm">
             <span class="badge bg-soft text-muted">{artifact.artifactType}</span>
-            <span class="font-mono text-xs text-muted" title={artifact.sha256}>
+            <span class="text-muted font-mono text-xs" title={artifact.sha256}>
               SHA-256: {artifact.sha256.slice(0, 16)}&hellip;
             </span>
             {#if artifact.uri}
-              <a href={artifact.uri} class="text-accent hover:underline" target="_blank" rel="noopener">
+              <a
+                href={artifact.uri}
+                class="text-accent hover:underline"
+                target="_blank"
+                rel="noopener"
+              >
                 View
               </a>
             {/if}

@@ -31,8 +31,25 @@ describe('Trend Queries', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
       };
       ingestCreditFile(db, file);
 
@@ -48,8 +65,25 @@ describe('Trend Queries', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
         tradelines: [
           {
             tradeline_id: 'tl_u1',
@@ -58,7 +92,13 @@ describe('Trend Queries', () => {
             status_current: 'up_to_date',
             source_import_id: 'imp_test_001',
             snapshots: [
-              { snapshot_id: 'snap_u1', as_of_date: '2025-12-01', current_balance: 30000, credit_limit: 100000, source_import_id: 'imp_test_001' },
+              {
+                snapshot_id: 'snap_u1',
+                as_of_date: '2025-12-01',
+                current_balance: 30000,
+                credit_limit: 100000,
+                source_import_id: 'imp_test_001',
+              },
             ],
           },
           {
@@ -68,7 +108,13 @@ describe('Trend Queries', () => {
             status_current: 'up_to_date',
             source_import_id: 'imp_test_001',
             snapshots: [
-              { snapshot_id: 'snap_u2', as_of_date: '2025-12-01', current_balance: 20000, credit_limit: 50000, source_import_id: 'imp_test_001' },
+              {
+                snapshot_id: 'snap_u2',
+                as_of_date: '2025-12-01',
+                current_balance: 20000,
+                credit_limit: 50000,
+                source_import_id: 'imp_test_001',
+              },
             ],
           },
         ],
@@ -94,22 +140,65 @@ describe('Trend Queries', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
-        organisations: [{ organisation_id: 'org_1', name: 'Test Bank', roles: ['furnisher'], source_import_id: 'imp_test_001' }],
-        tradelines: [{
-          tradeline_id: 'tl_evt_001',
-          furnisher_organisation_id: 'org_1',
-          account_type: 'credit_card',
-          status_current: 'up_to_date',
-          source_import_id: 'imp_test_001',
-          events: [
-            { event_id: 'evt_1', event_type: 'delinquency', event_date: '2025-11-15', source_import_id: 'imp_test_001' },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
           ],
-        }],
+        },
+        organisations: [
+          {
+            organisation_id: 'org_1',
+            name: 'Test Bank',
+            roles: ['furnisher'],
+            source_import_id: 'imp_test_001',
+          },
+        ],
+        tradelines: [
+          {
+            tradeline_id: 'tl_evt_001',
+            furnisher_organisation_id: 'org_1',
+            account_type: 'credit_card',
+            status_current: 'up_to_date',
+            source_import_id: 'imp_test_001',
+            events: [
+              {
+                event_id: 'evt_1',
+                event_type: 'delinquency',
+                event_date: '2025-11-15',
+                source_import_id: 'imp_test_001',
+              },
+            ],
+          },
+        ],
         credit_scores: [
-          { score_id: 'sc_1', score_type: 'credit_score', score_value: 720, calculated_at: '2025-11-01', source_import_id: 'imp_test_001' },
-          { score_id: 'sc_2', score_type: 'credit_score', score_value: 700, calculated_at: '2025-12-01', source_import_id: 'imp_test_001' },
+          {
+            score_id: 'sc_1',
+            score_type: 'credit_score',
+            score_value: 720,
+            calculated_at: '2025-11-01',
+            source_import_id: 'imp_test_001',
+          },
+          {
+            score_id: 'sc_2',
+            score_type: 'credit_score',
+            score_value: 700,
+            calculated_at: '2025-12-01',
+            source_import_id: 'imp_test_001',
+          },
         ],
       };
       ingestCreditFile(db, file);
@@ -131,8 +220,25 @@ describe('Trend Queries', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
       };
       ingestCreditFile(db, file);
 
@@ -151,8 +257,25 @@ describe('Trend Queries', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
         tradelines: [
           {
             tradeline_id: 'tl_pp_001',
@@ -161,9 +284,30 @@ describe('Trend Queries', () => {
             status_current: 'up_to_date',
             source_import_id: 'imp_test_001',
             monthly_metrics: [
-              { monthly_metric_id: 'mm_1', period: '2025-10', metric_type: 'payment_status', canonical_status: 'up_to_date', value_text: '0', source_import_id: 'imp_test_001' },
-              { monthly_metric_id: 'mm_2', period: '2025-11', metric_type: 'payment_status', canonical_status: 'up_to_date', value_text: '0', source_import_id: 'imp_test_001' },
-              { monthly_metric_id: 'mm_3', period: '2025-12', metric_type: 'payment_status', canonical_status: 'in_arrears', value_text: '1', source_import_id: 'imp_test_001' },
+              {
+                monthly_metric_id: 'mm_1',
+                period: '2025-10',
+                metric_type: 'payment_status',
+                canonical_status: 'up_to_date',
+                value_text: '0',
+                source_import_id: 'imp_test_001',
+              },
+              {
+                monthly_metric_id: 'mm_2',
+                period: '2025-11',
+                metric_type: 'payment_status',
+                canonical_status: 'up_to_date',
+                value_text: '0',
+                source_import_id: 'imp_test_001',
+              },
+              {
+                monthly_metric_id: 'mm_3',
+                period: '2025-12',
+                metric_type: 'payment_status',
+                canonical_status: 'in_arrears',
+                value_text: '1',
+                source_import_id: 'imp_test_001',
+              },
             ],
           },
         ],
@@ -190,8 +334,25 @@ describe('Trend Queries', () => {
         subject_id: 'subj_test_001',
         created_at: '2026-01-01T00:00:00Z',
         currency_code: 'GBP',
-        imports: [{ import_id: 'imp_test_001', imported_at: '2026-01-01T00:00:00Z', source_system: 'equifax', acquisition_method: 'api' }],
-        subject: { subject_id: 'subj_test_001', names: [{ name_id: 'n1', full_name: 'Test', name_type: 'legal', source_import_id: 'imp_test_001' }] },
+        imports: [
+          {
+            import_id: 'imp_test_001',
+            imported_at: '2026-01-01T00:00:00Z',
+            source_system: 'equifax',
+            acquisition_method: 'api',
+          },
+        ],
+        subject: {
+          subject_id: 'subj_test_001',
+          names: [
+            {
+              name_id: 'n1',
+              full_name: 'Test',
+              name_type: 'legal',
+              source_import_id: 'imp_test_001',
+            },
+          ],
+        },
       };
       ingestCreditFile(db, file);
 

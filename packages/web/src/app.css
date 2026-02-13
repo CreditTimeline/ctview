@@ -73,11 +73,11 @@ body {
 /* ── Reusable component classes ────────────────────────────────────────── */
 
 .panel {
-  @apply rounded-xl border border-soft bg-surface p-6;
+  @apply border-soft bg-surface rounded-xl border p-6;
 }
 
 .money {
-  @apply font-mono tabular-nums text-right;
+  @apply text-right font-mono tabular-nums;
 }
 
 .badge {
@@ -86,5 +86,5 @@ body {
 
 /* Focus ring for keyboard navigation */
 :focus-visible {
-  @apply outline-2 outline-offset-2 outline-accent;
+  @apply outline-accent outline-2 outline-offset-2;
 }

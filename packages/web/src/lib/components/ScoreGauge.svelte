@@ -68,6 +68,6 @@
   <AgencyBadge agency={score.sourceSystem} size="md" />
   <EChart option={gaugeOption} height="180px" class="w-full" />
   {#if score.scoreBand}
-    <p class="text-sm font-medium text-muted">{score.scoreBand}</p>
+    <p class="text-muted text-sm font-medium">{score.scoreBand}</p>
   {/if}
 </div>

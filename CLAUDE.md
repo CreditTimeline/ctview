@@ -44,6 +44,7 @@ Use the closest `CLAUDE.md` for local rules, then fall back to parents.
 If two rules conflict, the deeper file for the current path wins.
 
 Child instruction files:
+
 - `packages/core/CLAUDE.md`
 - `packages/web/CLAUDE.md`
 - `packages/web/src/routes/api/v1/CLAUDE.md`

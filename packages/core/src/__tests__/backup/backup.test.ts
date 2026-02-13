@@ -104,10 +104,10 @@ describe('listBackups', () => {
     createDatabase(dbPath);
     const backupDir = tempDir();
 
-    const r1 = await createBackup(dbPath, backupDir);
+    await createBackup(dbPath, backupDir);
     // Wait over 1 second to guarantee different second-level timestamps
     await new Promise((resolve) => setTimeout(resolve, 1100));
-    const r2 = await createBackup(dbPath, backupDir);
+    await createBackup(dbPath, backupDir);
 
     const backups = listBackups(backupDir);
 
@@ -215,16 +215,14 @@ describe('restoreBackup', () => {
 
     // Verify original data is back
     const raw4 = new Database(targetPath, { readonly: true });
-    const restored = raw4
-      .prepare("SELECT value FROM app_settings WHERE key = 'canary'")
-      .get() as { value: string };
+    const restored = raw4.prepare("SELECT value FROM app_settings WHERE key = 'canary'").get() as {
+      value: string;
+    };
     raw4.close();
     expect(restored.value).toBe('original');
   });
 
   it('throws for non-existent backup file', () => {
-    expect(() => restoreBackup('/tmp/nonexistent.db', '/tmp/target.db')).toThrow(
-      'not found',
-    );
+    expect(() => restoreBackup('/tmp/nonexistent.db', '/tmp/target.db')).toThrow('not found');
   });
 });

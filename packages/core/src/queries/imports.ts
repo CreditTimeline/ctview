@@ -21,8 +21,7 @@ export function listImports(
   const conditions: SQL[] = [];
   if (subjectId) conditions.push(sql`ib.subject_id = ${subjectId}`);
 
-  const where =
-    conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
+  const where = conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
 
   interface Row {
     import_id: string;
@@ -68,23 +67,12 @@ export function listImports(
   return paginate(items, total, limit, offset);
 }
 
-export function getImportDetail(
-  db: AppDatabase,
-  importId: string,
-): ImportDetail | null {
+export function getImportDetail(db: AppDatabase, importId: string): ImportDetail | null {
   // Use direct queries instead of relational API
-  const imp = db
-    .select()
-    .from(importBatch)
-    .where(eq(importBatch.import_id, importId))
-    .get();
+  const imp = db.select().from(importBatch).where(eq(importBatch.import_id, importId)).get();
   if (!imp) return null;
 
-  const artifacts = db
-    .select()
-    .from(rawArtifact)
-    .where(eq(rawArtifact.import_id, importId))
-    .all();
+  const artifacts = db.select().from(rawArtifact).where(eq(rawArtifact.import_id, importId)).all();
 
   const receipt = db
     .select()
@@ -120,11 +108,7 @@ export function getImportDetail(
   };
 }
 
-export function diffImports(
-  db: AppDatabase,
-  importIdA: string,
-  importIdB: string,
-): ImportDiff {
+export function diffImports(db: AppDatabase, importIdA: string, importIdB: string): ImportDiff {
   const receiptA = db
     .select({ entity_counts_json: ingestReceipt.entity_counts_json })
     .from(ingestReceipt)
@@ -137,8 +121,10 @@ export function diffImports(
     .where(eq(ingestReceipt.import_id, importIdB))
     .get();
 
-  const countsA = parseJsonColumn<Record<string, number>>(receiptA?.entity_counts_json ?? null) ?? {};
-  const countsB = parseJsonColumn<Record<string, number>>(receiptB?.entity_counts_json ?? null) ?? {};
+  const countsA =
+    parseJsonColumn<Record<string, number>>(receiptA?.entity_counts_json ?? null) ?? {};
+  const countsB =
+    parseJsonColumn<Record<string, number>>(receiptB?.entity_counts_json ?? null) ?? {};
 
   const allKeys = new Set([...Object.keys(countsA), ...Object.keys(countsB)]);
   const deltas: ImportDiffDelta[] = [];

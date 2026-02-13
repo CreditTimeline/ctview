@@ -67,10 +67,10 @@ export class CtviewClient {
   }
 
   // Subjects
-  async listSubjects(
-    params?: PaginationParams,
-  ): Promise<PaginatedResult<SubjectListItem>> {
-    return apiFetch(this.options, 'subjects', { params: params as Record<string, string | number | undefined> });
+  async listSubjects(params?: PaginationParams): Promise<PaginatedResult<SubjectListItem>> {
+    return apiFetch(this.options, 'subjects', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   async getSubjectSummary(subjectId: string): Promise<SubjectSummary> {
@@ -90,7 +90,9 @@ export class CtviewClient {
       sourceSystem?: string;
     },
   ): Promise<PaginatedResult<TradelineSummary>> {
-    return apiFetch(this.options, 'tradelines', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'tradelines', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   async getTradelineDetail(tradelineId: string): Promise<TradelineDetail> {
@@ -116,7 +118,9 @@ export class CtviewClient {
       to?: string;
     },
   ): Promise<PaginatedResult<SearchSummary>> {
-    return apiFetch(this.options, 'searches', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'searches', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   // Scores
@@ -128,14 +132,18 @@ export class CtviewClient {
       to?: string;
     },
   ): Promise<PaginatedResult<ScoreEntry>> {
-    return apiFetch(this.options, 'scores', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'scores', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   // Imports
   async listImports(
     params?: PaginationParams & { subjectId?: string },
   ): Promise<PaginatedResult<ImportListItem>> {
-    return apiFetch(this.options, 'imports', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'imports', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   async getImportDetail(importId: string): Promise<ImportDetail> {
@@ -146,21 +154,27 @@ export class CtviewClient {
   async listAddresses(
     params?: PaginationParams & { subjectId?: string; role?: string },
   ): Promise<PaginatedResult<AddressWithAssociations>> {
-    return apiFetch(this.options, 'addresses', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'addresses', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   // Insights
   async listInsights(
     params?: PaginationParams & { subjectId?: string; severity?: string; kind?: string },
   ): Promise<PaginatedResult<InsightSummary>> {
-    return apiFetch(this.options, 'insights', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'insights', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   // Public Records
   async listPublicRecords(
     params?: PaginationParams & { subjectId?: string },
   ): Promise<PaginatedResult<PublicRecordSummary>> {
-    return apiFetch(this.options, 'public-records', { params: params as Record<string, string | number | undefined> });
+    return apiFetch(this.options, 'public-records', {
+      params: params as Record<string, string | number | undefined>,
+    });
   }
 
   // Settings

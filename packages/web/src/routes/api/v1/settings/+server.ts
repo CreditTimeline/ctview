@@ -10,7 +10,10 @@ export const GET: RequestHandler = ({ locals }) => {
 export const PUT: RequestHandler = async ({ request, locals }) => {
   const body = await request.json();
   if (!body.key || typeof body.key !== 'string' || typeof body.value !== 'string') {
-    return apiError(ErrorCode.VALIDATION_FAILED, 'Request body must include "key" and "value" strings');
+    return apiError(
+      ErrorCode.VALIDATION_FAILED,
+      'Request body must include "key" and "value" strings',
+    );
   }
 
   // Protect read-only keys

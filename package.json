@@ -19,10 +19,18 @@
     "format:fix": "prettier --write .",
     "db:reset": "rm -f packages/web/data/credittimeline.db*"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
+  },
   "devDependencies": {
+    "@eslint/js": "^10.0.0",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.15.0",
+    "globals": "^17.3.0",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.4.1",
     "prettier-plugin-tailwindcss": "^0.7.2",

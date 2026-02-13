@@ -55,23 +55,25 @@
   }
 </script>
 
-<div class="{className}">
+<div class={className}>
   {#if events.length === 0}
-    <p class="text-sm text-muted">No events recorded.</p>
+    <p class="text-muted text-sm">No events recorded.</p>
   {:else}
     <div class="space-y-3">
       {#each events as event (event.eventId)}
         {@const severity = eventSeverity[event.eventType] ?? 'neutral'}
-        <div class="rounded-lg border-l-4 bg-surface p-4 {severityBorderColors[severity]}">
+        <div class="bg-surface rounded-lg border-l-4 p-4 {severityBorderColors[severity]}">
           <div class="flex items-center gap-2">
-            <span class="badge {severityBadgeColors[severity]}">{formatEventType(event.eventType)}</span>
-            <DateDisplay date={event.eventDate} class="text-sm text-muted" />
+            <span class="badge {severityBadgeColors[severity]}"
+              >{formatEventType(event.eventType)}</span
+            >
+            <DateDisplay date={event.eventDate} class="text-muted text-sm" />
             {#if event.amount !== null}
               <MoneyDisplay amount={event.amount} class="text-sm" />
             {/if}
           </div>
           {#if event.notes}
-            <p class="mt-2 text-sm text-muted">{event.notes}</p>
+            <p class="text-muted mt-2 text-sm">{event.notes}</p>
           {/if}
         </div>
       {/each}

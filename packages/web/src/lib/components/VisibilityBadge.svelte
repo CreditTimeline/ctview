@@ -11,7 +11,13 @@
     soft: { label: 'Soft', bg: 'bg-info-light', text: 'text-info' },
   };
 
-  const style = $derived(config[visibility ?? ''] ?? { label: visibility ?? 'Unknown', bg: 'bg-soft', text: 'text-muted' });
+  const style = $derived(
+    config[visibility ?? ''] ?? {
+      label: visibility ?? 'Unknown',
+      bg: 'bg-soft',
+      text: 'text-muted',
+    },
+  );
 </script>
 
 <span class="badge {style.bg} {style.text} {className}">{style.label}</span>

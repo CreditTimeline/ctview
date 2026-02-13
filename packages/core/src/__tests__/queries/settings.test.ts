@@ -1,11 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { createTestDb } from '../helpers/test-db.js';
 import { createSeededDb } from './query-test-helpers.js';
-import {
-  getSystemHealth,
-  getAppSettings,
-  updateAppSetting,
-} from '../../queries/settings.js';
+import { getSystemHealth, getAppSettings, updateAppSetting } from '../../queries/settings.js';
 
 describe('getSystemHealth', () => {
   it('returns zero counts on empty database', () => {

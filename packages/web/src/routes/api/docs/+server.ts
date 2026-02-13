@@ -7,9 +7,7 @@ const require = createRequire(import.meta.url);
 let cachedHtml: string | null = null;
 
 function buildHtml(): string {
-  const standalonePath = require.resolve(
-    '@scalar/api-reference/dist/browser/standalone.js',
-  );
+  const standalonePath = require.resolve('@scalar/api-reference/dist/browser/standalone.js');
   const standaloneJs = readFileSync(standalonePath, 'utf-8');
 
   return `<!DOCTYPE html>

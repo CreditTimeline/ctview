@@ -8,10 +8,7 @@ import type {
   SubjectAnomalyData,
 } from './types.js';
 
-function fetchLinkedEntities(
-  db: AppDatabase,
-  insightIds: string[],
-): Map<string, string[]> {
+function fetchLinkedEntities(db: AppDatabase, insightIds: string[]): Map<string, string[]> {
   const map = new Map<string, string[]>();
   if (insightIds.length === 0) return map;
 
@@ -45,8 +42,7 @@ export function listInsights(
   if (severity) conditions.push(sql`gi.severity = ${severity}`);
   if (kind) conditions.push(sql`gi.kind = ${kind}`);
 
-  const where =
-    conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
+  const where = conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
 
   interface Row {
     insight_id: string;
@@ -86,10 +82,7 @@ export function listInsights(
   return paginate(items, total, limit, offset);
 }
 
-export function getSubjectAnomalies(
-  db: AppDatabase,
-  subjectId: string,
-): SubjectAnomalyData {
+export function getSubjectAnomalies(db: AppDatabase, subjectId: string): SubjectAnomalyData {
   interface SeverityRow {
     severity: string | null;
     count: number;

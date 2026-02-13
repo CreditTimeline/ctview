@@ -39,8 +39,24 @@ export const GET: RequestHandler = ({ url, locals }) => {
 function buildDashboardHtml(
   subjectId: string,
   dashboard: ReturnType<typeof getDashboard>,
-  tradelines: { tradelineId: string; furnisherName: string | null; accountType: string | null; statusCurrent: string | null; latestBalance: number | null; latestCreditLimit: number | null }[],
-  scores: { scoreId: string; scoreType: string | null; scoreName: string | null; scoreValue: number | null; scoreMin: number | null; scoreMax: number | null; calculatedAt: string | null; sourceSystem: string }[],
+  tradelines: {
+    tradelineId: string;
+    furnisherName: string | null;
+    accountType: string | null;
+    statusCurrent: string | null;
+    latestBalance: number | null;
+    latestCreditLimit: number | null;
+  }[],
+  scores: {
+    scoreId: string;
+    scoreType: string | null;
+    scoreName: string | null;
+    scoreValue: number | null;
+    scoreMin: number | null;
+    scoreMax: number | null;
+    calculatedAt: string | null;
+    sourceSystem: string;
+  }[],
 ): string {
   const now = new Date().toISOString().slice(0, 10);
 

@@ -84,10 +84,7 @@ export async function ingestCreditFile(
   // Step 1: JSON Schema validation
   const schemaResult = validateCreditFile(data);
   if (!schemaResult.valid) {
-    log.warn(
-      { errorCount: schemaResult.errors?.length ?? 0 },
-      'schema validation failed',
-    );
+    log.warn({ errorCount: schemaResult.errors?.length ?? 0 }, 'schema validation failed');
     return {
       success: false,
       importIds: [],
@@ -222,10 +219,7 @@ export async function ingestCreditFile(
 
   const durationMs = Math.round(performance.now() - startTime);
   const importIds = file.imports.map((i) => i.import_id);
-  log.info(
-    { fileId: file.file_id, importIds, durationMs, entityCounts },
-    'ingestion completed',
-  );
+  log.info({ fileId: file.file_id, importIds, durationMs, entityCounts }, 'ingestion completed');
 
   return {
     success: true,

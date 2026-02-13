@@ -2,11 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { createTestDb } from '../helpers/test-db.js';
 import { buildCreditFileWithSearches } from './query-test-helpers.js';
 import { ingestCreditFile } from '../../ingestion/ingest-file.js';
-import {
-  listSearches,
-  getSearchTimeline,
-  getSearchFrequency,
-} from '../../queries/searches.js';
+import { listSearches, getSearchTimeline, getSearchFrequency } from '../../queries/searches.js';
 
 async function createSearchSeededDb() {
   const db = createTestDb();
@@ -135,9 +131,7 @@ describe('getSearchFrequency', () => {
 
     expect(result.items.length).toBeGreaterThan(0);
     // Should have entries for each org+type combination
-    const bankSearch = result.items.find(
-      (i) => i.organisationName === 'Bank Search Ltd',
-    );
+    const bankSearch = result.items.find((i) => i.organisationName === 'Bank Search Ltd');
     expect(bankSearch).toBeDefined();
   });
 });

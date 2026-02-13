@@ -32,8 +32,7 @@ export function listTradelines(
   if (status) conditions.push(sql`t.status_current = ${status}`);
   if (sourceSystem) conditions.push(sql`t.source_system = ${sourceSystem}`);
 
-  const where =
-    conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
+  const where = conditions.length > 0 ? sql`WHERE ${sql.join(conditions, sql` AND `)}` : sql``;
 
   interface Row {
     tradeline_id: string;
@@ -96,16 +95,9 @@ export function listTradelines(
   return paginate(items, total, limit, offset);
 }
 
-export function getTradelineDetail(
-  db: AppDatabase,
-  tradelineId: string,
-): TradelineDetail | null {
+export function getTradelineDetail(db: AppDatabase, tradelineId: string): TradelineDetail | null {
   // Use multiple targeted queries instead of relational API for type safety
-  const tl = db
-    .select()
-    .from(tradeline)
-    .where(eq(tradeline.tradeline_id, tradelineId))
-    .get();
+  const tl = db.select().from(tradeline).where(eq(tradeline.tradeline_id, tradelineId)).get();
   if (!tl) return null;
 
   // Furnisher org name
