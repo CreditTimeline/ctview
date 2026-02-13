@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@ctview/core": "workspace:*",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "better-sqlite3": "^12.0.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@scalar/api-reference": "^1.44.17",

@@ -4,4 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [tailwindcss(), sveltekit()],
+  ssr: {
+    external: ['ajv', 'ajv-formats', 'better-sqlite3'],
+  },
 });

@@ -36,4 +36,5 @@ coverage/
 
 # pnpm
 .pnpm-debug.log
+.pnpm-store/
 .claudit/
