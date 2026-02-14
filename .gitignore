@@ -42,3 +42,4 @@ test-results/
 .pnpm-debug.log
 .pnpm-store/
 .claudit/
+site/

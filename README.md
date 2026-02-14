@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/logo.png" alt="CreditTimeline" width="300">
+</p>
+
 # ctview
 
 A personal credit timeline viewer. Ingest credit report data from multiple bureaux into a normalised store, then browse and analyse it through a web UI or REST API.

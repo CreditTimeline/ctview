@@ -1,0 +1,26 @@
+[project]
+site_name = "ctview Documentation"
+site_description = "Interactive viewer and analysis tool for CreditTimeline data."
+site_url = "https://credittimeline.uk/ctview/"
+repo_name = "CreditTimeline/ctview"
+repo_url = "https://github.com/CreditTimeline/ctview"
+docs_dir = "docs"
+site_dir = "site"
+nav = [
+  { "Home" = "index.md" },
+  { "Setup Guide" = "setup-guide.md" },
+  { "API Guide" = "api-guide.md" },
+  { "Troubleshooting" = "troubleshooting.md" },
+]
+
+[project.theme]
+name = "material"
+logo = "assets/logo.png"
+favicon = "assets/icon.png"
+
+[project.theme.palette]
+primary = "teal"
+accent = "cyan"
+
+[[project.plugins]]
+sitemap = { changefreq = "daily", priority = 0.6 }
