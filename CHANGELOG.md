@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/CreditTimeline/ctview/compare/v0.2.0...v0.2.1) (2026-02-14)
+
+
+### Documentation
+
+* **site:** Add documentation site, assets and config ([3d3c01d](https://github.com/CreditTimeline/ctview/commit/3d3c01dcc571f75a3651f3e19c02ae3134fd68f4))
+
 ## [0.2.0](https://github.com/CreditTimeline/ctview/compare/v0.1.0...v0.2.0) (2026-02-13)
 
 
